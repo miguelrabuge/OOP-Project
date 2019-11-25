@@ -1,5 +1,4 @@
-package classes;
-
+package com.company;
 import java.util.Calendar;
 
 public class Development extends Task {

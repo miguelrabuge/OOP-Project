@@ -1,4 +1,4 @@
-package classes;
+package com.company;
 
 import java.util.ArrayList;
 

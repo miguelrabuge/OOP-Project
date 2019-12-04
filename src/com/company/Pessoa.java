@@ -10,9 +10,11 @@ abstract class Pessoa {
     protected String nome;
     protected String email;
 
-    public Pessoa(String nome, String email){
+    public Pessoa(String nome, String email, ResearchCenter researchCenter){
         this.nome = nome;
         this.email = email;
+        this.tasks = new ArrayList<Task>();
+        this.researchCenter = researchCenter;
     }
 
     public ResearchCenter getResearchCenter() {
@@ -47,7 +49,24 @@ abstract class Pessoa {
         this.email = email;
     }
 
-    public double getSobrecarga(Calendar dia){
-        //percorre o array de tasks e ve se ,no dia passado por parametro, qual e o estado de sobrecarga da pessoa
+    public void removeTask(Task task){//remove uma task das tasks da pessoa
+        this.tasks.remove(task);
+    }
+
+    public void addTask(Task task){//adiciona uma task as tasks da pessoa
+        this.tasks.add(task);
+    }
+
+
+    public double getSobrecarga(){//retorna a sobrecarga da pessoa
+        double sobrecarga = 0;
+
+        for(Task task : this.tasks){
+            if(task.getPercentage() != 100){//se a tarefa estiver por completar adicionamos o seu esforco a sobrecarga da pessoa
+                sobrecarga = task.getEsforco();
+            }
+        }
+
+        return sobrecarga;
     }
 }

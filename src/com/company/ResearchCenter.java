@@ -40,11 +40,28 @@ public class ResearchCenter {
     }
 
     public ArrayList<Project> getUnfinishedProjects(){
-        //colocar codigo para retornar os projetos inacabados
+        //retorna os projetos inacabados
+        ArrayList<Project> temp = new ArrayList<Project>();
+
+        for(Project project : this.projects){
+            if(project.getAcabado() == 0){
+                temp.add(project);
+            }
+        }
+        return temp;//depois verificar se o temp esta vazio ou nao
     }
 
     public ArrayList<Project> getFinishedProjects(){
-        //colocar codigo para retornar projetos acabados
+        //retorna projetos acabados
+        ArrayList<Project> temp = new ArrayList<Project>();
+
+        for(Project project : this.projects){
+            if(project.getAcabado() == 1){
+                temp.add(project);
+            }
+        }
+
+        return temp;//depois verificar se o temp esta vazio ou nao
     }
 
 

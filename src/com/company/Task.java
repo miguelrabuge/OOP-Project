@@ -5,15 +5,15 @@ import java.util.Calendar;
 abstract class Task {
     protected Calendar inicio;
     protected Calendar fim;
-    protected Calendar eta;
+    protected int etc;
     protected int percentage = 0; //achei por bem inicializa-la a 0
     protected Project projeto;
     protected Pessoa responsavel;
 
-    public Task(Calendar inicio, Calendar fim, Calendar eta, Pessoa responsavel){
+    public Task(Calendar inicio, Calendar fim, int etc, Pessoa responsavel){
         this.inicio = inicio;
         this.fim = fim;
-        this.eta = eta;
+        this.etc = etc;
         this.responsavel = responsavel;
     }
 
@@ -33,12 +33,12 @@ abstract class Task {
         this.fim = fim;
     }
 
-    public Calendar getEta() {
-        return this.eta;
+    public int getEtc() {
+        return this.etc;
     }
 
-    public void setEta(Calendar eta) {
-        this.eta = eta;
+    public void setEtc(int etc) {
+        this.etc = etc;
     }
 
     public int getPercentage() {

@@ -10,20 +10,19 @@ public class Project {
     private String acronimo;
     private Docente principal;
     private Calendar dataInicio;
-    private int etc;//tempo estimado para terminar o projeto em meses
-    private Calendar dataFim;//TODO vamos inicializar a data fim com que valor
+    private Calendar etc;//tempo estimado para terminar o projeto em meses
+    private Calendar dataFim = null;//TODO vamos inicializar a data fim com null, pois so se sabe este dado depois do projeto ser terminado
     private ArrayList<Task> tasks;
     private ArrayList<Docente> docentes;
     private ArrayList<Bolseiro> bolseiros;
 
     private int acabado = 0;//acrescentei esta variavel para saber se um projeto esta ou nao acabado (1 == acabado, 0 == por acabar)
 
-
-    public void Project(String nome, String acronimo, Calendar dataInicio, Calendar dataFim, int etc, Docente principal){
+    //retirei o dataFim do construtor, visto que so se sabe depois do projeto ser terminado
+    public  Project(String nome, String acronimo, Calendar dataInicio, Calendar etc, Docente principal){
         this.nome = nome;
         this.acronimo = acronimo;
         this.dataInicio = dataInicio;
-        this.dataFim = dataFim;//TODO penso que isto possa ser null porque no inicio nao se sabe qual vai ser a data fim do projeto, ou o projeto ja tem uma data de fim predefinida (esta tudo acabado esta, nao esta estivesse)
         this.etc = etc;
         this.principal = principal;
     }
@@ -42,23 +41,47 @@ public class Project {
 
     public boolean changeTaskResp(Pessoa responsavel, Task task){
         Pessoa temp;
-        //colocar codigo para trocar o responsavel de uma determinada tarefa
-        //TODO tenho de avaliar, caso seja um bolseiro, se o novo responsavel tem tempo de contrato suficiente para concluir a tarefa
-        if(responsavel.getSobrecarga() + task.getEsforco() <= 1 && task.percentage != 100){//Se isto acontecer, entao a tarefa pode ser atribuida ao novo responsavel
-
-            //retirar a tarefa das tarefas do atual responsavel
-            temp = task.getResponsavel();//para saber quem e o responsavel atual da tarefa
-            temp.removeTask(task);
-
-            //adicionar a tarefa ao novo responsavel
-            responsavel.addTask(task);
+        Calendar dia = Calendar.getInstance();
+        Bolseiro aux;
+        int cond = 0;
 
 
-            return true;
+        //verifica se o responsavel e um bolseiro ou um docente
+        if(this.bolseiros.contains(responsavel)){
+            aux = (Bolseiro) responsavel;//nao sei se posso fazer isto
+            if( task.getEtc().before(aux.getFimBolsa()) ){//se o etc da task for antes do fim da bolsa do bolseiro, e provavel que a task lhe possa ser atribuida
+               cond = 1;
+            }
+
+        }
+        else if(this.docentes.contains(responsavel)){
+            cond = 1;
+        }
+
+        if(cond == 1) {
+            if (responsavel.getSobrecarga(dia) + task.getEsforco() <= 1 && task.percentage != 100) {//Se isto acontecer, entao a tarefa pode ser atribuida ao novo responsavel
+
+                //retirar a tarefa das tarefas do atual responsavel
+                temp = task.getResponsavel();//para saber quem e o responsavel atual da tarefa
+                temp.removeTask(task);
+
+                //faz o mesmo que as duas linhas em cima
+                //task.getResponsavel().removeTask(task);
+
+                //adicionar a tarefa ao novo responsavel
+                responsavel.addTask(task);
+
+
+                return true;
+            } else {
+                return false;
+
+            }
         }
         else{
             return false;
         }
+
     }
 
     public boolean removeTask(Task task){//remove uma task das tasks do projeto, para isso acontecer a task tem de ser removida das tasks do responsavel pela task
@@ -77,10 +100,12 @@ public class Project {
             }
             else{
                 //TODO --> nao sei o que queres fazer se nao der, queres dar print de uma mensagem a dizer porque e que nao deu?
+                System.out.printf("Nao e possivel adicionar a percentagem que deseja a ja existente.\n");
             }
         }
         else{
             //TODO --> nao sei o que queres fazer se nao der, queres dar print de uma mensagem a dizer porque e que nao deu?
+            System.out.printf("Não pode alterar a taxa de conclusao da tarefa uma vez que ja se encontra a 100%%.\n");
         }
     }
 
@@ -165,11 +190,11 @@ public class Project {
         this.dataInicio = dataInicio;
     }
 
-    public int getEtc(){
+    public Calendar getEtc(){
         return this.etc;
     }
 
-    public void setEtc(int etc){
+    public void setEtc(Calendar etc){
         this.etc = etc;
     }
 
@@ -210,7 +235,38 @@ public class Project {
     }
 
 
-    public void assignResp(Pessoa responsavel, Task task){
+    public void assignResp(Pessoa responsavel, Task task){//atribui uma task, se possivel, a pessoa passada como parametro
+
+        Calendar dia = Calendar.getInstance();
+        Bolseiro aux;
+        int cond = 0;
+
+        if(this.bolseiros.contains(responsavel)){
+            aux = (Bolseiro) responsavel;
+            if(aux.getFimBolsa().after(task.getEtc())){
+                cond = 1;
+            }
+        }
+        else if(this.docentes.contains(responsavel)){
+            cond = 1;
+        }
+
+
+        if(cond == 1){
+            if(responsavel.getSobrecarga(dia) + task.getEsforco() <= 1 && task.getPercentage() != 100){
+                responsavel.addTask(task);
+                System.out.printf("Tarefa atribuida com sucesso.\n");
+            }
+            else{
+                if(task.getPercentage() == 100)
+                    System.out.printf("Tarefa nao atribuida, pois a tarefa ja esta concluida.\n");
+                else
+                    System.out.printf("Tarefa nao atribuida, pois a pessoa esta sobrecarregada no periodo de execucao da tarefa.\n");
+            }
+        }
+        else{
+            System.out.printf("Nao foi possivel atribuir a tarefa a pessoa em questao, porque o contrato acaba antes do periodo de execucao da tarefa.\n");
+        }
 
     }
 }

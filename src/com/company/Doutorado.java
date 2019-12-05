@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 public class Doutorado extends Bolseiro {
 
-    public Doutorado(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa){
-        super(nome, email, inicioBolsa, fimBolsa);
+    public Doutorado(String nome, String email, ResearchCenter researchCenter,Calendar inicioBolsa, Calendar fimBolsa){
+        super(nome, email, researchCenter,inicioBolsa, fimBolsa);
     }
 
     public int getCusto(){

@@ -51,20 +51,32 @@ abstract class Pessoa {
 
     public void removeTask(Task task){//remove uma task das tasks da pessoa
         this.tasks.remove(task);
+        task.setResponsavel(null);//volta a colocar a task como livre, ou seja nao tem um responsavel
     }
 
     public void addTask(Task task){//adiciona uma task as tasks da pessoa
         this.tasks.add(task);
+        task.setResponsavel(this);//penso que isto funcione
     }
 
-
-    public double getSobrecarga(){//retorna a sobrecarga da pessoa
+    public double getSobrecarga(Calendar dia){//retorna a sobrecarga da pessoa
         double sobrecarga = 0;
-
+/*
         for(Task task : this.tasks){
             if(task.getPercentage() != 100){//se a tarefa estiver por completar adicionamos o seu esforco a sobrecarga da pessoa
                 sobrecarga = task.getEsforco();
             }
+        }
+*/
+
+        for(Task task : this.tasks){
+
+            if(dia.after(task.getInicio()) && dia.before(task.getEtc())){
+
+                sobrecarga += task.getEsforco();
+
+            }
+
         }
 
         return sobrecarga;

@@ -9,8 +9,8 @@ public class Docente extends Pessoa {
     private ArrayList<Estudante> orientados;
     private ArrayList<Project> projetos;
 
-    public Docente(String nome, String email, String mecano, String researchArea){
-        super(nome, email);
+    public Docente(String nome, String email, ResearchCenter researchCenter,String mecano, String researchArea){
+        super(nome, email, researchCenter);
         this.mecano = mecano;
         this.researchArea = researchArea;
     }

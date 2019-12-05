@@ -9,8 +9,8 @@ abstract class Bolseiro extends Pessoa {
     protected Calendar fimBolsa;
     protected Project projeto;
 
-    public Bolseiro(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa){
-        super(nome, email);
+    public Bolseiro(String nome, String email, ResearchCenter researchCenter,Calendar inicioBolsa, Calendar fimBolsa){
+        super(nome, email, researchCenter);
         this.inicoBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
     }

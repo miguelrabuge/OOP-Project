@@ -6,8 +6,8 @@ abstract class Estudante extends Bolseiro {
 
     protected Docente orientador;
 
-    public Estudante(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa, Docente orientador){
-        super(nome, email, inicioBolsa, fimBolsa);
+    public Estudante(String nome, String email, ResearchCenter researchCenter,Calendar inicioBolsa, Calendar fimBolsa, Docente orientador){
+        super(nome, email, researchCenter,inicioBolsa, fimBolsa);
         this.orientador = orientador;
     }
 

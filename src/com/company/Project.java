@@ -11,7 +11,7 @@ public class Project {
     private Docente principal;
     private Calendar dataInicio;
     private Calendar etc;//tempo estimado para terminar o projeto em meses
-    private Calendar dataFim = null;//TODO vamos inicializar a data fim com null, pois so se sabe este dado depois do projeto ser terminado
+    private Calendar dataFim;
     private ArrayList<Task> tasks;
     private ArrayList<Docente> docentes;
     private ArrayList<Bolseiro> bolseiros;
@@ -24,6 +24,7 @@ public class Project {
         this.acronimo = acronimo;
         this.dataInicio = dataInicio;
         this.etc = etc;
+        this.dataFim = null;
         this.principal = principal;
     }
 
@@ -207,7 +208,7 @@ public class Project {
     }
 
     public ResearchCenter getResearchCenter() {
-        return researchCenter;
+        return this.researchCenter;
     }
 
     public void setResearchCenter(ResearchCenter researchCenter){

@@ -6,7 +6,7 @@ abstract class Task {
     protected Calendar inicio;
     protected Calendar fim;
     protected Calendar etc;
-    protected int percentage = 0; //achei por bem inicializa-la a 0
+    protected int percentage;
     protected Project projeto;
     protected Pessoa responsavel;
 
@@ -14,6 +14,7 @@ abstract class Task {
         this.inicio = inicio;
         this.fim = fim;
         this.etc = etc;
+        this.percentage = 0;
         this.responsavel = responsavel;
     }
 

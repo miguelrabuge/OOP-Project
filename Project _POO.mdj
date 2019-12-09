@@ -63,7 +63,7 @@
 											"top": 239,
 											"width": 730.9072265625,
 											"height": 13,
-											"text": "InvestigationCenter"
+											"text": "ResearchCenter"
 										},
 										{
 											"_type": "LabelView",
@@ -324,13 +324,47 @@
 											"height": 13,
 											"text": "+setPessoas(pessoas: ArrayList<Pessoa>): void",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFu0Ld9pJ/z1EI=",
+											"_parent": {
+												"$ref": "AAAAAAFuWzcqUbhrO2s="
+											},
+											"model": {
+												"$ref": "AAAAAAFu0Ld9Wp/wo08="
+											},
+											"font": "Arial;13;0",
+											"left": 1621,
+											"top": 435,
+											"width": 730.9072265625,
+											"height": 13,
+											"text": "+getdocentes()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFu0LeVlqCKFy0=",
+											"_parent": {
+												"$ref": "AAAAAAFuWzcqUbhrO2s="
+											},
+											"model": {
+												"$ref": "AAAAAAFu0LeVYaCHMZY="
+											},
+											"font": "Arial;13;0",
+											"left": 1621,
+											"top": 450,
+											"width": 730.9072265625,
+											"height": 13,
+											"text": "+getbolseiros()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1616,
 									"top": 280,
 									"width": 740.9072265625,
-									"height": 158
+									"height": 188
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -370,7 +404,7 @@
 							"left": 1616,
 							"top": 232,
 							"width": 740.9072265625,
-							"height": 206,
+							"height": 236,
 							"nameCompartment": {
 								"$ref": "AAAAAAFuWzcqULhl4wA="
 							},
@@ -961,7 +995,7 @@
 											"top": 1012,
 											"width": 691.1962890625,
 											"height": 13,
-											"text": "+getInvestigationCenter(): InvestigationCenter",
+											"text": "+getInvestigationCenter(): ResearchCenter",
 											"horizontalAlignment": 0
 										},
 										{
@@ -978,7 +1012,7 @@
 											"top": 1027,
 											"width": 691.1962890625,
 											"height": 13,
-											"text": "+setInvestigationCenter(investigationCenter: InvestigationCenter): void",
+											"text": "+setInvestigationCenter(investigationCenter: ResearchCenter): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1925,7 +1959,7 @@
 											"top": 1372,
 											"width": 580.5947265625,
 											"height": 13,
-											"text": "+getInvestigationCenter(): InvestigationCenter",
+											"text": "+getInvestigationCenter(): ResearchCenter",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1943,7 +1977,7 @@
 											"top": 1387,
 											"width": 580.5947265625,
 											"height": 13,
-											"text": "+setInvestigationCenter(investigationCenter: InvestigationCenter): void",
+											"text": "+setInvestigationCenter(investigationCenter: ResearchCenter): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2588,7 +2622,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2000,
-									"top": 503,
+									"top": 518,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2609,7 +2643,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 2015,
-									"top": 503,
+									"top": 518,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2630,7 +2664,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1971,
-									"top": 504,
+									"top": 519,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2650,7 +2684,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 2003,
-									"top": 455,
+									"top": 485,
 									"width": 118.87890625,
 									"height": 13,
 									"alpha": 1.2631463890498662,
@@ -2673,7 +2707,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2014,
-									"top": 460,
+									"top": 490,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -2693,7 +2727,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 1970,
-									"top": 453,
+									"top": 483,
 									"width": 7.22998046875,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -2807,7 +2841,7 @@
 								"$ref": "AAAAAAFuWzcqULhk2RY="
 							},
 							"lineStyle": 1,
-							"points": "1986:438;1987:583",
+							"points": "1986:468;1987:583",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFuWzwDl7r1vF8="
@@ -5591,7 +5625,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 2387,
-									"top": 314,
+									"top": 321,
 									"width": 118.87890625,
 									"height": 13,
 									"alpha": 0.1594733525066346,
@@ -5613,8 +5647,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 2385,
-									"top": 300,
+									"left": 2384,
+									"top": 308,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -5634,7 +5668,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 2375,
-									"top": 341,
+									"top": 349,
 									"width": 7.22998046875,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -5748,7 +5782,7 @@
 								"$ref": "AAAAAAFuWzcqULhk2RY="
 							},
 							"lineStyle": 1,
-							"points": "2357:335;2824:336;2822:1183",
+							"points": "2357:343;2824:336;2822:1183",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFuW6x8uRWfepo="
@@ -7180,7 +7214,7 @@
 											"top": 248,
 											"width": 446.22119140625,
 											"height": 13,
-											"text": "+printUnfinishedProjects(investigationCenter: InvestigationCenter): void",
+											"text": "+printUnfinishedProjects(investigationCenter: ResearchCenter): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7197,7 +7231,7 @@
 											"top": 263,
 											"width": 446.22119140625,
 											"height": 13,
-											"text": "+printFinishedProjects(investigationCenter: InvestigationCenter): void",
+											"text": "+printFinishedProjects(investigationCenter: ResearchCenter): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7350,7 +7384,7 @@
 											"top": 398,
 											"width": 446.22119140625,
 											"height": 13,
-											"text": "+listInvestigationCenterPeople(investigationCenter: InvestigationCenter): void",
+											"text": "+listInvestigationCenterPeople(investigationCenter: ResearchCenter): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7437,7 +7471,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1351,
-									"top": 311,
+									"top": 318,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -7458,7 +7492,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1351,
-									"top": 296,
+									"top": 303,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -7479,7 +7513,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1350,
-									"top": 340,
+									"top": 347,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -7500,7 +7534,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1114,
-									"top": 311,
+									"top": 314,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -7521,7 +7555,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1116,
-									"top": 297,
+									"top": 301,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -7542,7 +7576,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1109,
-									"top": 338,
+									"top": 341,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -7563,7 +7597,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1589,
-									"top": 311,
+									"top": 321,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -7582,8 +7616,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1586,
-									"top": 298,
+									"left": 1587,
+									"top": 308,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -7603,7 +7637,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1593,
-									"top": 339,
+									"top": 349,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -7648,7 +7682,7 @@
 								"$ref": "AAAAAAFudEDXdPMojJE="
 							},
 							"lineStyle": 1,
-							"points": "1088:332;1615:333",
+							"points": "1088:335;1615:343",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAFudFNuzTqyArA="
@@ -7692,7 +7726,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "InvestigationCenter",
+					"name": "ResearchCenter",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -8001,6 +8035,22 @@
 									"direction": "return"
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFu0Ld9Wp/wo08=",
+							"_parent": {
+								"$ref": "AAAAAAFuWzcqT7higBI="
+							},
+							"name": "getdocentes"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFu0LeVYaCHMZY=",
+							"_parent": {
+								"$ref": "AAAAAAFuWzcqT7higBI="
+							},
+							"name": "getbolseiros"
 						}
 					]
 				},

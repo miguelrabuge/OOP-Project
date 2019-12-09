@@ -1,4 +1,4 @@
-package com.company;
+package core;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -260,13 +260,13 @@ public class Project {
             }
             else{
                 if(task.getPercentage() == 100)
-                    System.out.printf("Tarefa nao atribuida, pois a tarefa ja esta concluida.\n");
+                    System.out.print("Tarefa nao atribuida, pois a tarefa ja esta concluida.\n");
                 else
-                    System.out.printf("Tarefa nao atribuida, pois a pessoa esta sobrecarregada no periodo de execucao da tarefa.\n");
+                    System.out.print("Tarefa nao atribuida, pois a pessoa esta sobrecarregada no periodo de execucao da tarefa.\n");
             }
         }
         else{
-            System.out.printf("Nao foi possivel atribuir a tarefa a pessoa em questao, porque o contrato acaba antes do periodo de execucao da tarefa.\n");
+            System.out.print("Nao foi possivel atribuir a tarefa a pessoa em questao, porque o contrato acaba antes do periodo de execucao da tarefa.\n");
         }
 
     }

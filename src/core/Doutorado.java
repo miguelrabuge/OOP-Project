@@ -23,8 +23,11 @@ public class Doutorado extends Bolseiro {
      * Gets the doutorado's cost in a month.
      * @return int with the doutorado's cost in a month.
      */
-    public int getCusto(){
+    @Override
+    public int getCusto() {
         return 1200;
     }
+
+
 
 }

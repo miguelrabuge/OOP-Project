@@ -6,7 +6,6 @@ import java.util.Calendar;
  */
 public class Development extends Task {
 
-
     /**
      * Creates a Development task with its starting date and the estimated time to complete it.
      * @param inicio Calendar with the starting date of the task.

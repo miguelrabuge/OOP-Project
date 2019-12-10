@@ -6,7 +6,7 @@ import java.util.Calendar;
 /**
  * Represents a Bolseiro.
  */
-abstract class Bolseiro extends Pessoa {
+public abstract class Bolseiro extends Pessoa {
 
     protected Calendar inicoBolsa;
     protected Calendar fimBolsa;
@@ -25,12 +25,6 @@ abstract class Bolseiro extends Pessoa {
         this.inicoBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
     }
-
-    /**
-     *Gets the Bolseiro's cost in a month.
-     * @return int with the cost of the calling Bolseiro in a month.
-     */
-    public abstract int getCusto();
 
     /**
      * Gets the starting date of the bolseiro's scholarship.

@@ -6,7 +6,7 @@ import java.util.Calendar;
 /**
  * Represents a Pessoa.
  */
-abstract class Pessoa {
+public abstract class Pessoa {
 
     protected ResearchCenter researchCenter;
     protected ArrayList<Task> tasks;
@@ -127,5 +127,15 @@ abstract class Pessoa {
         }
 
         return sobrecarga;
+    }
+    /**
+     *Gets the cost in a month.
+     * @return int with the cost of the calling Bolseiro in a month.
+     */
+    public abstract int getCusto();
+
+    @Override
+    public String toString() {
+        return nome;
     }
 }

@@ -24,6 +24,7 @@ public class Licenciado extends Estudante {
      * Gets the licenciado's cost in a month.
      * @return int with the licenciado's cost in a month.
      */
+    @Override
     public int getCusto(){
         return 800;
     }

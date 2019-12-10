@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * Represents a Estudante.
  */
-abstract class Estudante extends Bolseiro {
+public abstract class Estudante extends Bolseiro {
 
     protected Docente orientador;
 

@@ -103,9 +103,11 @@ public class ResearchCenter {
                 temp.add(project);
             }
         }
-
         return temp;//depois verificar se o temp esta vazio ou nao
     }
 
-
+    @Override
+    public String toString() {
+        return name;
+    }
 }

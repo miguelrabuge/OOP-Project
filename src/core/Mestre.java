@@ -24,6 +24,7 @@ public class Mestre extends Estudante {
      * Gets the mestre's cost in a month.
      * @return int with the mestre's cost in a month.
      */
+    @Override
     public int getCusto(){
         return 1000;
     }

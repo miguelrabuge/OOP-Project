@@ -89,4 +89,9 @@ public class Docente extends Pessoa {
     public void setProjetos(ArrayList<Project> projetos) {
         this.projetos = projetos;
     }
+
+    @Override
+    public int getCusto() {
+        return 0;
+    }
 }

@@ -1,12 +1,10 @@
 package core;
 
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
-//TODO fazer o getter e setter do principal
-//TODO fazer metodo para adicionar bolseiro
-//TODO fazer metodo para adicionar docente
 //TODO fazer um get cost de maneira inteligente
 
 /**
@@ -141,7 +139,6 @@ public class Project {
      * @param task Task object that will get its percentage updated.
      * @param percentageToAdd int that will be added to the current task's percentage of completion.
      */
-    //TODO se a task chegar a 100% automaticamente declarar a task como concluida
     public void updateTaskPercentage(Task task, int percentageToAdd){//percentageToAdd e a percentagem que e para adicionar a que ja estava, pode ate ser negativa, se a pessoa quiser reduzir a taxa de realizacao da tarefa
         int temp = task.getPercentage();
         if(temp != 100) {//se a taxa de conclusao for 100, nao da para mudar a sua percentagem
@@ -154,6 +151,7 @@ public class Project {
             else if(percentageToAdd + task.getPercentage() > 100){
                 task.setPercentage(100);
             }
+            if(task.getPercentage() == 100) task.setFim(new GregorianCalendar());//como a taxa de conclusao chegou a 100%, declara a task como finalizada e guarda a data em que isso aconteceu
         }
         else{
             System.out.printf("Não pode alterar a taxa de conclusao da tarefa uma vez que ja se encontra a 100%%.\n");
@@ -219,61 +217,72 @@ public class Project {
         //retorna o custo total do projeto
         int custo = 0;
 
-        for(Bolseiro bolseiro : this.bolseiros){
-            custo += bolseiro.getCusto();
+        for(Task task : this.tasks){
+            //calculo o custo por dia da pessoa responsavel pela tarefa e multiplico pelo numero de dias que foram dispendidos por essa pessoa na execucao dessa tarefa, que esteja ja acabada ou nao.
+            custo += ( (task.getResponsavel().getCusto() * 12)/365 ) * numeroDeDias(task);
         }
 
         return custo;
     }
 
     /**
+     * Counts the days that were spent by the tasks reponsible to complete it.
+     * @param task Tasks object that we want to know the time taken to finish it.
+     * @return int with the number of days spent to complete the task.
+     */
+    private int numeroDeDias(Task task){
+        int i;
+        Calendar dia = (Calendar) task.getInicio().clone();
+        Calendar atual = new GregorianCalendar();
+
+
+        if(task.getFim() != null) {
+            for (i = 0; dia.compareTo(task.getFim()) <= 0; i++){
+                dia.add(Calendar.DAY_OF_MONTH, 1);
+            }
+
+        }
+        else{
+            for(i = 0; dia.compareTo(atual) <= 0 ; i++){
+                dia.add(Calendar.DAY_OF_MONTH, 1);
+            }
+        }
+        return i;
+    }
+
+    /**
      * Sets a project as finished, if it is not already finished and if all the project's tasks are completed.
      * @return On success, returns true, otherwise returns false.
      */
-    public boolean endProject(){//TODO Apenas deixar acabar um projeto se todas as tarefas estiverem concluidas e o etc tiver passado
+    public boolean endProject(){
 
         if(this.acabado != true) {
-            if (this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) {
-                this.acabado = true;
-                this.dataFim = new GregorianCalendar();
-                return true;
-            }
-            else if ((!this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) || (this.tasks.size() != this.getTasksConcluded().size())) {
-                return false;
-            }
-            else if(this.compareTaskLists()){
-                this.acabado = true;
-                this.setDataFim(new GregorianCalendar());
-                return true;
+            if(this.etc.compareTo(new GregorianCalendar()) <= 0){//se o tempo estimado para concluir o projeto ja tiver passado, estamos provavelmente em condicao de finalizar o projeto
+
+                if (this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) {//se o projeto nao tiver tarefas e o etc tiver passado, o projeto pode ser finalizado
+                    this.acabado = true;
+                    this.dataFim = new GregorianCalendar();
+                    return true;
+                }
+                 else if ((!this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) || (this.tasks.size() != this.getTasksConcluded().size())) {//se as tarefas nao tiverem sido todas concluidas, mesmo que o etc tenha passado, o projeto nao pode ser terminado
+                    return false;
+                }
+                else {//se as tarefas estiverem todas concluidas e o etc ja tiver passado, o projeto pode ser terminado
+                    this.acabado = true;
+                    this.dataFim = new GregorianCalendar();
+                    return true;
+                }
             }
             else{
                 return false;
             }
+
         }
         else{
             return false;
         }
     }
 
-    /**
-     * Compares the project's tasks and concluded tasks lists.
-     * @return If they're equal to each other, return true, otherwise return false.
-     */
-    private boolean compareTaskLists(){
-        int flag = 0;
-        for(Task task : this.tasks){
-            if(!this.getTasksConcluded().contains(task)){
-                flag = 1;
-            }
-        }
-        for(Task task : this.getTasksConcluded()){
-            if(!this.tasks.contains(task)){
-                flag = 1;
-            }
-        }
-
-        return flag != 1;
-    }
 
     /**
      * Gets the project's name.
@@ -414,7 +423,6 @@ public class Project {
      */
     public void assignResp(Pessoa responsavel, Task task){//atribui uma task, se possivel, a pessoa passada como parametro
 
-        Calendar dia = Calendar.getInstance();
         Bolseiro aux;
         int cond = 0;
 
@@ -430,7 +438,7 @@ public class Project {
 
 
         if(cond == 1){
-            if(responsavel.getSobrecarga(dia) + task.getEsforco() <= 1 && task.getPercentage() != 100){
+            if(task.checkAvailability(responsavel) && task.getPercentage() != 100){
                 responsavel.addTask(task);
                 System.out.printf("Tarefa atribuida com sucesso.\n");
             }
@@ -446,4 +454,52 @@ public class Project {
         }
 
     }
+
+    /**
+     * Gets the project's principal investigator.
+     * @return Docente object with the project's principal investigator.
+     */
+    public Docente getPrincipal(){
+        return this.principal;
+    }
+
+    /**
+     * Sets the project's principal investigator.
+     * @param principal Docente object with the project's principal investigator.
+     */
+    public void setPrincipal(Docente principal){
+        this.principal = principal;
+    }
+
+    /**
+     * Adds a bolseiro to the project's bolseiros.
+     * @param bolseiro Bolseiro object that will be added to the project's bolseiros.
+     * @return On success, returns true, otherwise returns false.
+     */
+    public boolean addBolseiro(Bolseiro bolseiro){
+        if(bolseiro.getProjeto() == null){
+            this.bolseiros.add(bolseiro);
+            bolseiro.setProjeto(this);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Adds a docente to the project's docentes.
+     * @param docente Docente object that will be added to the project's docentes.
+     * @return On success, returns true, otherwise returns false.
+     */
+    public boolean addDocente(Docente docente){
+        if(!this.docentes.contains(docente)){//se o docente nao estiver ja no projeto, adiciona-o.
+            this.docentes.add(docente);
+            docente.addProject(this);
+            return true;
+        }
+        return false;//se o docente ja estiver adicionado ao projeto retorna false.
+    }
+
+
 }

@@ -95,4 +95,12 @@ public class Docente extends Pessoa {
     public int getCusto() {
         return 0;
     }
+
+    /**
+     * Adds a project to the dodente's projects.
+     * @param project Project object that will be added to the docente's projects.
+     */
+    public void addProject(Project project){
+        this.projetos.add(project);
+    }
 }

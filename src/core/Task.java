@@ -128,4 +128,22 @@ abstract class Task {
      * @return double with the effort that has to be done by the task responsible in order to complete it.
      */
     public abstract double  getEsforco();
+
+    /**
+     *Checks if a task can be assigned to responsavel.
+     * @param task Task obejct that we want to know if can be assigned to responsavel.
+     * @param responsavel Pessoa object that we want to check the availability.
+     * @return
+     */
+    public boolean checkAvailability(Pessoa responsavel){
+        Calendar dia = (Calendar) this.getInicio().clone();
+
+        while(dia.compareTo(this.getEtc()) < 0) {//enquanto nao chegar ao dia estimado para concluir a tarefa verificamos se a pessoa pode executar a task
+            if( (this.getEsforco() + responsavel.getSobrecarga(dia)) > 1){
+                return false;
+            }
+            dia.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return true;
+    }
 }

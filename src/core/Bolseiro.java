@@ -23,6 +23,7 @@ public abstract class Bolseiro extends Pessoa {
         super(nome, email);
         this.inicoBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
+        this.projeto = null;
     }
 
     /**

@@ -14,12 +14,12 @@ public class CenterUI {
     private int index;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
-    private JDialog listerDialog;
+    private JDialog listerDialog,projectCreaterDialog;
     private JLabel welcomeLabel, docentesLabel, bolseirosLabel, projetosLabel;
     private JScrollPane docentesScroller, bolseirosScroller, projetosScroller;
-    private JButton backListerFrameButton,backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton;
+    private JButton backListerFrameButton, backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton;
     private JPanel topPanel, centerPanel, leftPanel, rightPanel, bottomPanel;
-    private ButtonListener listener;
+    private Listener listener;
     private JList<Pessoa> docentesList;
     private JList<Pessoa> bolseirosList;
     private JList<Project> projetosList;
@@ -34,7 +34,7 @@ public class CenterUI {
 
     private void drawer() {
         frame = new JFrame();
-        listener = new ButtonListener();
+        listener = new Listener();
 
         frame.setTitle("Project Manager");
         frame.setSize(800, 600);
@@ -131,12 +131,14 @@ public class CenterUI {
 
         frame.setVisible(true);
     }
-    private void lister(ArrayList<Project> projects, String title){
+
+    private void lister(ArrayList<Project> projects, String title) {
         listerDialog = new JDialog();
         listerDialog.setModal(true);
-        listerDialog.setSize(400,400);
+        listerDialog.setSize(400, 400);
         listerDialog.setLocationRelativeTo(null);
         listerDialog.setLayout(new BorderLayout());
+        listerDialog.setTitle(title);
 
         JPanel topListerPanel = new JPanel();
         JPanel middleListerPanel = new JPanel();
@@ -147,7 +149,7 @@ public class CenterUI {
         JLabel titleListerLabel = new JLabel(title);
         titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
         DefaultListModel<Project> projetosListModel = new DefaultListModel<Project>();
-        if (projects != null){
+        if (projects != null) {
             for (Project p : projects) {
                 projetosListModel.addElement(p);
             }
@@ -161,11 +163,121 @@ public class CenterUI {
 
         listerDialog.add(topListerPanel, BorderLayout.NORTH);
         listerDialog.add(middleListerPanel, BorderLayout.CENTER);
-        listerDialog.add(bottomListerPanel,BorderLayout.SOUTH);
+        listerDialog.add(bottomListerPanel, BorderLayout.SOUTH);
 
         listerDialog.setVisible(true);
     }
-    private class ButtonListener implements ActionListener {
+
+    private void projectCreater() {
+        projectCreaterDialog = new JDialog();
+        projectCreaterDialog.setModal(true);
+        projectCreaterDialog.setSize(600, 400);
+        projectCreaterDialog.setLocationRelativeTo(null);
+        projectCreaterDialog.setLayout(new BorderLayout());
+        projectCreaterDialog.setTitle("Criar Projeto");
+
+        projectCreaterDialog.setVisible(true);
+    }
+
+    private void personAdder() {
+        int diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim;
+        String name, email, mecanografico, investigationArea;
+
+        JTextField firstTextField = new JTextField();
+        JTextField secondTextField = new JTextField();
+        JTextField diaInicioTextField = new JTextField();
+        JTextField mesInicioTextField = new JTextField();
+        JTextField anoInicioTextField = new JTextField();
+        JTextField diaFimTextField = new JTextField();
+        JTextField mesFimTextField = new JTextField();
+        JTextField anoFimTextField = new JTextField();
+        JComboBox<String> optionBox = new JComboBox<String>();
+
+
+        String[] options = {"Docente", "Licenciado", "Mestre", "Doutorado"};
+        String[] titles = {"Adicionar Docente", "Adicionar Licenciado", "Adicionar Mestre", "Adicionar Doutorado"};
+
+        for (String s : options) {
+            optionBox.addItem(s);
+        }
+        Object[] questions = new Object[]{"Nome:", firstTextField, "Email:", secondTextField, "Escolha uma opção:", optionBox};
+        if (JOptionPane.showConfirmDialog(null, questions, "Adicionar Pessoa", JOptionPane.OK_CANCEL_OPTION) == 0) {
+            name = firstTextField.getText();
+            email = secondTextField.getText();
+            firstTextField.setText("");
+            secondTextField.setText("");
+            if (!(name.isBlank() || email.isBlank())) {
+                try {
+                    if (optionBox.getSelectedIndex() == 0) {
+                        questions = new Object[]{"Número Mecanográfico:", firstTextField, "Área de Investigação:", secondTextField};
+                        if (JOptionPane.showConfirmDialog(null, questions, "Adicionar Docente", JOptionPane.OK_CANCEL_OPTION) == 0) {
+                            mecanografico = firstTextField.getText();
+                            investigationArea = secondTextField.getText();
+                            if (!(mecanografico.isBlank() || investigationArea.isBlank())) {
+                                Docente docente = new Docente(name, email, mecanografico, investigationArea);
+                                researchCenters.get(index).addPessoa(docente);
+                                docentesListObjs.addElement(docente);
+                                docentesList = new JList(docentesListObjs);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else {
+                        questions = new Object[]{"Data de Inicio:", "Dia:", diaInicioTextField, "Mês:", mesInicioTextField, "Ano:", anoInicioTextField, "\n", "Data de Fim:", "Dia:", diaFimTextField, "Mês:", mesFimTextField, "Ano:", anoFimTextField, "\n"};
+                        if (JOptionPane.showConfirmDialog(null, questions, titles[optionBox.getSelectedIndex()], JOptionPane.OK_CANCEL_OPTION) == 0) {
+                            diaInicio = Integer.parseInt(diaInicioTextField.getText());
+                            mesInicio = Integer.parseInt(mesInicioTextField.getText());
+                            anoInicio = Integer.parseInt(anoInicioTextField.getText());
+
+                            diaFim = Integer.parseInt(diaFimTextField.getText());
+                            mesFim = Integer.parseInt(mesFimTextField.getText());
+                            anoFim = Integer.parseInt(anoFimTextField.getText());
+
+                            Calendar inicio = new GregorianCalendar(anoInicio, mesInicio, diaInicio);
+                            Calendar fim = new GregorianCalendar(anoFim, mesFim, diaFim);
+
+                            if (inicio.before(fim)) {
+                                if ((1 <= mesInicio && mesInicio <= 12) && (1 <= mesFim && mesFim <= 12) &&
+                                        (1 <= diaInicio && diaInicio <= 31) && (1 <= diaFim && diaFim <= 31) &&
+                                        (anoInicio > 0) && (anoFim > 0)) {
+
+                                    Pessoa pessoa;
+                                    switch (optionBox.getSelectedIndex()) {
+                                        case 1:
+                                            pessoa = new Licenciado(name, email, inicio, fim);
+                                            break;
+                                        case 2:
+                                            pessoa = new Mestre(name, email, inicio, fim);
+                                            break;
+                                        case 3:
+                                            pessoa = new Doutorado(name, email, inicio, fim);
+                                            break;
+                                        default:
+                                            pessoa = null;
+                                            System.out.println("Erro");
+                                            break;
+                                    }
+                                    researchCenters.get(index).addPessoa(pessoa);
+                                    bolseirosListObjs.addElement(pessoa);
+                                    bolseirosList = new JList(bolseirosListObjs);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "A data de início tem de ser anterior à data de fim!", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                } catch (NumberFormatException exp) {
+                    JOptionPane.showMessageDialog(null, "Introduza valores válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private class Listener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
@@ -174,110 +286,16 @@ public class CenterUI {
                     frame.dispose();
                     new IntroUI(researchCenters);
                 }
-            }else if(e.getSource() == backListerFrameButton){
+            } else if (e.getSource() == backListerFrameButton) {
                 listerDialog.dispose();
             } else if (e.getSource() == listConcludedButton) {
-                lister(researchCenters.get(index).getFinishedProjects(),"Projetos Concluídos");
-            } else if (e.getSource() == listNotConcludedButton){
-                lister(researchCenters.get(index).getUnfinishedProjects(),"Projetos Não Concluídos");
-            } else if (e.getSource() == createProjectButton){
-
+                lister(researchCenters.get(index).getFinishedProjects(), "Projetos Concluídos");
+            } else if (e.getSource() == listNotConcludedButton) {
+                lister(researchCenters.get(index).getUnfinishedProjects(), "Projetos Não Concluídos");
+            } else if (e.getSource() == createProjectButton) {
+                projectCreater();
             } else if (e.getSource() == addPersonButton) {
-                int diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim;
-                String name, email, mecanografico, investigationArea;
-
-                JTextField firstTextField = new JTextField();
-                JTextField secondTextField = new JTextField();
-                JTextField diaInicioTextField = new JTextField();
-                JTextField mesInicioTextField = new JTextField();
-                JTextField anoInicioTextField = new JTextField();
-                JTextField diaFimTextField = new JTextField();
-                JTextField mesFimTextField = new JTextField();
-                JTextField anoFimTextField = new JTextField();
-                JComboBox<String> optionBox = new JComboBox<String>();
-
-
-                String[] options = {"Docente", "Licenciado", "Mestre", "Doutorado"};
-                String[] titles = {"Adicionar Docente", "Adicionar Licenciado", "Adicionar Mestre", "Adicionar Doutorado"};
-
-                for (String s : options) {
-                    optionBox.addItem(s);
-                }
-                Object[] questions = new Object[]{"Nome:", firstTextField, "Email:", secondTextField, "Escolha uma opção:", optionBox};
-                if (JOptionPane.showConfirmDialog(null, questions, "Adicionar Pessoa", JOptionPane.OK_CANCEL_OPTION) == 0) {
-                    name = firstTextField.getText();
-                    email = secondTextField.getText();
-                    firstTextField.setText("");
-                    secondTextField.setText("");
-                    if (!(name.isBlank() || email.isBlank())) {
-                        try {
-                            if (optionBox.getSelectedIndex() == 0) {
-                                questions = new Object[]{"Número Mecanográfico:", firstTextField, "Área de Investigação:", secondTextField};
-                                if (JOptionPane.showConfirmDialog(null, questions, "Adicionar Docente", JOptionPane.OK_CANCEL_OPTION) == 0) {
-                                    mecanografico = firstTextField.getText();
-                                    investigationArea = secondTextField.getText();
-                                    if (!(mecanografico.isBlank() || investigationArea.isBlank())) {
-                                        Docente docente = new Docente(name, email, mecanografico, investigationArea);
-                                        researchCenters.get(index).addPessoa(docente);
-                                        docentesListObjs.addElement(docente);
-                                        docentesList = new JList(docentesListObjs);
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
-                                    }
-                                }
-                            } else {
-                                questions = new Object[]{"Data de Inicio:", "Dia:", diaInicioTextField, "Mês:", mesInicioTextField, "Ano:", anoInicioTextField, "\n", "Data de Fim:", "Dia:", diaFimTextField, "Mês:", mesFimTextField, "Ano:", anoFimTextField, "\n"};
-                                if (JOptionPane.showConfirmDialog(null, questions, titles[optionBox.getSelectedIndex() - 1], JOptionPane.OK_CANCEL_OPTION) == 0) {
-                                    diaInicio = Integer.parseInt(diaInicioTextField.getText());
-                                    mesInicio = Integer.parseInt(mesInicioTextField.getText());
-                                    anoInicio = Integer.parseInt(anoInicioTextField.getText());
-
-                                    diaFim = Integer.parseInt(diaFimTextField.getText());
-                                    mesFim = Integer.parseInt(mesFimTextField.getText());
-                                    anoFim = Integer.parseInt(anoFimTextField.getText());
-
-                                    Calendar inicio = new GregorianCalendar(anoInicio, mesInicio, diaInicio);
-                                    Calendar fim = new GregorianCalendar(anoFim, mesFim, diaFim);
-
-                                    if (inicio.before(fim)) {
-                                        if (    (1 <= mesInicio && mesInicio <= 12) && (1 <= mesFim && mesFim <= 12) &&
-                                                (1 <= diaInicio && diaInicio <= 31) && (1 <= diaFim && diaFim <= 31) &&
-                                                                    (anoInicio > 0) && (anoFim > 0)                      ){
-
-                                            Pessoa pessoa;
-                                            switch (optionBox.getSelectedIndex()) {
-                                                case 1:
-                                                    pessoa = new Licenciado(name, email, inicio, fim);
-                                                    break;
-                                                case 2:
-                                                    pessoa = new Mestre(name, email, inicio, fim);
-                                                    break;
-                                                case 3:
-                                                    pessoa = new Doutorado(name, email, inicio, fim);
-                                                    break;
-                                                default:
-                                                    pessoa = null;
-                                                    System.out.println("Erro");
-                                                    break;
-                                            }
-                                            researchCenters.get(index).addPessoa(pessoa);
-                                            bolseirosListObjs.addElement(pessoa);
-                                            bolseirosList = new JList(bolseirosListObjs);
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
-                                        }
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "A data de início tem de ser anterior à data de fim!", "Erro", JOptionPane.ERROR_MESSAGE);
-                                    }
-                                }
-                            }
-                        } catch (NumberFormatException exp) {
-                            JOptionPane.showMessageDialog(null, "Introduza valores válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
+                personAdder();
             }
         }
     }

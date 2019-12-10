@@ -501,5 +501,8 @@ public class Project {
         return false;//se o docente ja estiver adicionado ao projeto retorna false.
     }
 
-
+    @Override
+    public String toString() {
+        return acronimo;
+    }
 }

@@ -2,12 +2,24 @@ package core;
 
 import java.util.Calendar;
 
+/**
+ * Represents a Design task.
+ */
 public class Design extends Task {
 
-    public Design(Calendar inicio, Calendar fim, Calendar eta, Pessoa responsavel){//nao inclui o percentage, pois esta e comecada a 0 e depois e alterada usando setPercentage()
-        super(inicio, fim, eta, responsavel);
+    /**
+     * Creates a Design task with the beginning date and the estimated time to complete it.
+     * @param inicio Calendar with the starting date of the design task.
+     * @param eta Calendar with the estimated time to complete the task.
+     */
+    public Design(Calendar inicio, Calendar eta){
+        super(inicio, eta);
     }
 
+    /**
+     * Gets the effort to do the design task.
+     * @return int with the effort to do the design task.
+     */
     public double getEsforco(){
         return 0.5;
     }

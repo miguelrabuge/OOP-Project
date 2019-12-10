@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 //TODO fazer o getter e setter do principal
+//TODO fazer metodo para adicionar bolseiro
+//TODO fazer metodo para adicionar docente
 //TODO fazer um get cost de maneira inteligente
 
 /**
@@ -39,6 +41,9 @@ public class Project {
         this.etc = etc;
         this.dataFim = null;
         this.principal = principal;
+        this.tasks = new ArrayList<Task>();
+        this.docentes = new ArrayList<Docente>();
+        this.bolseiros = new ArrayList<Bolseiro>();
     }
 
     /**

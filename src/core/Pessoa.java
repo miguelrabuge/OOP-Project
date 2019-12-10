@@ -8,7 +8,6 @@ import java.util.Calendar;
  */
 public abstract class Pessoa {
 
-    protected ResearchCenter researchCenter;
     protected ArrayList<Task> tasks;
     protected String nome;
     protected String email;
@@ -22,22 +21,6 @@ public abstract class Pessoa {
         this.nome = nome;
         this.email = email;
         this.tasks = new ArrayList<Task>();
-    }
-
-    /**
-     * Gets the pessoa's research center.
-     * @return ResearchCenter object with the pessoa's research center.
-     */
-    public ResearchCenter getResearchCenter() {
-        return this.researchCenter;
-    }
-
-    /**
-     * Sets the pessoa's research center.
-     * @param researchCenter ResearchCenter object with the pessoa's research center.
-     */
-    public void setResearchCenter(ResearchCenter researchCenter) {
-        this.researchCenter = researchCenter;
     }
 
     /**
@@ -107,7 +90,7 @@ public abstract class Pessoa {
     }
 
     /**
-     * Gets the pessoa's workload.
+     * Gets the pessoa's workload in a certain day.
      * @param dia Calendar with the day that the workload refers to.
      * @return double with the pessoa's workload on the day passed as argument.
      */
@@ -116,7 +99,7 @@ public abstract class Pessoa {
 
         for(Task task : this.tasks){
 
-            if(dia.after(task.getInicio()) && dia.before(task.getEtc())){
+            if( (dia.after(task.getInicio()) && dia.before(task.getEtc())) || dia.compareTo(task.getInicio()) == 0 || dia.compareTo(task.getEtc()) == 0 ){
 
                 sobrecarga += task.getEsforco();
 

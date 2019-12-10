@@ -13,10 +13,9 @@ public class Licenciado extends Estudante {
      * @param email String with the licenciado's email.
      * @param inicioBolsa Calendar with the starting date of the licenciado's scholarship.
      * @param fimBolsa Calendar with the ending date of the licenciado's scholarship.
-     * @param orientador Docente object with the licenciado's advisor.
      */
-    public Licenciado(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa, Docente orientador) {
-        super(nome, email, inicioBolsa, fimBolsa, orientador);
+    public Licenciado(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa) {
+        super(nome, email, inicioBolsa, fimBolsa);
     }
 
     /**

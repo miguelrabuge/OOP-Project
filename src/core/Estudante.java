@@ -15,11 +15,9 @@ public abstract class Estudante extends Bolseiro {
      * @param email String with the estudante's email.
      * @param inicioBolsa Calendar with the starting date of the estudante's scholarship.
      * @param fimBolsa Calendar with the ending date of the estudante's scholarship.
-     * @param orientador Docente object with the information of the estudante's advisor.
      */
-    public Estudante(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa, Docente orientador){
+    public Estudante(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa){
         super(nome, email,inicioBolsa, fimBolsa);
-        this.orientador = orientador;
     }
 
     /**

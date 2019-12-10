@@ -23,6 +23,8 @@ public class Docente extends Pessoa {
         super(nome, email);
         this.mecano = mecano;
         this.researchArea = researchArea;
+        this.orientados = new ArrayList<Estudante>();
+        this.projetos = new ArrayList<Project>();
     }
 
     /**

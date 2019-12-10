@@ -11,9 +11,9 @@ public class Main {
         researchCenters.add(new ResearchCenter("CISUC"));
         ArrayList<Pessoa> pessoas = new ArrayList<Pessoa>();
         for (int i = 0; i < 50; i++) {
-            pessoas.add(new Docente("Miguel","miguelrabuge12@gmail.com",null,"LOL","AI"));
+            pessoas.add(new Docente("Miguel","miguelrabuge12@gmail.com",null,"AI"));
         }
-        pessoas.add(new Doutorado("João","joao@",null,null,null));
+        pessoas.add(new Doutorado("João","joao@",null,null));
         researchCenters.get(0).setPessoas(pessoas);
         researchCenters.add(new ResearchCenter("CISUP"));
         new IntroUI(researchCenters);

@@ -20,6 +20,8 @@ public class CenterUI {
     private JList<Pessoa> docentesList;
     private JList<Pessoa> bolseirosList;
     private JList<Project> projetosList;
+    private DefaultListModel<Pessoa> docentesListObjs, bolseirosListObjs;
+    private DefaultListModel<Project> projetosListObjs;
 
     public CenterUI(ArrayList<ResearchCenter> researchCenters, int index){
         this.researchCenters = researchCenters;
@@ -60,9 +62,9 @@ public class CenterUI {
         bolseirosLabel = new JLabel("Bolseiros:",JLabel.CENTER);
         projetosLabel = new JLabel("Projetos:",JLabel.CENTER);
 
-        DefaultListModel<Pessoa> docentesListObjs = new DefaultListModel<>();
-        DefaultListModel<Pessoa> bolseirosListObjs = new DefaultListModel<Pessoa>();
-        DefaultListModel<Project> projetosListObjs = new DefaultListModel<>();
+        docentesListObjs = new DefaultListModel<>();
+        bolseirosListObjs = new DefaultListModel<>();
+        projetosListObjs = new DefaultListModel<>();
 
         ArrayList<Pessoa> pessoas = researchCenters.get(index).getPessoas();
         if (pessoas != null){
@@ -148,16 +150,19 @@ public class CenterUI {
                 if (JOptionPane.showConfirmDialog(null,questions, "Adicionar Pessoa",JOptionPane.OK_CANCEL_OPTION) == 0){
                     name = firstTextField.getText();
                     email = secondTextField.getText();
+                    firstTextField.setText("");
+                    secondTextField.setText("");
                     switch (optionBox.getSelectedIndex()){
                         case 0:
                             questions = new Object[]{"Número Mecanográfico:", firstTextField, "Área de Investigação:", secondTextField};
                             if (JOptionPane.showConfirmDialog(null,questions, "Adicionar Docente",JOptionPane.OK_CANCEL_OPTION) == 0){
                                     mecanografico = firstTextField.getText();
                                     investigationArea = secondTextField.getText();
-                                    Docente docente = new Docente(name,email);
-                                    researchCenters.get(index).getPessoas().add()
+                                    Docente docente = new Docente(name,email,mecanografico,investigationArea);
+                                    researchCenters.get(index).getPessoas().add(docente);
+                                    docentesListObjs.addElement(docente);
+                                    docentesList = new JList(docentesListObjs);
                             }
-
                             break;
                         case 1:
                             break;

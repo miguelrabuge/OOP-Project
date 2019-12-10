@@ -37,7 +37,8 @@ public class IntroUI extends JFrame {
 
         centerList = new JComboBox();
         subtitle = new JLabel("Escolha um centro:");
-        centerList.addItem("-------------------");
+        subtitle.setFont(new Font(subtitle.getFont().getName(), Font.BOLD, 22));
+        centerList.addItem("---------------------------------------------");
         for (ResearchCenter r : researchCenters) {
             centerList.addItem(r);
         }

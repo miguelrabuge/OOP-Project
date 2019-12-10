@@ -69,6 +69,16 @@ public class ResearchCenter {
     }
 
     /**
+     * Adds a Pessoa to the reasearchCenter
+     * @param pessoa Pessoa object that will be added to the researchCenter Pessoa's
+     */
+    public void addPessoa(Pessoa pessoa){
+        if (pessoa != null && !this.pessoas.contains(pessoa)){
+            this.pessoas.add(pessoa);
+        }
+    }
+
+    /**
      * Adds a project to the researchcenter's projects.
      * @param projeto Project object that will be added to the researchcenter's projects.
      */

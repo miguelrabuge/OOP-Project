@@ -16,6 +16,8 @@ public class ResearchCenter {
      */
     public ResearchCenter(String name){
         this.name = name;
+        this.projects = new ArrayList<Project>();
+        this.pessoas = new ArrayList<Pessoa>();
     }
 
     /**

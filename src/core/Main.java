@@ -5,6 +5,7 @@ import UI.IntroUI;
 import java.util.ArrayList;
 
 public class Main {
+
     public static void main(String[] args) {
         ArrayList<ResearchCenter> researchCenters = new ArrayList<ResearchCenter>();
         researchCenters.add(new ResearchCenter("CISUC"));

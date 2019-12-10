@@ -17,7 +17,9 @@ public class CenterUI {
     private JButton backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton;
     private JPanel topPanel, centerPanel, leftPanel, rightPanel, bottomPanel;
     private ButtonListener listener;
-    private JList docentesList, bolseirosList, projetosList;
+    private JList<Pessoa> docentesList;
+    private JList<Pessoa> bolseirosList;
+    private JList<Project> projetosList;
 
     public CenterUI(ArrayList<ResearchCenter> researchCenters, int index){
         this.researchCenters = researchCenters;
@@ -58,9 +60,9 @@ public class CenterUI {
         bolseirosLabel = new JLabel("Bolseiros:",JLabel.CENTER);
         projetosLabel = new JLabel("Projetos:",JLabel.CENTER);
 
-        DefaultListModel docentesListObjs = new DefaultListModel();
-        DefaultListModel bolseirosListObjs = new DefaultListModel();
-        DefaultListModel projetosListObjs = new DefaultListModel();
+        DefaultListModel<Pessoa> docentesListObjs = new DefaultListModel<>();
+        DefaultListModel<Pessoa> bolseirosListObjs = new DefaultListModel<Pessoa>();
+        DefaultListModel<Project> projetosListObjs = new DefaultListModel<>();
 
         ArrayList<Pessoa> pessoas = researchCenters.get(index).getPessoas();
         if (pessoas != null){
@@ -80,13 +82,13 @@ public class CenterUI {
             }
         }
 
-        docentesList = new JList(docentesListObjs);
+        docentesList = new JList<>(docentesListObjs);
         docentesList.setFixedCellHeight(20);
         docentesList.setFixedCellWidth(200);
-        bolseirosList = new JList(bolseirosListObjs);
+        bolseirosList = new JList<>(bolseirosListObjs);
         bolseirosList.setFixedCellHeight(20);
         bolseirosList.setFixedCellWidth(200);
-        projetosList = new JList(projetosListObjs);
+        projetosList = new JList<>(projetosListObjs);
         projetosList.setFixedCellHeight(20);
         projetosList.setFixedCellWidth(200);
 
@@ -134,9 +136,40 @@ public class CenterUI {
                     new IntroUI(researchCenters);
                 }
             } else if (e.getSource() == addPersonButton){
-                frame.setVisible(false);
-                frame.dispose();
-                new AddPersonUI(researchCenters,index);
+                JTextField firstTextField = new JTextField();
+                JTextField secondTextField = new JTextField();
+                JComboBox<String> optionBox = new JComboBox<String>();
+                String name, email, mecanografico, investigationArea;
+                String[] options = {"Docente","Licenciado","Mestre","Doutorado"};
+                for (String s : options) {
+                    optionBox.addItem(s);
+                }
+                Object[] questions = {"Nome:",firstTextField,"Email:",secondTextField,"Escolha uma opção:",optionBox};
+                if (JOptionPane.showConfirmDialog(null,questions, "Adicionar Pessoa",JOptionPane.OK_CANCEL_OPTION) == 0){
+                    name = firstTextField.getText();
+                    email = secondTextField.getText();
+                    switch (optionBox.getSelectedIndex()){
+                        case 0:
+                            questions = new Object[]{"Número Mecanográfico:", firstTextField, "Área de Investigação:", secondTextField};
+                            if (JOptionPane.showConfirmDialog(null,questions, "Adicionar Docente",JOptionPane.OK_CANCEL_OPTION) == 0){
+                                    mecanografico = firstTextField.getText();
+                                    investigationArea = secondTextField.getText();
+                                    Docente docente = new Docente(name,email);
+                                    researchCenters.get(index).getPessoas().add()
+                            }
+
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
             }
         }
     }

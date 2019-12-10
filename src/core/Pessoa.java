@@ -17,13 +17,11 @@ public abstract class Pessoa {
      * Creates a Pessoa with his name, email and research center.
      * @param nome String with the pessoa's name.
      * @param email String with the pessoa's email.
-     * @param researchCenter ResearchCenter object with the pessoa's research center.
      */
-    public Pessoa(String nome, String email, ResearchCenter researchCenter){
+    public Pessoa(String nome, String email){
         this.nome = nome;
         this.email = email;
         this.tasks = new ArrayList<Task>();
-        this.researchCenter = researchCenter;
     }
 
     /**

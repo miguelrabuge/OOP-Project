@@ -11,13 +11,12 @@ public class Mestre extends Estudante {
      * Creates a Mestre with his name, email, research center, beginning of the scholarship, end of the scholarship and his advisor.
      * @param nome String with the mestre's name.
      * @param email String with the mestre's name.
-     * @param researchCenter ResearchCenter object with the mestre's research center.
      * @param inicioBolsa Calendar with the starting date of the mestre's scholarship.
      * @param fimBolsa Calendar with the ending date of the mestre's scholarship.
      * @param orientador Docente object with the mestre's advisor.
      */
-    public Mestre(String nome, String email, ResearchCenter researchCenter,Calendar inicioBolsa, Calendar fimBolsa, Docente orientador){
-        super(nome, email, researchCenter,inicioBolsa, fimBolsa, orientador);
+    public Mestre(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa, Docente orientador){
+        super(nome, email, inicioBolsa, fimBolsa, orientador);
     }
 
     /**

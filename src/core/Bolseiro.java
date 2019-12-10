@@ -16,12 +16,11 @@ public abstract class Bolseiro extends Pessoa {
      * Creates a Bolseiro with his name, email, research center, beginning of the scholarship and end of the scholarship.
      * @param nome String with the bolseiro's name.
      * @param email String with the bolseiro's email.
-     * @param researchCenter ResearchCenter objetct with the bolseiro's research center.
      * @param inicioBolsa Calendat with the starting date of the bolseiro's scholarship.
      * @param fimBolsa Calendar with the ending date of the bolseiro's scholarship.
      */
-    public Bolseiro(String nome, String email, ResearchCenter researchCenter,Calendar inicioBolsa, Calendar fimBolsa){
-        super(nome, email, researchCenter);
+    public Bolseiro(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa){
+        super(nome, email);
         this.inicoBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
     }

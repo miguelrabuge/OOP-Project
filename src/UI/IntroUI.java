@@ -72,7 +72,7 @@ public class IntroUI extends JFrame {
                 }
             } else if (e.getSource() == exitButton) {
                 if (JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja sair?", "Sair", JOptionPane.YES_NO_OPTION) == 0) {
-                    //save configs
+                    //TODO: save configs
                     System.exit(0);
                 }
             } else if (e.getSource() == createCenterButton) {

@@ -16,12 +16,11 @@ public class Docente extends Pessoa {
      * Creates a Docente with his name, email, research center, mecanographic number and research area.
      * @param nome String with the docente's name.
      * @param email String with the docente's email.
-     * @param researchCenter ResearchCenter object with the docente's research center.
      * @param mecano String with the docente's mecanographic number.
      * @param researchArea String with the docente's research area.
      */
-    public Docente(String nome, String email, ResearchCenter researchCenter,String mecano, String researchArea){
-        super(nome, email, researchCenter);
+    public Docente(String nome, String email,String mecano, String researchArea){
+        super(nome, email);
         this.mecano = mecano;
         this.researchArea = researchArea;
     }

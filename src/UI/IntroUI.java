@@ -78,7 +78,7 @@ public class IntroUI extends JFrame {
                 }
             } else if (e.getSource() == createCenterButton) {
                 String name = JOptionPane.showInputDialog(null, "Indique o nome do centro de investigação:", "Adicionar novo Centro", JOptionPane.QUESTION_MESSAGE);
-                if (name != null){
+                if (name != null) {
                     ResearchCenter center = new ResearchCenter(name);
                     researchCenters.add(center);
                     centerList.addItem(center);

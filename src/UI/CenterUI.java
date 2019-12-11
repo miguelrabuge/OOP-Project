@@ -322,8 +322,6 @@ public class CenterUI {
                         Project projeto = new Project(name, acronimo, inicio, etc, (Docente) docente);
                         researchCenters.get(index).addProject(projeto);
                         projetosListObjs.addElement(projeto);
-                        projetosList = new JList<Project>(projetosListObjs);
-
                     } else {
                         projectCreaterDialog.dispose();
                         JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);

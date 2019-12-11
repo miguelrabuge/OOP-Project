@@ -96,19 +96,14 @@ public abstract class Pessoa {
      */
     public double getSobrecarga(Calendar dia){//retorna a sobrecarga da pessoa
         double sobrecarga = 0;
-
         for(Task task : this.tasks){
-
             if( (dia.after(task.getInicio()) && dia.before(task.getEtc())) || dia.compareTo(task.getInicio()) == 0 || dia.compareTo(task.getEtc()) == 0 ){
-
                 sobrecarga += task.getEsforco();
-
             }
-
         }
-
         return sobrecarga;
     }
+
     /**
      *Gets the cost in a month.
      * @return int with the cost of the calling Bolseiro in a month.

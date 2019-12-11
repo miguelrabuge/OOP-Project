@@ -61,6 +61,20 @@ public class ResearchCenter {
     }
 
     /**
+     * Gets a Pessoa on the Center by name
+     * @param name
+     * @return On success Pessoa object that matches the given String else returns null
+     */
+    public Pessoa getPessoaByName(String name){
+        for (Pessoa pessoa: this.pessoas) {
+            if(pessoa.getNome().equals(name)){
+                return pessoa;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the researchcenter's docentes.
      * @return ArrayList with the researchcenter's docentes.
      */
@@ -138,7 +152,6 @@ public class ResearchCenter {
     public ArrayList<Project> getFinishedProjects(){
         //retorna projetos acabados
         ArrayList<Project> temp = new ArrayList<Project>();
-
         for(Project project : this.projects){
             if(project.getAcabado()){
                 temp.add(project);

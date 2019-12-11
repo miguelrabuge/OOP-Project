@@ -23,10 +23,8 @@ public class CenterUI {
     private JPanel topPanel, centerPanel, leftPanel, rightPanel, bottomPanel;
     private ButtonListener buttonListener;
     private ListListener listListener;
-    private JList<Pessoa> docentesList, bolseirosList, docentesCreateProjectList;
-    private JList<Project> projetosList;
-    private DefaultListModel<Pessoa> docentesListObjs, bolseirosListObjs;
-    private DefaultListModel<Project> projetosListObjs;
+    private JList<Object> docentesList, bolseirosList, docentesCreateProjectList, projetosList;
+    private DefaultListModel<Object> docentesListObjs, bolseirosListObjs, projetosListObjs;
     private JTextField nameTextField, acronimoTextField, diaInicioTextField, diaFimTextField, mesInicioTextField, mesFimTextField, anoInicioTextField, anoFimTextField;
 
     public CenterUI(ArrayList<ResearchCenter> researchCenters, int index) {
@@ -72,10 +70,10 @@ public class CenterUI {
         bolseirosLabel = new JLabel("Bolseiros:", JLabel.CENTER);
         projetosLabel = new JLabel("Projetos:", JLabel.CENTER);
 
-        docentesListObjs = new DefaultListModel<Pessoa>();
-        bolseirosListObjs = new DefaultListModel<Pessoa>();
-        projetosListObjs = new DefaultListModel<Project>();
-
+        docentesListObjs = new DefaultListModel<Object>();
+        bolseirosListObjs = new DefaultListModel<Object>();
+        projetosListObjs = new DefaultListModel<Object>();
+        //TODO: change fors to .addall()
         for (Pessoa pessoa : researchCenters.get(index).getDocentes()) {
             docentesListObjs.addElement(pessoa);
         }
@@ -88,15 +86,15 @@ public class CenterUI {
             projetosListObjs.addElement(projeto);
         }
 
-        docentesList = new JList<>(docentesListObjs);
+        docentesList = new JList<Object>(docentesListObjs);
         docentesList.setEnabled(false);
         docentesList.setFixedCellHeight(20);
         docentesList.setFixedCellWidth(200);
-        bolseirosList = new JList<>(bolseirosListObjs);
+        bolseirosList = new JList<Object>(bolseirosListObjs);
         bolseirosList.setEnabled(false);
         bolseirosList.setFixedCellHeight(20);
         bolseirosList.setFixedCellWidth(200);
-        projetosList = new JList<>(projetosListObjs);
+        projetosList = new JList<Object>(projetosListObjs);
         projetosList.setFixedCellHeight(20);
         projetosList.setFixedCellWidth(200);
         projetosList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -153,13 +151,13 @@ public class CenterUI {
         backListerFrameButton.addActionListener(buttonListener);
         JLabel titleListerLabel = new JLabel(title);
         titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
-        DefaultListModel<Project> projetosListModel = new DefaultListModel<Project>();
+        DefaultListModel<Object> projetosListModel = new DefaultListModel<Object>();
         if (projects != null) {
             for (Project p : projects) {
                 projetosListModel.addElement(p);
             }
         }
-        JList listerList = new JList(projetosListModel);
+        JList<Object> listerList = new JList<Object>(projetosListModel);
         listerList.setFixedCellWidth(170);
         listerList.setFixedCellHeight(30);
         JScrollPane listerScroller = new JScrollPane(listerList);
@@ -212,11 +210,11 @@ public class CenterUI {
         anoFimTextField = new JTextField(2);
 
         JLabel principalLabel = new JLabel("Escolha um Investigador Principal:");
-        DefaultListModel<Pessoa> docentesCreateProjectDefaultListModel = new DefaultListModel<Pessoa>();
+        DefaultListModel<Object> docentesCreateProjectDefaultListModel = new DefaultListModel<Object>();
         for (Pessoa pessoa : researchCenters.get(index).getDocentes()) {
             docentesCreateProjectDefaultListModel.addElement(pessoa);
         }
-        docentesCreateProjectList = new JList(docentesCreateProjectDefaultListModel);
+        docentesCreateProjectList = new JList<Object>(docentesCreateProjectDefaultListModel);
         docentesCreateProjectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         docentesCreateProjectList.addListSelectionListener(listListener);
         JScrollPane docentesCreateProjectScroller = new JScrollPane(docentesCreateProjectList);
@@ -311,8 +309,16 @@ public class CenterUI {
                 mesFim = Integer.parseInt(mesFimTextField.getText());
                 anoFim = Integer.parseInt(anoFimTextField.getText());
 
-                Calendar inicio = new GregorianCalendar(anoInicio, mesInicio, diaInicio);
-                Calendar etc = new GregorianCalendar(anoFim, mesFim, diaFim);
+                Calendar inicio = new GregorianCalendar();
+                inicio.set(Calendar.DAY_OF_MONTH, diaInicio);
+                inicio.set(Calendar.MONTH, mesInicio - 1);
+                inicio.set(Calendar.YEAR,anoInicio);
+
+                Calendar etc = new GregorianCalendar();
+                etc.set(Calendar.DAY_OF_MONTH, diaFim);
+                etc.set(Calendar.MONTH, mesFim - 1);
+                etc.set(Calendar.YEAR,anoFim);
+
                 if (inicio.before(etc)) {
                     if ((1 <= mesInicio && mesInicio <= 12) && (1 <= mesFim && mesFim <= 12) &&
                             (1 <= diaInicio && diaInicio <= 31) && (1 <= diaFim && diaFim <= 31) &&
@@ -378,7 +384,7 @@ public class CenterUI {
                                 Docente docente = new Docente(name, email, mecanografico, investigationArea);
                                 researchCenters.get(index).addPessoa(docente);
                                 docentesListObjs.addElement(docente);
-                                docentesList = new JList(docentesListObjs);
+                                docentesList = new JList<>(docentesListObjs);
                             } else {
                                 JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
                             }
@@ -394,8 +400,15 @@ public class CenterUI {
                             mesFim = Integer.parseInt(mesFimTextField.getText());
                             anoFim = Integer.parseInt(anoFimTextField.getText());
 
-                            Calendar inicio = new GregorianCalendar(anoInicio, mesInicio, diaInicio);
-                            Calendar fim = new GregorianCalendar(anoFim, mesFim, diaFim);
+                            Calendar inicio = new GregorianCalendar();
+                            inicio.set(Calendar.DAY_OF_MONTH, diaInicio);
+                            inicio.set(Calendar.MONTH, mesInicio - 1);
+                            inicio.set(Calendar.YEAR,anoInicio);
+
+                            Calendar fim = new GregorianCalendar();
+                            fim.set(Calendar.DAY_OF_MONTH, diaFim);
+                            fim.set(Calendar.MONTH, mesFim - 1);
+                            fim.set(Calendar.YEAR,anoFim);
 
                             if (inicio.before(fim)) {
                                 if ((1 <= mesInicio && mesInicio <= 12) && (1 <= mesFim && mesFim <= 12) &&
@@ -420,7 +433,7 @@ public class CenterUI {
                                     }
                                     researchCenters.get(index).addPessoa(pessoa);
                                     bolseirosListObjs.addElement(pessoa);
-                                    bolseirosList = new JList(bolseirosListObjs);
+                                    bolseirosList = new JList<>(bolseirosListObjs);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
                                 }
@@ -466,7 +479,7 @@ public class CenterUI {
             } else if (e.getSource() == openProjectButton) {
                 frame.setVisible(false);
                 frame.dispose();
-                new ProjectUI(researchCenters,index,projetosList.getSelectedIndex());
+                new ProjectUI(researchCenters, index, projetosList.getSelectedIndex());
             }
         }
     }

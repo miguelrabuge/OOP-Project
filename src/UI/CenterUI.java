@@ -17,14 +17,14 @@ public class CenterUI {
     private JDialog listerDialog,projectCreaterDialog;
     private JLabel welcomeLabel, docentesLabel, bolseirosLabel, projetosLabel;
     private JScrollPane docentesScroller, bolseirosScroller, projetosScroller;
-    private JButton backListerFrameButton, backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton;
+    private JButton backListerFrameButton, backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton, trueCreateProjectButton, backCreateProjectButton;
     private JPanel topPanel, centerPanel, leftPanel, rightPanel, bottomPanel;
     private Listener listener;
-    private JList<Pessoa> docentesList;
-    private JList<Pessoa> bolseirosList;
+    private JList<Pessoa> docentesList, bolseirosList, docentesCreateProjectList;
     private JList<Project> projetosList;
     private DefaultListModel<Pessoa> docentesListObjs, bolseirosListObjs;
     private DefaultListModel<Project> projetosListObjs;
+    private JTextField nameTextField,acronimoTextField,diaInicioTextField,diaFimTextField,mesInicioTextField,mesFimTextField,anoInicioTextField,anoFimTextField;
 
     public CenterUI(ArrayList<ResearchCenter> researchCenters, int index) {
         this.researchCenters = researchCenters;
@@ -69,23 +69,18 @@ public class CenterUI {
         bolseirosListObjs = new DefaultListModel<Pessoa>();
         projetosListObjs = new DefaultListModel<Project>();
 
-        ArrayList<Pessoa> pessoas = researchCenters.get(index).getPessoas();
-        if (pessoas != null) {
-            for (Pessoa p : pessoas) {
-                if (p.getCusto() == 0) {
-                    docentesListObjs.addElement(p);
-                } else {
-                    bolseirosListObjs.addElement(p);
-                }
-            }
+        for (Pessoa pessoa: researchCenters.get(index).getDocentes()){
+            docentesListObjs.addElement(pessoa);
         }
 
-        ArrayList<Project> projetos = researchCenters.get(index).getProjects();
-        if (projetos != null) {
-            for (Project p : projetos) {
-                projetosListObjs.addElement(p);
-            }
+        for (Pessoa pessoa : researchCenters.get(index).getBolseiros()) {
+            bolseirosListObjs.addElement(pessoa);
         }
+
+        for (Project projeto : researchCenters.get(index).getProjects()){
+            projetosListObjs.addElement(projeto);
+        }
+
         docentesList = new JList<>(docentesListObjs);
         docentesList.setEnabled(false);
         docentesList.setFixedCellHeight(20);
@@ -155,6 +150,8 @@ public class CenterUI {
             }
         }
         JList listerList = new JList(projetosListModel);
+        listerList.setFixedCellWidth(170);
+        listerList.setFixedCellHeight(30);
         JScrollPane listerScroller = new JScrollPane(listerList);
 
         topListerPanel.add(titleListerLabel);
@@ -168,15 +165,171 @@ public class CenterUI {
         listerDialog.setVisible(true);
     }
 
-    private void projectCreater() {
+    private void projectCreateDrawer() {
         projectCreaterDialog = new JDialog();
         projectCreaterDialog.setModal(true);
-        projectCreaterDialog.setSize(600, 400);
+        projectCreaterDialog.setSize(700, 500);
         projectCreaterDialog.setLocationRelativeTo(null);
-        projectCreaterDialog.setLayout(new BorderLayout());
+        projectCreaterDialog.setLayout(new GridLayout(1,2));
         projectCreaterDialog.setTitle("Criar Projeto");
 
+        JLabel subtitleProjectCreaterLabel= new JLabel("    Criar Projeto");
+        subtitleProjectCreaterLabel.setFont(new Font(subtitleProjectCreaterLabel.getFont().getName(), Font.BOLD,30));
+        JLabel instructionLabel = new JLabel("  Preencha os seguintes campos:");
+
+        JLabel nameLabel = new JLabel("Nome:      ");
+        JLabel acronimoLabel = new JLabel("Acrónimo:");
+        nameTextField = new JTextField(20);
+        acronimoTextField = new JTextField(20);
+
+        JLabel diaInicioLabel = new JLabel("Dia:");
+        JLabel diaFimLabel = new JLabel("Dia:");
+        JLabel mesInicioLabel = new JLabel("Mês:");
+        JLabel mesFimLabel = new JLabel("Mês:");
+        JLabel anoInicioLabel = new JLabel("Ano:");
+        JLabel anoFimLabel = new JLabel("Ano:");
+
+        JLabel inicioLabel = new JLabel("Data de Início:");
+        inicioLabel.setFont(new Font(inicioLabel.getFont().getName(), Font.BOLD,16));
+        diaInicioTextField = new JTextField(2);
+        mesInicioTextField = new JTextField(2);
+        anoInicioTextField = new JTextField(2);
+
+        JLabel fimLabel = new JLabel("Data Estimada de Conclusão:");
+        fimLabel.setFont(new Font(fimLabel.getFont().getName(), Font.BOLD,16));
+        diaFimTextField = new JTextField(2);
+        mesFimTextField = new JTextField(2);
+        anoFimTextField = new JTextField(2);
+
+        JLabel principalLabel = new JLabel("Escolha um Investigador Principal:");
+        DefaultListModel<Pessoa> docenteCreateProjectDefaultListModel = new DefaultListModel<Pessoa>();
+        for (Pessoa pessoa: researchCenters.get(index).getDocentes()) {
+            docenteCreateProjectDefaultListModel.addElement(pessoa);
+        }
+        docentesCreateProjectList = new JList(docenteCreateProjectDefaultListModel);
+        docentesCreateProjectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane docentesCreateProjectScroller = new JScrollPane(docentesCreateProjectList);
+        trueCreateProjectButton = new JButton("Criar Projeto");
+        trueCreateProjectButton.addActionListener(listener);
+        backCreateProjectButton = new JButton("Voltar");
+        backCreateProjectButton.addActionListener(listener);
+
+        JPanel leftProjectCreaterPanel = new JPanel(new GridLayout(2,1));
+
+        JPanel topLeftProjectCreaterPanel = new JPanel(new GridLayout(4,1));
+        JPanel nameInputPanel = new JPanel(new FlowLayout());
+        JPanel acronimoInputPanel = new JPanel(new FlowLayout());
+
+        JPanel bottomLeftProjectCreaterPanel = new JPanel( new GridLayout(4,1));
+        JPanel inicioInputPanel = new JPanel(new FlowLayout());
+        JPanel fimInputPanel = new JPanel(new FlowLayout());
+        JPanel dataInicioPanel = new JPanel(new FlowLayout());
+        JPanel dataFimPanel = new JPanel(new FlowLayout());
+
+        JPanel rightProjectCreaterPanel = new JPanel(new BorderLayout());
+        JPanel buttonerPanel = new JPanel(new FlowLayout());
+
+        //LEFT PANELS
+        //topLeftPanel
+        nameInputPanel.add(nameLabel);
+        nameInputPanel.add(nameTextField);
+
+        acronimoInputPanel.add(acronimoLabel);
+        acronimoInputPanel.add(acronimoTextField);
+
+        topLeftProjectCreaterPanel.add(subtitleProjectCreaterLabel);
+        topLeftProjectCreaterPanel.add(instructionLabel);
+        topLeftProjectCreaterPanel.add(nameInputPanel);
+        topLeftProjectCreaterPanel.add(acronimoInputPanel);
+
+        //bottomLeftPanel
+        dataInicioPanel.add(inicioLabel);
+
+        inicioInputPanel.add(diaInicioLabel);
+        inicioInputPanel.add(diaInicioTextField);
+        inicioInputPanel.add(mesInicioLabel);
+        inicioInputPanel.add(mesInicioTextField);
+        inicioInputPanel.add(anoInicioLabel);
+        inicioInputPanel.add(anoInicioTextField);
+
+        dataFimPanel.add(fimLabel);
+
+        fimInputPanel.add(diaFimLabel);
+        fimInputPanel.add(diaFimTextField);
+        fimInputPanel.add(mesFimLabel);
+        fimInputPanel.add(mesFimTextField);
+        fimInputPanel.add(anoFimLabel);
+        fimInputPanel.add(anoFimTextField);
+
+        bottomLeftProjectCreaterPanel.add(dataInicioPanel);
+        bottomLeftProjectCreaterPanel.add(inicioInputPanel);
+        bottomLeftProjectCreaterPanel.add(dataFimPanel);
+        bottomLeftProjectCreaterPanel.add(fimInputPanel);
+
+        //adding "lefts" panels to the leftPanel
+        leftProjectCreaterPanel.add(topLeftProjectCreaterPanel);
+        leftProjectCreaterPanel.add(bottomLeftProjectCreaterPanel);
+
+        //RIGHT PANELS
+        buttonerPanel.add(backCreateProjectButton);
+        buttonerPanel.add(trueCreateProjectButton);
+
+        rightProjectCreaterPanel.add(principalLabel,BorderLayout.NORTH);
+        rightProjectCreaterPanel.add(docentesCreateProjectScroller,BorderLayout.CENTER);
+        rightProjectCreaterPanel.add(buttonerPanel, BorderLayout.SOUTH);
+        //adding main panels to the JDialog
+        projectCreaterDialog.add(leftProjectCreaterPanel);
+        projectCreaterDialog.add(rightProjectCreaterPanel);
+
         projectCreaterDialog.setVisible(true);
+    }
+    private void projectCreater(){
+        String name = nameTextField.getText();
+        String acronimo = acronimoTextField.getText();
+        int diaInicio, mesInicio, anoInicio;
+        int diaFim, mesFim, anoFim;
+        if (!(name.isBlank() || acronimo.isBlank())){
+            try{
+                diaInicio = Integer.parseInt(diaInicioTextField.getText());
+                mesInicio = Integer.parseInt(mesInicioTextField.getText());
+                anoInicio = Integer.parseInt(anoInicioTextField.getText());
+
+                diaFim = Integer.parseInt(diaFimTextField.getText());
+                mesFim = Integer.parseInt(mesFimTextField.getText());
+                anoFim = Integer.parseInt(anoFimTextField.getText());
+
+                Calendar inicio = new GregorianCalendar(anoInicio,mesInicio,diaInicio);
+                Calendar etc = new GregorianCalendar(anoFim,mesFim,diaFim);
+                if (inicio.before(etc)){
+                    if (    (1 <= mesInicio && mesInicio <= 12) && (1 <= mesFim && mesFim <= 12) &&
+                            (1 <= diaInicio && diaInicio <= 31) && (1 <= diaFim && diaFim <= 31) &&
+                                                (anoInicio > 0) && (anoFim > 0)                     ){
+
+                    Pessoa docente = researchCenters.get(index).getDocentes().get(docentesCreateProjectList.getSelectedIndex());
+                    Project projeto = new Project(name,acronimo,inicio,etc, (Docente) docente);
+                    researchCenters.get(index).addProject(projeto);
+                    projetosListObjs.addElement(projeto);
+                    projetosList = new JList<Project>(projetosListObjs);
+
+                    } else {
+                        projectCreaterDialog.dispose();
+                        JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    projectCreaterDialog.dispose();
+                    JOptionPane.showMessageDialog(null, "A data de início tem de ser anterior à data de fim!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException exp){
+                projectCreaterDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (IndexOutOfBoundsException exp){
+                projectCreaterDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Selecione um Investigador Principal!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            projectCreaterDialog.dispose();
+            JOptionPane.showMessageDialog(null, "Campos vazios!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void personAdder() {
@@ -286,14 +439,20 @@ public class CenterUI {
                     frame.dispose();
                     new IntroUI(researchCenters);
                 }
+            } else if (e.getSource() == trueCreateProjectButton) {
+                projectCreater();
+                projectCreaterDialog.setVisible(false);
+                projectCreaterDialog.dispose();
+            } else if (e.getSource() == backCreateProjectButton) {
+                projectCreaterDialog.dispose();
             } else if (e.getSource() == backListerFrameButton) {
                 listerDialog.dispose();
+            } else if (e.getSource() == createProjectButton) {
+                projectCreateDrawer();
             } else if (e.getSource() == listConcludedButton) {
                 lister(researchCenters.get(index).getFinishedProjects(), "Projetos Concluídos");
             } else if (e.getSource() == listNotConcludedButton) {
                 lister(researchCenters.get(index).getUnfinishedProjects(), "Projetos Não Concluídos");
-            } else if (e.getSource() == createProjectButton) {
-                projectCreater();
             } else if (e.getSource() == addPersonButton) {
                 personAdder();
             }

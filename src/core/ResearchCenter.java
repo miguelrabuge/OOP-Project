@@ -61,6 +61,35 @@ public class ResearchCenter {
     }
 
     /**
+     * Gets the researchcenter's docentes.
+     * @return ArrayList with the researchcenter's docentes.
+     */
+    public ArrayList<Pessoa> getDocentes(){
+        ArrayList<Pessoa> docentes = new ArrayList<Pessoa>();{
+            for (Pessoa pessoa : this.pessoas) {
+                if (pessoa.getCusto() == 0){
+                    docentes.add(pessoa);
+                }
+            }
+        }
+        return docentes;
+    }
+
+    /**
+     * Gets the researchcenter's bolseiros.
+     * @return ArrayList with the researchcenter's docentes.
+     */
+    public ArrayList<Pessoa> getBolseiros(){
+        ArrayList<Pessoa> bolseiros = new ArrayList<Pessoa>();{
+            for (Pessoa pessoa : this.pessoas) {
+                if (pessoa.getCusto() != 0){
+                    bolseiros.add(pessoa);
+                }
+            }
+        }
+        return bolseiros;
+    }
+    /**
      * Sets the researchcenter's pessoas.
      * @param pessoas ArrayList with the researchcenter's pessoas.
      */
@@ -82,7 +111,7 @@ public class ResearchCenter {
      * Adds a project to the researchcenter's projects.
      * @param projeto Project object that will be added to the researchcenter's projects.
      */
-    public void addProject(Project projeto ){
+    public void addProject(Project projeto){
         this.projects.add(projeto);
     }
 

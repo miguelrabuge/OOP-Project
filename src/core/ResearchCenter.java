@@ -77,7 +77,7 @@ public class ResearchCenter {
 
     /**
      * Gets the researchcenter's bolseiros.
-     * @return ArrayList with the researchcenter's docentes.
+     * @return ArrayList with the researchcenter's bolseiros.
      */
     public ArrayList<Pessoa> getBolseiros(){
         ArrayList<Pessoa> bolseiros = new ArrayList<Pessoa>();{

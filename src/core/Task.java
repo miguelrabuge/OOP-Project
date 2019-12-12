@@ -146,7 +146,6 @@ abstract class Task {
     /**
      * Checks if a task can be assigned to responsavel.
      *
-     * @param task        Task obejct that we want to know if can be assigned to responsavel.
      * @param responsavel Pessoa object that we want to check the availability.
      * @return
      */

@@ -70,6 +70,14 @@ public class Project {
     }
 
     /**
+     * Sets the end state of the project.
+     * @param b boolean to represent the state of completion fo the project.
+     */
+    public void setAcabado(boolean b){
+        this.acabado = b;
+    }
+
+    /**
      * Changes the person responsible for the task passed as argument to the other person passed as argument.
      *
      * @param responsavel Pessoa object that will become responsible for the task.
@@ -363,12 +371,14 @@ public class Project {
         return this.dataFim;
     }
 
+
+
     /**
      * Sets the project's ending date.
      *
      * @param dataFim Calendar with the project's ending date.
      */
-    private void setDataFim(Calendar dataFim) {
+    public void setDataFim(Calendar dataFim) {
         this.dataFim = dataFim;
     }
 

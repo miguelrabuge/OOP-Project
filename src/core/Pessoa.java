@@ -96,11 +96,18 @@ public abstract class Pessoa {
      */
     public double getSobrecarga(Calendar dia){//retorna a sobrecarga da pessoa
         double sobrecarga = 0;
+
         for(Task task : this.tasks){
-            if( (dia.after(task.getInicio()) && dia.before(task.getEtc())) || dia.compareTo(task.getInicio()) == 0 || dia.compareTo(task.getEtc()) == 0 ){
-                sobrecarga += task.getEsforco();
+            if(task.getPercentage() != 100) {
+                if ((dia.after(task.getInicio()) && dia.before(task.getEtc())) || dia.compareTo(task.getInicio()) == 0 || dia.compareTo(task.getEtc()) == 0) {
+
+                    sobrecarga += task.getEsforco();
+
+                }
             }
+
         }
+
         return sobrecarga;
     }
 

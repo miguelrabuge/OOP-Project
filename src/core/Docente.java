@@ -103,4 +103,12 @@ public class Docente extends Pessoa {
     public void addProject(Project project){
         this.projetos.add(project);
     }
+
+    /**
+     * Adds a estudante to the docente's oriented;
+     * @param orientado Estudante object that will be added to the docente's orientaded;_
+     */
+    public void addOrientado(Estudante orientado){
+        this.orientados.add(orientado);
+    }
 }

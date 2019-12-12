@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * Represents a Task.
  */
-abstract class Task {
+public abstract class Task {
     protected Calendar inicio;
     protected Calendar fim;
     protected Calendar etc;

@@ -85,44 +85,12 @@ public class Project {
      * @return On success, returns true, otherwise returns false.
      */
     public boolean changeTaskResp(Pessoa responsavel, Task task) {
-        Pessoa temp;
-        Calendar dia = Calendar.getInstance();
-        Bolseiro aux;
-        int cond = 0;
-
-
-        //verifica se o responsavel e um bolseiro ou um docente
-        if (this.bolseiros.contains(responsavel)) {
-            aux = (Bolseiro) responsavel;//nao sei se posso fazer isto
-            if (task.getEtc().before(aux.getFimBolsa())) {//se o etc da task for antes do fim da bolsa do bolseiro, e provavel que a task lhe possa ser atribuida
-                cond = 1;
-            }
-
-        } else if (this.docentes.contains(responsavel)) {
-            cond = 1;
+        if (assignResp(responsavel,task)){
+            task.getResponsavel().removeTask(task);
+            task.setResponsavel(responsavel);
+            return true;
         }
-
-        if (cond == 1) {
-            if (task.checkAvailability(responsavel) && task.percentage != 100) {//Se isto acontecer, entao a tarefa pode ser atribuida ao novo responsavel
-
-                //retirar a tarefa das tarefas do atual responsavel
-                temp = task.getResponsavel();//para saber quem e o responsavel atual da tarefa
-                temp.removeTask(task);
-
-                //faz o mesmo que as duas linhas em cima
-                //task.getResponsavel().removeTask(task);
-
-                //adicionar a tarefa ao novo responsavel
-                responsavel.addTask(task);
-
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
+        return false;
     }
 
     /**
@@ -443,35 +411,24 @@ public class Project {
      * @param responsavel Pessoa object that will become responsible by the task.
      * @param task        Task object that will have the pessoa as responsible.
      */
-    public void assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, a pessoa passada como parametro
-
-        Bolseiro aux;
-        int cond = 0;
-
-        if (this.bolseiros.contains(responsavel)) {
-            aux = (Bolseiro) responsavel;
-            if (aux.getFimBolsa().after(task.getEtc())) {
-                cond = 1;
-            }
-        } else if (this.docentes.contains(responsavel)) {
-            cond = 1;
-        }
-
-
-        if (cond == 1) {
+    public boolean assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, a pessoa passada como parametro
+        if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0) && ((Bolseiro)responsavel).getFimBolsa().after(task.getEtc()))) {
             if (task.checkAvailability(responsavel) && task.getPercentage() != 100) {
                 responsavel.addTask(task);
-                System.out.printf("Tarefa atribuida com sucesso.\n");
+                System.out.println("Tarefa atribuida com sucesso.\n");
             } else {
-                if (task.getPercentage() == 100)
-                    System.out.print("Tarefa nao atribuida, pois a tarefa ja esta concluida.\n");
-                else
-                    System.out.print("Tarefa nao atribuida, pois a pessoa esta sobrecarregada no periodo de execucao da tarefa.\n");
+                if (task.getPercentage() == 100){
+                    System.out.println("Tarefa nao atribuída, pois está concluída.\n");
+                } else {
+                    System.out.println("Tarefa nao atribuída, pois a pessoa está sobrecarregada no periodo de execução da tarefa.\n");
+                }
+                return false;
             }
         } else {
-            System.out.print("Nao foi possivel atribuir a tarefa a pessoa em questao, porque o contrato acaba antes do periodo de execucao da tarefa.\n");
+            System.out.println("Não foi possível atribuir a tarefa à pessoa em questão, porque o contrato acaba antes do periodo de execução da tarefa.\n");
+            return false;
         }
-
+        return true;
     }
 
     /**

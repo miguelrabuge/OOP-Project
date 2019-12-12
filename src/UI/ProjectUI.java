@@ -1,6 +1,6 @@
 package UI;
 
-import core.ResearchCenter;
+import core.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -222,26 +222,52 @@ public class ProjectUI {
     }
 
     private void taskCreater() {
-        int diaInicio, mesInicio, anoInicio, mesFim;
+        int diaInicio, mesInicio, anoInicio, mesFim, listIndex, boxIndex;
         Calendar inicio, etc;
-        try{
+        Pessoa responsavel;
+        Task tarefa;
+        try {
+            listIndex = peopleCreateTaskList.getSelectedIndex();
             diaInicio = Integer.parseInt(diaInicioCreateTaskTextField.getText());
             mesInicio = Integer.parseInt(mesInicioCreateTaskTextField.getText());
             anoInicio = Integer.parseInt(anoInicioCreateTaskTextField.getText());
             mesFim = Integer.parseInt(mesFimCreateTaskTextField.getText());
 
-            if (( 1 <= diaInicio && diaInicio <= 31 ) && ( 1 <= mesInicio && mesInicio <= 12 ) && (anoInicio > 0) && (mesFim > 0)) {
+            if ((1 <= diaInicio && diaInicio <= 31) && (1 <= mesInicio && mesInicio <= 12) && (anoInicio > 0) && (mesFim > 0)) {
                 inicio = new GregorianCalendar();
-                inicio.set(Calendar.DAY_OF_MONTH,diaInicio);
+                inicio.set(Calendar.DAY_OF_MONTH, diaInicio);
                 inicio.set(Calendar.MONTH, mesInicio - 1);
-                inicio.set(Calendar.YEAR,anoInicio);
+                inicio.set(Calendar.YEAR, anoInicio);
+
+                etc = new GregorianCalendar();
+                etc.set(Calendar.DAY_OF_MONTH, diaInicio);
+                etc.set(Calendar.MONTH, mesInicio - 1);
+                etc.set(Calendar.YEAR, anoInicio);
+                etc.add(Calendar.MONTH, mesFim);
+
+                boxIndex = typeCreateTaskBox.getSelectedIndex();
+                if (boxIndex == 0) {
+                    tarefa = new Documentation(inicio, etc);
+                } else if (boxIndex == 1) {
+                    tarefa = new Design(inicio, etc);
+                } else {
+                    tarefa = new Development(inicio, etc);
+                }
+
+                responsavel = (Pessoa) peopleCreateTaskList.getSelectedValue();
+                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).assignResp(responsavel, tarefa)) {
+                    tarefa.setResponsavel(responsavel);
+                    researchCenters.get(centerIndex).getProjects().get(projectIndex).addTask(tarefa);
+                    JOptionPane.showMessageDialog(null, "Tarefa Criada Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Verifique se:\n  As Datas são Compatíveis\n  A Pessoa não está sobrecarregada", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             createTaskDialog.setVisible(false);
             createTaskDialog.dispose();
-            JOptionPane.showMessageDialog(null,"Introduza Valores válidos!","Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Introduza Valores válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     private class ButtonListener implements ActionListener {

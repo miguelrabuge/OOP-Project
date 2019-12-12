@@ -8,9 +8,10 @@ import java.util.Calendar;
  */
 public abstract class Pessoa {
 
-    protected ArrayList<Task> tasks;
+
     protected String nome;
     protected String email;
+    protected ArrayList<Task> tasks;
 
     /**
      * Creates a Pessoa with his name, email and research center.

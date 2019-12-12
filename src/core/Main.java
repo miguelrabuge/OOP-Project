@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<ResearchCenter> researchCenters = new ArrayList<>();
         ResearchCenter researchCenterFileBooter;
-        String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/Teste.txt";
+        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\Teste.txt";
 
         if (/*read from .obj == true*/ false) {
             //TODO: read from .obj

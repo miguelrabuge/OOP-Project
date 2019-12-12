@@ -73,4 +73,11 @@ public abstract class Bolseiro extends Pessoa {
     public void setProjeto(Project projetos) {
         this.projeto = projetos;
     }
+
+    @Override
+    public String toString() {
+        return  nome + " " +
+                inicoBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicoBolsa.get(Calendar.MONTH) + 1)+ "/" + inicoBolsa.get(Calendar.YEAR) +
+                " - " + fimBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (fimBolsa.get(Calendar.MONTH) + 1)+ "/" + fimBolsa.get(Calendar.YEAR);
+    }
 }

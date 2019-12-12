@@ -103,7 +103,7 @@ public class Project {
         }
 
         if (cond == 1) {
-            if (responsavel.getSobrecarga(dia) + task.getEsforco() <= 1 && task.percentage != 100) {//Se isto acontecer, entao a tarefa pode ser atribuida ao novo responsavel
+            if (task.checkAvailability(responsavel) && task.percentage != 100) {//Se isto acontecer, entao a tarefa pode ser atribuida ao novo responsavel
 
                 //retirar a tarefa das tarefas do atual responsavel
                 temp = task.getResponsavel();//para saber quem e o responsavel atual da tarefa

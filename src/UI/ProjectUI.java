@@ -66,6 +66,7 @@ public class ProjectUI {
         changeRespButton = new JButton("Atribuir");
         //Other Buttons
         totalCostButton = new JButton("Custo Total");
+        totalCostButton.addActionListener(buttonListener);
         endButton = new JButton("TERMINAR!");
         backButton = new JButton("Voltar");
         backButton.addActionListener(buttonListener);
@@ -309,9 +310,10 @@ public class ProjectUI {
     }
 
     private void removeTaskDialogDrawer(){
-        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasks(),"Remover Tarefas");
+        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(),"Remover Tarefas");
         JPanel bottomPanel = new JPanel();
         trueRemoveTaskButton = new JButton("Eliminar Tarefa");
+        trueRemoveTaskButton.setEnabled(false);
         trueRemoveTaskButton.addActionListener(buttonListener);
         bottomPanel.add(backListerDialogButton);
         bottomPanel.add(trueRemoveTaskButton);
@@ -323,7 +325,7 @@ public class ProjectUI {
         Task tarefa = (Task) listerList.getSelectedValue();
         listerTaskDialog.setVisible(false);
         listerTaskDialog.dispose();
-        if(researchCenters.get(centerIndex).getProjects().get(projectIndex).removeTask(tarefa)){
+        if((tarefa != null) && researchCenters.get(centerIndex).getProjects().get(projectIndex).removeTask(tarefa)){
             JOptionPane.showMessageDialog(null, "Tarefa Removida Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Erro a remover Tarefa", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -353,6 +355,8 @@ public class ProjectUI {
             } else if(e.getSource() == backListerDialogButton){
                 listerTaskDialog.setVisible(false);
                 listerTaskDialog.dispose();
+            } else if(e.getSource() == totalCostButton){
+                JOptionPane.showMessageDialog(null,"Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost()+" €.","Custo Total",JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

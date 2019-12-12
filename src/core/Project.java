@@ -153,15 +153,13 @@ public class Project {
      * @return ArrayList with all of the project's tasks that aren't concluded.
      */
     public ArrayList<Task> getTasksNotConcluded() {
-        //retorna um ArrayList<Task> com as tasks por concluir (0 < pergentagem < 100)
+        //retorna um ArrayList<Task> com as tasks por concluir (0 <= pergentagem < 100)
         ArrayList<Task> temp = new ArrayList<Task>();
-
         for (Task task : this.tasks) {
-            if (task.getPercentage() > 0 && task.getPercentage() < 100) {
+            if (task.getPercentage() >= 0 && task.getPercentage() < 100) {
                 temp.add(task);
             }
         }
-
         return temp;//depois ver se o temp esta vazio ou nao
     }
 
@@ -189,14 +187,10 @@ public class Project {
      * @return int with the cost of the project until the current day.
      */
     public int getCost() {
-        //retorna o custo total do projeto
         int custo = 0;
-
         for (Task task : this.tasks) {
-            //calculo o custo por dia da pessoa responsavel pela tarefa e multiplico pelo numero de dias que foram dispendidos por essa pessoa na execucao dessa tarefa, que esteja ja acabada ou nao.
             custo += ((task.getResponsavel().getCusto() * 12) / 365) * numeroDeDias(task);
         }
-
         return custo;
     }
 
@@ -207,21 +201,18 @@ public class Project {
      * @return int with the number of days spent to complete the task.
      */
     private int numeroDeDias(Task task) {
-        int i;
-        Calendar dia = (Calendar) task.getInicio().clone();
-        Calendar atual = new GregorianCalendar();
-
-
+        int daysCounter;
+        Calendar inicio = (Calendar) task.getInicio().clone();
         if (task.getFim() != null) {
-            for (i = 0; dia.compareTo(task.getFim()) <= 0; i++) {
-                dia.add(Calendar.DAY_OF_MONTH, 1);
+            for (daysCounter = 0; inicio.compareTo(task.getFim()) <= 0; daysCounter++) {
+                inicio.add(Calendar.DAY_OF_MONTH, 1);
             }
         } else {
-            for (i = 0; dia.compareTo(atual) <= 0; i++) {
-                dia.add(Calendar.DAY_OF_MONTH, 1);
+            for (daysCounter = 0; inicio.compareTo(task.getEtc()) <= 0; daysCounter++) {
+                inicio.add(Calendar.DAY_OF_MONTH, 1);
             }
         }
-        return i;
+        return daysCounter;
     }
 
     /**

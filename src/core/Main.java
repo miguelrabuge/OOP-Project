@@ -113,7 +113,6 @@ public class Main {
 
                             project = new Project(tokens[1], tokens[2], dataStart, dataEtc, (Docente) researchCenter.getPessoaByName(tokens[5]));
                             project.addDocente((Docente) researchCenter.getPessoaByName(tokens[5]));
-                            project.setDataFim(dataEnd);
 
                             if (tokens.length == 7) { //Projeto concluído
                                 dataEnd = readDay(tokens[6], sep);

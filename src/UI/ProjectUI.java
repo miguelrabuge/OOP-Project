@@ -47,7 +47,15 @@ public class ProjectUI {
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
-        JLabel projectLabel = new JLabel("Projeto " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome());
+        JLabel projectLabel = new JLabel(
+                "Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
+                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.MONTH) + 1)+ "/"
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.YEAR) + " - "
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.DAY_OF_MONTH) + "/"
+                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.MONTH) + 1)+ "/"
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.YEAR) +  ")"
+        );
         projectLabel.setFont(new Font(projectLabel.getFont().getName(), Font.BOLD, 28));
         JLabel tarefasLabel = new JLabel("Tarefas:");
         JLabel pessoasLabel = new JLabel("Pessoas:");
@@ -98,7 +106,7 @@ public class ProjectUI {
         frame.setVisible(true);
     }
 
-    private void listerDrawer(ArrayList<Task> tarefas, String title){
+    private void listerDrawer(ArrayList<Object> objects, String title){
         listerTaskDialog = new JDialog();
         listerTaskDialog.setModal(true);
         listerTaskDialog.setSize(400, 400);
@@ -115,8 +123,8 @@ public class ProjectUI {
         JLabel titleListerLabel = new JLabel(title);
         titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
         DefaultListModel<Object> tasksListModel = new DefaultListModel<>();
-        if (tarefas != null) {
-            tasksListModel.addAll(tarefas);
+        if (objects != null) {
+            tasksListModel.addAll(objects);
         }
         listerList = new JList<>(tasksListModel);
         listerList.setFixedCellWidth(230);
@@ -292,15 +300,21 @@ public class ProjectUI {
                 } else {
                     tarefa = new Development(inicio, etc);
                 }
+                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().before(inicio) &&
+                        researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataFim().after(etc)        ){
 
-                responsavel = (Pessoa) peopleCreateTaskList.getSelectedValue();
-                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).assignResp(responsavel, tarefa)) {
-                    tarefa.setResponsavel(responsavel);
-                    researchCenters.get(centerIndex).getProjects().get(projectIndex).addTask(tarefa);
-                    JOptionPane.showMessageDialog(null, "Tarefa Criada Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    responsavel = (Pessoa) peopleCreateTaskList.getSelectedValue();
+                    if (researchCenters.get(centerIndex).getProjects().get(projectIndex).assignResp(responsavel, tarefa)) {
+                        tarefa.setResponsavel(responsavel);
+                        researchCenters.get(centerIndex).getProjects().get(projectIndex).addTask(tarefa);
+                        JOptionPane.showMessageDialog(null, "Tarefa Criada Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Verifique se:\n  As Datas são Compatíveis\n  A Pessoa não está sobrecarregada", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Verifique se:\n  As Datas são Compatíveis\n  A Pessoa não está sobrecarregada", "Erro", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "A Tarefa não está contida na duração do Projeto", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
+
             }
         } catch (NumberFormatException e) {
             createTaskDialog.setVisible(false);
@@ -312,12 +326,16 @@ public class ProjectUI {
     private void removeTaskDialogDrawer(){
         listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(),"Remover Tarefas");
         JPanel bottomPanel = new JPanel();
+
         trueRemoveTaskButton = new JButton("Eliminar Tarefa");
         trueRemoveTaskButton.setEnabled(false);
         trueRemoveTaskButton.addActionListener(buttonListener);
+
         bottomPanel.add(backListerDialogButton);
         bottomPanel.add(trueRemoveTaskButton);
+
         listerTaskDialog.add(bottomPanel, BorderLayout.SOUTH);
+
         listerTaskDialog.setVisible(true);
     }
 

@@ -152,9 +152,9 @@ public class Project {
      *
      * @return ArrayList with all of the project's tasks that aren't concluded.
      */
-    public ArrayList<Task> getTasksNotConcluded() {
+    public ArrayList<Object> getTasksNotConcluded() {
         //retorna um ArrayList<Task> com as tasks por concluir (0 <= pergentagem < 100)
-        ArrayList<Task> temp = new ArrayList<Task>();
+        ArrayList<Object> temp = new ArrayList<>();
         for (Task task : this.tasks) {
             if (task.getPercentage() >= 0 && task.getPercentage() < 100) {
                 temp.add(task);

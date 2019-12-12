@@ -70,31 +70,23 @@ public class CenterUI {
         bolseirosLabel = new JLabel("Bolseiros:", JLabel.CENTER);
         projetosLabel = new JLabel("Projetos:", JLabel.CENTER);
 
-        docentesListObjs = new DefaultListModel<Object>();
-        bolseirosListObjs = new DefaultListModel<Object>();
-        projetosListObjs = new DefaultListModel<Object>();
+        docentesListObjs = new DefaultListModel<>();
+        bolseirosListObjs = new DefaultListModel<>();
+        projetosListObjs = new DefaultListModel<>();
         //TODO: change fors to .addall()
-        for (Pessoa pessoa : researchCenters.get(index).getDocentes()) {
-            docentesListObjs.addElement(pessoa);
-        }
+        docentesListObjs.addAll(researchCenters.get(index).getDocentes());
+        bolseirosListObjs.addAll(researchCenters.get(index).getBolseiros());
+        projetosListObjs.addAll(researchCenters.get(index).getProjects());
 
-        for (Pessoa pessoa : researchCenters.get(index).getBolseiros()) {
-            bolseirosListObjs.addElement(pessoa);
-        }
-
-        for (Project projeto : researchCenters.get(index).getProjects()) {
-            projetosListObjs.addElement(projeto);
-        }
-
-        docentesList = new JList<Object>(docentesListObjs);
+        docentesList = new JList<>(docentesListObjs);
         docentesList.setEnabled(false);
         docentesList.setFixedCellHeight(20);
         docentesList.setFixedCellWidth(200);
-        bolseirosList = new JList<Object>(bolseirosListObjs);
+        bolseirosList = new JList<>(bolseirosListObjs);
         bolseirosList.setEnabled(false);
         bolseirosList.setFixedCellHeight(20);
         bolseirosList.setFixedCellWidth(200);
-        projetosList = new JList<Object>(projetosListObjs);
+        projetosList = new JList<>(projetosListObjs);
         projetosList.setFixedCellHeight(20);
         projetosList.setFixedCellWidth(200);
         projetosList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -151,13 +143,13 @@ public class CenterUI {
         backListerFrameButton.addActionListener(buttonListener);
         JLabel titleListerLabel = new JLabel(title);
         titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
-        DefaultListModel<Object> projetosListModel = new DefaultListModel<Object>();
+        DefaultListModel<Object> projetosListModel = new DefaultListModel<>();
         if (projects != null) {
             for (Project p : projects) {
                 projetosListModel.addElement(p);
             }
         }
-        JList<Object> listerList = new JList<Object>(projetosListModel);
+        JList<Object> listerList = new JList<>(projetosListModel);
         listerList.setFixedCellWidth(170);
         listerList.setFixedCellHeight(30);
         JScrollPane listerScroller = new JScrollPane(listerList);
@@ -210,11 +202,11 @@ public class CenterUI {
         anoFimTextField = new JTextField(2);
 
         JLabel principalLabel = new JLabel("Escolha um Investigador Principal:");
-        DefaultListModel<Object> docentesCreateProjectDefaultListModel = new DefaultListModel<Object>();
+        DefaultListModel<Object> docentesCreateProjectDefaultListModel = new DefaultListModel<>();
         for (Pessoa pessoa : researchCenters.get(index).getDocentes()) {
             docentesCreateProjectDefaultListModel.addElement(pessoa);
         }
-        docentesCreateProjectList = new JList<Object>(docentesCreateProjectDefaultListModel);
+        docentesCreateProjectList = new JList<>(docentesCreateProjectDefaultListModel);
         docentesCreateProjectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         docentesCreateProjectList.addListSelectionListener(listListener);
         JScrollPane docentesCreateProjectScroller = new JScrollPane(docentesCreateProjectList);
@@ -358,7 +350,7 @@ public class CenterUI {
         JTextField diaFimTextField = new JTextField();
         JTextField mesFimTextField = new JTextField();
         JTextField anoFimTextField = new JTextField();
-        JComboBox<String> optionBox = new JComboBox<String>();
+        JComboBox<String> optionBox = new JComboBox<>();
 
 
         String[] options = {"Docente", "Licenciado", "Mestre", "Doutorado"};

@@ -15,15 +15,15 @@ public class ProjectUI {
     private int centerIndex, projectIndex;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
-    private JDialog createTaskDialog;
+    private JDialog createTaskDialog, listerTaskDialog;
     private ButtonListener buttonListener;
     private ListListener listListener;
     private JButton createTaskButton, removeTaskButton, listTaskButton, updateTaskButton, addDocenteButton, addBolseiroButton, changeRespButton, totalCostButton, endButton, backButton;
-    private JButton backCreateTaskButton, trueCreateTaskButton;
-    private JButton trueRemoveTaskButton, backRemoveTaskButton;
+    private JButton backCreateTaskButton, trueCreateTaskButton , backListerDialogButton;
+    private JButton trueRemoveTaskButton;
     private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField;
     private JComboBox typeCreateTaskBox;
-    private JList<Object> peopleCreateTaskList;
+    private JList<Object> peopleCreateTaskList, listerList;
 
     public ProjectUI(ArrayList<ResearchCenter> researchCenters, int centerIndex, int projectIndex) {
         this.researchCenters = researchCenters;
@@ -57,6 +57,7 @@ public class ProjectUI {
         createTaskButton = new JButton("Criar");
         createTaskButton.addActionListener(buttonListener);
         removeTaskButton = new JButton("Eliminar");
+        removeTaskButton.addActionListener(buttonListener);
         listTaskButton = new JButton("Listar");
         updateTaskButton = new JButton("Atualizar");
         //People related Buttons
@@ -94,6 +95,42 @@ public class ProjectUI {
         frame.add(bottomPanel);
 
         frame.setVisible(true);
+    }
+
+    private void listerDrawer(ArrayList<Task> tarefas, String title){
+        listerTaskDialog = new JDialog();
+        listerTaskDialog.setModal(true);
+        listerTaskDialog.setSize(400, 400);
+        listerTaskDialog.setLocationRelativeTo(null);
+        listerTaskDialog.setLayout(new BorderLayout());
+        listerTaskDialog.setTitle(title);
+
+        JPanel topListerPanel = new JPanel();
+        JPanel middleListerPanel = new JPanel();
+        JPanel bottomListerPanel = new JPanel();
+
+        backListerDialogButton = new JButton("Voltar");
+        backListerDialogButton.addActionListener(buttonListener);
+        JLabel titleListerLabel = new JLabel(title);
+        titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
+        DefaultListModel<Object> tasksListModel = new DefaultListModel<>();
+        if (tarefas != null) {
+            tasksListModel.addAll(tarefas);
+        }
+        listerList = new JList<>(tasksListModel);
+        listerList.setFixedCellWidth(230);
+        listerList.setFixedCellHeight(40);
+        listerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listerList.addListSelectionListener(listListener);
+        JScrollPane listerScroller = new JScrollPane(listerList);
+
+        topListerPanel.add(titleListerLabel);
+        middleListerPanel.add(listerScroller);
+        bottomListerPanel.add(backListerDialogButton);
+
+        listerTaskDialog.add(topListerPanel, BorderLayout.NORTH);
+        listerTaskDialog.add(middleListerPanel, BorderLayout.CENTER);
+        listerTaskDialog.add(bottomListerPanel, BorderLayout.SOUTH);
     }
 
     private void createTaskDrawer() {
@@ -271,6 +308,28 @@ public class ProjectUI {
         }
     }
 
+    private void removeTaskDialogDrawer(){
+        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasks(),"Remover Tarefas");
+        JPanel bottomPanel = new JPanel();
+        trueRemoveTaskButton = new JButton("Eliminar Tarefa");
+        trueRemoveTaskButton.addActionListener(buttonListener);
+        bottomPanel.add(backListerDialogButton);
+        bottomPanel.add(trueRemoveTaskButton);
+        listerTaskDialog.add(bottomPanel, BorderLayout.SOUTH);
+        listerTaskDialog.setVisible(true);
+    }
+
+    private void taskRemover(){
+        Task tarefa = (Task) listerList.getSelectedValue();
+        listerTaskDialog.setVisible(false);
+        listerTaskDialog.dispose();
+        if(researchCenters.get(centerIndex).getProjects().get(projectIndex).removeTask(tarefa)){
+            JOptionPane.showMessageDialog(null, "Tarefa Removida Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro a remover Tarefa", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -288,9 +347,12 @@ public class ProjectUI {
                 createTaskDialog.setVisible(false);
                 createTaskDialog.dispose();
             } else if (e.getSource() == removeTaskButton){
-
+                removeTaskDialogDrawer();
             } else if (e.getSource() ==  trueRemoveTaskButton){
-
+                taskRemover();
+            } else if(e.getSource() == backListerDialogButton){
+                listerTaskDialog.setVisible(false);
+                listerTaskDialog.dispose();
             }
         }
     }
@@ -303,6 +365,16 @@ public class ProjectUI {
                     trueCreateTaskButton.setEnabled(false);
                 } else {
                     trueCreateTaskButton.setEnabled(true);
+                }
+            } else if (e.getSource() == listerList){
+                if (listerList.getSelectedIndex() == -1) {
+                    if(trueRemoveTaskButton != null){
+                        trueRemoveTaskButton.setEnabled(false);
+                    }
+                } else {
+                    if(trueRemoveTaskButton != null) {
+                        trueRemoveTaskButton.setEnabled(true);
+                    }
                 }
             }
         }

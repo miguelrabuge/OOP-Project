@@ -99,12 +99,9 @@ public class Project {
      * @param task Task object that will be removed from the project's tasks.
      * @return On success, returns true, otherwise returns false.
      */
-    public boolean removeTask(Task task) {//remove uma task das tasks do projeto, para isso acontecer a task tem de ser removida das tasks do responsavel pela task
-        //para poder remover a task da lista de tasks do responsavel pela task
-        Pessoa temp = task.getResponsavel();
-        temp.removeTask(task);
-
-        return this.tasks.remove(task);//retorna true (se for removido com sucesso) ou false (se nao for removido)
+    public boolean removeTask(Task task) {
+        task.getResponsavel().removeTask(task);
+        return (this.tasks).remove(task);//retorna true (se for removido com sucesso) ou false (se nao for removido)
     }
 
     /**

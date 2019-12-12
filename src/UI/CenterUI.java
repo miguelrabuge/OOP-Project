@@ -462,7 +462,7 @@ public class CenterUI {
             } else if (e.getSource() == listConcludedButton) {
                 lister(researchCenters.get(index).getFinishedProjects(), "Projetos Concluídos");
             } else if (e.getSource() == listNotConcludedButton) {
-                lister(researchCenters.get(index).getUnfinishedProjects(), "Projetos Não Concluídos");
+                lister(researchCenters.get(index).getUnfinishedProjectsInEtc(), "Projetos Não Concluídos na Data Estimada");
             } else if (e.getSource() == addPersonButton) {
                 personAdder();
             } else if (e.getSource() == openProjectButton) {

@@ -137,13 +137,11 @@ public class Project {
     public ArrayList<Task> getTasksNotStarted() {
         //retorna um ArrayList<Task> com as tasks do projeto nao comecadas (percentagem == 0)
         ArrayList<Task> temp = new ArrayList<Task>();
-
         for (Task task : this.tasks) {
             if (task.getPercentage() == 0) {
                 temp.add(task);
             }
         }
-
         return temp;//depois ver se o temp esta vazio ou nao
     }
 
@@ -163,6 +161,17 @@ public class Project {
         return temp;//depois ver se o temp esta vazio ou nao
     }
 
+    public ArrayList<Object> getTasksNotConcludedInEtc(){
+        ArrayList<Object> tarefas = new ArrayList<>();
+        Calendar diaAtual = new GregorianCalendar();
+        for (Task task: this.tasks) {
+            if (((task.getPercentage() == 100) && task.getEtc().before(task.getFim())) || (task.getEtc().before(diaAtual))){
+                tarefas.add(task);
+            }
+        }
+        return tarefas;
+    }
+
     /**
      * Gets the project's concluded tasks.
      *
@@ -171,13 +180,11 @@ public class Project {
     public ArrayList<Task> getTasksConcluded() {
         //retorna um ArrayList<Task> com as tasks concluidas (percentagem == 100)
         ArrayList<Task> temp = new ArrayList<Task>();
-
         for (Task task : this.tasks) {
             if (task.getPercentage() == 100) {
                 temp.add(task);
             }
         }
-
         return temp;//depois ver se o temp esta vazio ou nao
     }
 

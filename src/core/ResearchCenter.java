@@ -1,6 +1,8 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Represents a ResearchCenter
@@ -130,15 +132,15 @@ public class ResearchCenter {
     }
 
     /**
-     * Gets the researchcenter's unfinished projects.
-     * @return ArrayList with all of the researchcenter's unfinished projects.
+     * Gets the researchcenter's unfinished in ETC projects.
+     * @return ArrayList with all of the researchcenter's unfinished in etc projects.
      */
-    public ArrayList<Project> getUnfinishedProjects(){
+    public ArrayList<Project> getUnfinishedProjectsInEtc(){
         //retorna os projetos inacabados
+        Calendar diaAtual = new GregorianCalendar();
         ArrayList<Project> temp = new ArrayList<Project>();
-
         for(Project project : this.projects){
-            if(!project.getAcabado()){
+            if((project.getAcabado() && project.getEtc().before(project.getDataFim())) || (project.getEtc().before(diaAtual))){
                 temp.add(project);
             }
         }

@@ -15,15 +15,17 @@ public class ProjectUI {
     private int centerIndex, projectIndex;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
-    private JDialog createTaskDialog, listerTaskDialog;
+    private JDialog createTaskDialog, listerTaskDialog, displayTasksDialog;
     private ButtonListener buttonListener;
     private ListListener listListener;
     private JButton createTaskButton, removeTaskButton, listTaskButton, updateTaskButton, addDocenteButton, addBolseiroButton, changeRespButton, totalCostButton, endButton, backButton;
-    private JButton backCreateTaskButton, trueCreateTaskButton , backListerDialogButton;
+    private JButton backCreateTaskButton, trueCreateTaskButton, backListerDialogButton;
     private JButton trueRemoveTaskButton;
+    private JButton listAllButton, listNotStartedButton, listNotConcludedEtcButton, listConcludedButton, backListerButton;
     private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField;
     private JComboBox typeCreateTaskBox;
     private JList<Object> peopleCreateTaskList, listerList;
+    private ArrayList<Object> chosenTasks;
 
     public ProjectUI(ArrayList<ResearchCenter> researchCenters, int centerIndex, int projectIndex) {
         this.researchCenters = researchCenters;
@@ -37,7 +39,7 @@ public class ProjectUI {
         buttonListener = new ButtonListener();
         listListener = new ListListener();
         frame.setTitle("Project Manager");
-        frame.setSize(650, 350);
+        frame.setSize(750, 350);
         frame.setLayout(new GridLayout(4, 1));
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,12 +51,12 @@ public class ProjectUI {
 
         JLabel projectLabel = new JLabel(
                 "Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
-                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
-                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.MONTH) + 1)+ "/"
-                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.YEAR) + " - "
-                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.DAY_OF_MONTH) + "/"
-                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.MONTH) + 1)+ "/"
-                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.YEAR) +  ")"
+                        +researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
+                        + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.MONTH) + 1) + "/"
+                        + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.YEAR) + " - "
+                        + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.DAY_OF_MONTH) + "/"
+                        + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.MONTH) + 1) + "/"
+                        + researchCenters.get(centerIndex).getProjects().get(projectIndex).getEtc().get(Calendar.YEAR) + ")"
         );
         projectLabel.setFont(new Font(projectLabel.getFont().getName(), Font.BOLD, 28));
         JLabel tarefasLabel = new JLabel("Tarefas:");
@@ -67,6 +69,7 @@ public class ProjectUI {
         removeTaskButton = new JButton("Eliminar");
         removeTaskButton.addActionListener(buttonListener);
         listTaskButton = new JButton("Listar");
+        listTaskButton.addActionListener(buttonListener);
         updateTaskButton = new JButton("Atualizar");
         //People related Buttons
         addDocenteButton = new JButton("Associar Docente ao Projeto");
@@ -106,7 +109,7 @@ public class ProjectUI {
         frame.setVisible(true);
     }
 
-    private void listerDrawer(ArrayList<Object> objects, String title){
+    private void listerDrawer(ArrayList<Object> objects, String title) {
         listerTaskDialog = new JDialog();
         listerTaskDialog.setModal(true);
         listerTaskDialog.setSize(400, 400);
@@ -175,12 +178,12 @@ public class ProjectUI {
         JLabel fieldFillCreateTaskLabel = new JLabel("Preencha os seguintes campos:");
         fieldFillCreateTaskLabel.setFont(new Font(fieldFillCreateTaskLabel.getFont().getName(), Font.BOLD, 15));
         JLabel inicioCreateTaskLabel = new JLabel("Data de Início:");
-        inicioCreateTaskLabel.setFont(new Font(inicioCreateTaskLabel.getFont().getName(), Font.BOLD,14));
+        inicioCreateTaskLabel.setFont(new Font(inicioCreateTaskLabel.getFont().getName(), Font.BOLD, 14));
         JLabel diaInicioCreateTaskLabel = new JLabel("Dia:");
         JLabel mesInicioCreateTaskLabel = new JLabel("Mês:");
         JLabel anoInicioCreateTaskLabel = new JLabel("Ano:");
         JLabel etcCreateTaskLabel = new JLabel("Data estimada de Conclusão:");
-        etcCreateTaskLabel.setFont(new Font(etcCreateTaskLabel.getFont().getName(), Font.BOLD,14));
+        etcCreateTaskLabel.setFont(new Font(etcCreateTaskLabel.getFont().getName(), Font.BOLD, 14));
         JLabel mesFimCreateTaskLabel = new JLabel("Mêses depois da Data de Início:");
         JLabel typeCreateTaskLabel = new JLabel("Tipo:");
 
@@ -219,8 +222,8 @@ public class ProjectUI {
         titleCreateTaskPanel.add(titleCreateTaskLabel);
         fieldFillCreateTaskPanel.add(fieldFillCreateTaskLabel);
 
-        informationCreateTaskPanel.add(titleCreateTaskPanel,BorderLayout.NORTH);
-        informationCreateTaskPanel.add(fieldFillCreateTaskPanel,BorderLayout.SOUTH);
+        informationCreateTaskPanel.add(titleCreateTaskPanel, BorderLayout.NORTH);
+        informationCreateTaskPanel.add(fieldFillCreateTaskPanel, BorderLayout.SOUTH);
 
         //adding inicioLabels and TextFields
         topInicioCreateTaskPanel.add(inicioCreateTaskLabel);
@@ -300,9 +303,7 @@ public class ProjectUI {
                 } else {
                     tarefa = new Development(inicio, etc);
                 }
-                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().before(inicio) &&
-                        researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataFim().after(etc)        ){
-
+                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().before(inicio)) {
                     responsavel = (Pessoa) peopleCreateTaskList.getSelectedValue();
                     if (researchCenters.get(centerIndex).getProjects().get(projectIndex).assignResp(responsavel, tarefa)) {
                         tarefa.setResponsavel(responsavel);
@@ -314,7 +315,8 @@ public class ProjectUI {
                 } else {
                     JOptionPane.showMessageDialog(null, "A Tarefa não está contida na duração do Projeto", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-
+            } else {
+                JOptionPane.showMessageDialog(null, "Introduza Valores Válidos", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             createTaskDialog.setVisible(false);
@@ -323,8 +325,8 @@ public class ProjectUI {
         }
     }
 
-    private void removeTaskDialogDrawer(){
-        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(),"Remover Tarefas");
+    private void removeTaskDialogDrawer() {
+        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(), "Remover Tarefas");
         JPanel bottomPanel = new JPanel();
 
         trueRemoveTaskButton = new JButton("Eliminar Tarefa");
@@ -339,15 +341,62 @@ public class ProjectUI {
         listerTaskDialog.setVisible(true);
     }
 
-    private void taskRemover(){
+    private void taskRemover() {
         Task tarefa = (Task) listerList.getSelectedValue();
         listerTaskDialog.setVisible(false);
         listerTaskDialog.dispose();
-        if((tarefa != null) && researchCenters.get(centerIndex).getProjects().get(projectIndex).removeTask(tarefa)){
+        if ((tarefa != null) && researchCenters.get(centerIndex).getProjects().get(projectIndex).removeTask(tarefa)) {
             JOptionPane.showMessageDialog(null, "Tarefa Removida Com Sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Erro a remover Tarefa", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void displayTasksDrawer() {
+        displayTasksDialog = new JDialog();
+        displayTasksDialog.setModal(true);
+        displayTasksDialog.setSize(400, 400);
+        displayTasksDialog.setLocationRelativeTo(null);
+        displayTasksDialog.setLayout(new BorderLayout());
+        displayTasksDialog.setTitle("Listar Tarefas");
+
+        /*Panels*/
+        JPanel topPanel = new JPanel(new FlowLayout());
+        JPanel middlePanel = new JPanel(new GridLayout(4, 1));
+        JPanel bottomPanel = new JPanel(new FlowLayout());
+
+        /*Buttons*/
+        listAllButton = new JButton("Todas");
+        listAllButton.addActionListener(buttonListener);
+        listNotStartedButton = new JButton("Não Iniciadas");
+        listNotStartedButton.addActionListener(buttonListener);
+        listConcludedButton = new JButton("Concluídas");
+        listConcludedButton.addActionListener(buttonListener);
+        listNotConcludedEtcButton = new JButton("Não Concluídas na Data Estimada");
+        listNotConcludedEtcButton.addActionListener(buttonListener);
+        backListerButton = new JButton("Voltar");
+        backListerButton.addActionListener(buttonListener);
+
+        /*Label*/
+        JLabel titleDisplayTasksLabel = new JLabel("Listar");
+        titleDisplayTasksLabel.setFont(new Font(titleDisplayTasksLabel.getFont().getName(), Font.BOLD, 20));
+
+        /*Adding Components to Panels*/
+        topPanel.add(titleDisplayTasksLabel);
+
+        middlePanel.add(listAllButton);
+        middlePanel.add(listNotStartedButton);
+        middlePanel.add(listConcludedButton);
+        middlePanel.add(listNotConcludedEtcButton);
+
+        bottomPanel.add(backListerButton);
+
+        /*Adding Panels to the Dialog frame*/
+        displayTasksDialog.add(topPanel, BorderLayout.NORTH);
+        displayTasksDialog.add(middlePanel, BorderLayout.CENTER);
+        displayTasksDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+        displayTasksDialog.setVisible(true);
     }
 
     private class ButtonListener implements ActionListener {
@@ -366,15 +415,36 @@ public class ProjectUI {
             } else if (e.getSource() == backCreateTaskButton) {
                 createTaskDialog.setVisible(false);
                 createTaskDialog.dispose();
-            } else if (e.getSource() == removeTaskButton){
+            } else if (e.getSource() == removeTaskButton) {
                 removeTaskDialogDrawer();
-            } else if (e.getSource() ==  trueRemoveTaskButton){
+            } else if (e.getSource() == trueRemoveTaskButton) {
                 taskRemover();
-            } else if(e.getSource() == backListerDialogButton){
+            } else if (e.getSource() == listTaskButton) {
+                displayTasksDrawer();
+            } else if (e.getSource() == backListerButton) {
+                displayTasksDialog.setVisible(false);
+                displayTasksDialog.dispose();
+            } else if (e.getSource() == listAllButton) {
+                chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasks());
+                listerDrawer(chosenTasks, "Todas as Tarefas");
+                listerTaskDialog.setVisible(true);
+            } else if (e.getSource() == listNotStartedButton) {
+                chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotStarted());
+                listerDrawer(chosenTasks, "Tarefas Não Iniciadas");
+                listerTaskDialog.setVisible(true);
+            } else if (e.getSource() == listConcludedButton) {
+                chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksConcluded());
+                listerDrawer(chosenTasks, "Tarefas Concluídas");
+                listerTaskDialog.setVisible(true);
+            } else if (e.getSource() == listNotConcludedEtcButton) {
+                chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcludedInEtc());
+                listerDrawer(chosenTasks,"Tarefas Não Concluídas na Data Estimada");
+                listerTaskDialog.setVisible(true);
+            } else if (e.getSource() == backListerDialogButton) {
                 listerTaskDialog.setVisible(false);
                 listerTaskDialog.dispose();
-            } else if(e.getSource() == totalCostButton){
-                JOptionPane.showMessageDialog(null,"Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost()+" €.","Custo Total",JOptionPane.INFORMATION_MESSAGE);
+            } else if (e.getSource() == totalCostButton) {
+                JOptionPane.showMessageDialog(null, "Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost() + " €.", "Custo Total", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -388,13 +458,13 @@ public class ProjectUI {
                 } else {
                     trueCreateTaskButton.setEnabled(true);
                 }
-            } else if (e.getSource() == listerList){
+            } else if (e.getSource() == listerList) {
                 if (listerList.getSelectedIndex() == -1) {
-                    if(trueRemoveTaskButton != null){
+                    if (trueRemoveTaskButton != null) {
                         trueRemoveTaskButton.setEnabled(false);
                     }
                 } else {
-                    if(trueRemoveTaskButton != null) {
+                    if (trueRemoveTaskButton != null) {
                         trueRemoveTaskButton.setEnabled(true);
                     }
                 }

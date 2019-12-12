@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ProjectUI {
     private int centerIndex, projectIndex;
@@ -159,9 +161,9 @@ public class ProjectUI {
         typeCreateTaskBox.addItem("Desenvolvimento");
 
         /*List*/
-        DefaultListModel<Object> peopleCreateTaskObjs = new DefaultListModel<Object>();
+        DefaultListModel<Object> peopleCreateTaskObjs = new DefaultListModel<>();
         peopleCreateTaskObjs.addAll(researchCenters.get(centerIndex).getProjects().get(projectIndex).getPessoas());
-        peopleCreateTaskList = new JList<Object>(peopleCreateTaskObjs);
+        peopleCreateTaskList = new JList<>(peopleCreateTaskObjs);
         peopleCreateTaskList.addListSelectionListener(listListener);
 
         /*Setting up left side of the menu*/
@@ -221,6 +223,7 @@ public class ProjectUI {
 
     private void taskCreater() {
         int diaInicio, mesInicio, anoInicio, mesFim;
+        Calendar inicio, etc;
         try{
             diaInicio = Integer.parseInt(diaInicioCreateTaskTextField.getText());
             mesInicio = Integer.parseInt(mesInicioCreateTaskTextField.getText());
@@ -228,12 +231,15 @@ public class ProjectUI {
             mesFim = Integer.parseInt(mesFimCreateTaskTextField.getText());
 
             if (( 1 <= diaInicio && diaInicio <= 31 ) && ( 1 <= mesInicio && mesInicio <= 12 ) && (anoInicio > 0) && (mesFim > 0)) {
-
+                inicio = new GregorianCalendar();
+                inicio.set(Calendar.DAY_OF_MONTH,diaInicio);
+                inicio.set(Calendar.MONTH, mesInicio - 1);
+                inicio.set(Calendar.YEAR,anoInicio);
             }
         } catch (NumberFormatException e){
             createTaskDialog.setVisible(false);
             createTaskDialog.dispose();
-            JOptionPane.showMessageDialog(null,"Introduza Valores válidos!","Erro",JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null,"Introduza Valores válidos!","Erro", JOptionPane.ERROR_MESSAGE);
         }
 
     }

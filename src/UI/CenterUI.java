@@ -17,10 +17,7 @@ public class CenterUI {
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
     private JDialog listerDialog, projectCreaterDialog;
-    private JLabel welcomeLabel, docentesLabel, bolseirosLabel, projetosLabel;
-    private JScrollPane docentesScroller, bolseirosScroller, projetosScroller;
     private JButton backListerFrameButton, backButton, createProjectButton, listConcludedButton, listNotConcludedButton, addPersonButton, openProjectButton, trueCreateProjectButton, backCreateProjectButton;
-    private JPanel topPanel, centerPanel, leftPanel, rightPanel, bottomPanel;
     private ButtonListener buttonListener;
     private ListListener listListener;
     private JList<Object> docentesList, bolseirosList, docentesCreateProjectList, projetosList;
@@ -44,11 +41,11 @@ public class CenterUI {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        topPanel = new JPanel();
-        centerPanel = new JPanel();
-        leftPanel = new JPanel();
-        rightPanel = new JPanel();
-        bottomPanel = new JPanel();
+        JPanel topPanel = new JPanel();
+        JPanel centerPanel = new JPanel();
+        JPanel leftPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
+        JPanel bottomPanel = new JPanel();
 
         createProjectButton = new JButton("Criar Projeto");
         createProjectButton.addActionListener(buttonListener);
@@ -64,16 +61,16 @@ public class CenterUI {
         backButton = new JButton("Voltar");
         backButton.addActionListener(buttonListener);
 
-        welcomeLabel = new JLabel(" Bem-Vindo ao " + researchCenters.get(index).getName());
+        JLabel welcomeLabel = new JLabel(" Bem-Vindo ao " + researchCenters.get(index).getName());
         welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 30));
-        docentesLabel = new JLabel("Docentes:", JLabel.CENTER);
-        bolseirosLabel = new JLabel("Bolseiros:", JLabel.CENTER);
-        projetosLabel = new JLabel("Projetos:", JLabel.CENTER);
+        JLabel docentesLabel = new JLabel("Docentes:", JLabel.CENTER);
+        JLabel bolseirosLabel = new JLabel("Bolseiros:", JLabel.CENTER);
+        JLabel projetosLabel = new JLabel("Projetos:", JLabel.CENTER);
 
         docentesListObjs = new DefaultListModel<>();
         bolseirosListObjs = new DefaultListModel<>();
         projetosListObjs = new DefaultListModel<>();
-        //TODO: change fors to .addall()
+
         docentesListObjs.addAll(researchCenters.get(index).getDocentes());
         bolseirosListObjs.addAll(researchCenters.get(index).getBolseiros());
         projetosListObjs.addAll(researchCenters.get(index).getProjects());
@@ -92,9 +89,9 @@ public class CenterUI {
         projetosList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         projetosList.addListSelectionListener(listListener);
 
-        docentesScroller = new JScrollPane(docentesList);
-        bolseirosScroller = new JScrollPane(bolseirosList);
-        projetosScroller = new JScrollPane(projetosList);
+        JScrollPane docentesScroller = new JScrollPane(docentesList);
+        JScrollPane bolseirosScroller = new JScrollPane(bolseirosList);
+        JScrollPane projetosScroller = new JScrollPane(projetosList);
 
         topPanel.setLayout(new BorderLayout());
         topPanel.add(welcomeLabel, BorderLayout.CENTER);

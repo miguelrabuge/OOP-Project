@@ -11,11 +11,8 @@ import java.util.ArrayList;
 public class IntroUI extends JFrame {
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
-    private JPanel bottomPanel, middlePanel, topPanel;
     private JButton exitButton, chooseButton, createCenterButton;
-    private JComboBox centerList;
-    private JLabel subtitle;
-    private ButtonListener listener;
+    private JComboBox<Object> centerList;
 
     public IntroUI(ArrayList<ResearchCenter> researchCenters) {
         this.researchCenters = researchCenters;
@@ -24,10 +21,10 @@ public class IntroUI extends JFrame {
 
     private void Drawer() {
         frame = new JFrame();
-        listener = new ButtonListener();
-        bottomPanel = new JPanel();
-        middlePanel = new JPanel();
-        topPanel = new JPanel();
+        ButtonListener listener = new ButtonListener();
+        JPanel bottomPanel = new JPanel();
+        JPanel middlePanel = new JPanel();
+        JPanel topPanel = new JPanel();
         exitButton = new JButton("Exit");
         exitButton.addActionListener(listener);
         createCenterButton = new JButton("Adicionar Centro");
@@ -35,8 +32,8 @@ public class IntroUI extends JFrame {
         chooseButton = new JButton("Escolher");
         chooseButton.addActionListener(listener);
 
-        centerList = new JComboBox();
-        subtitle = new JLabel("Escolha um centro:");
+        centerList = new JComboBox<>();
+        JLabel subtitle = new JLabel("Escolha um centro:");
         subtitle.setFont(new Font(subtitle.getFont().getName(), Font.BOLD, 22));
         centerList.addItem("---------------------------------------------");
         for (ResearchCenter r : researchCenters) {

@@ -165,6 +165,7 @@ public class ProjectUI {
         peopleCreateTaskObjs.addAll(researchCenters.get(centerIndex).getProjects().get(projectIndex).getPessoas());
         peopleCreateTaskList = new JList<>(peopleCreateTaskObjs);
         peopleCreateTaskList.addListSelectionListener(listListener);
+        peopleCreateTaskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         /*Setting up left side of the menu*/
         //Title and information

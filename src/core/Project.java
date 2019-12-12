@@ -412,7 +412,8 @@ public class Project {
      * @param task        Task object that will have the pessoa as responsible.
      */
     public boolean assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, a pessoa passada como parametro
-        if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0) && (((Bolseiro)responsavel).getFimBolsa().after(task.getEtc())) && (((Bolseiro)responsavel).getInicoBolsa().before(task.getInicio())))) {
+        if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0)  && (((Bolseiro)responsavel).getInicioBolsa().before(task.getInicio())) //Se a data de inicio da tarefa for depois ou igual à data de inicio da bolsa
+                                                                            && (((Bolseiro)responsavel).getFimBolsa().after(task.getEtc())))) { //Se a data de fim da tarefa for antes ou igual à data de fim da bolsa
             if (task.checkAvailability(responsavel) && task.getPercentage() != 100) {
                 responsavel.addTask(task);
                 System.out.println("Tarefa atribuida com sucesso.\n");

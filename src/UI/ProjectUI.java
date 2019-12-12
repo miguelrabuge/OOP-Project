@@ -20,6 +20,7 @@ public class ProjectUI {
     private ListListener listListener;
     private JButton createTaskButton, removeTaskButton, listTaskButton, updateTaskButton, addDocenteButton, addBolseiroButton, changeRespButton, totalCostButton, endButton, backButton;
     private JButton backCreateTaskButton, trueCreateTaskButton;
+    private JButton trueRemoveTaskButton, backRemoveTaskButton;
     private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField;
     private JComboBox typeCreateTaskBox;
     private JList<Object> peopleCreateTaskList;
@@ -242,9 +243,8 @@ public class ProjectUI {
 
                 etc = new GregorianCalendar();
                 etc.set(Calendar.DAY_OF_MONTH, diaInicio);
-                etc.set(Calendar.MONTH, mesInicio - 1);
+                etc.set(Calendar.MONTH, (mesInicio - 1) + mesFim);
                 etc.set(Calendar.YEAR, anoInicio);
-                etc.add(Calendar.MONTH, mesFim);
 
                 boxIndex = typeCreateTaskBox.getSelectedIndex();
                 if (boxIndex == 0) {
@@ -287,6 +287,10 @@ public class ProjectUI {
             } else if (e.getSource() == backCreateTaskButton) {
                 createTaskDialog.setVisible(false);
                 createTaskDialog.dispose();
+            } else if (e.getSource() == removeTaskButton){
+
+            } else if (e.getSource() ==  trueRemoveTaskButton){
+
             }
         }
     }

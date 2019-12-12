@@ -23,4 +23,11 @@ public class Documentation extends Task {
     public double getEsforco(){
         return 0.25;
     }
+
+    @Override
+    public String toString() {
+        return  "Desenvolvimento " +
+                inicio.get(Calendar.DAY_OF_MONTH) + "/" + (inicio.get(Calendar.MONTH) + 1)+ "/" + inicio.get(Calendar.YEAR) +
+                " - " + etc.get(Calendar.DAY_OF_MONTH) + "/" + (etc.get(Calendar.MONTH) + 1)+ "/" + etc.get(Calendar.YEAR);
+    }
 }

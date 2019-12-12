@@ -1,6 +1,5 @@
 package core;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -8,7 +7,7 @@ import java.util.Calendar;
  */
 public abstract class Bolseiro extends Pessoa {
 
-    protected Calendar inicoBolsa;
+    protected Calendar inicioBolsa;
     protected Calendar fimBolsa;
     protected Project projeto;
 
@@ -21,7 +20,7 @@ public abstract class Bolseiro extends Pessoa {
      */
     public Bolseiro(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa){
         super(nome, email);
-        this.inicoBolsa = inicioBolsa;
+        this.inicioBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
         this.projeto = null;
     }
@@ -30,16 +29,16 @@ public abstract class Bolseiro extends Pessoa {
      * Gets the starting date of the bolseiro's scholarship.
      * @return Calendar with the starting date of the bolseiro's scholarship.
      */
-    public Calendar getInicoBolsa() {
-        return this.inicoBolsa;
+    public Calendar getInicioBolsa() {
+        return this.inicioBolsa;
     }
 
     /**
      * Sets the starting date of the bolseiro's scholarship.
-     * @param inicoBolsa Calendar with the starting date of the bolseiro's scholarship.
+     * @param inicioBolsa Calendar with the starting date of the bolseiro's scholarship.
      */
-    public void setInicoBolsa(Calendar inicoBolsa) {
-        this.inicoBolsa = inicoBolsa;
+    public void setInicioBolsa(Calendar inicioBolsa) {
+        this.inicioBolsa = inicioBolsa;
     }
 
     /**
@@ -77,7 +76,7 @@ public abstract class Bolseiro extends Pessoa {
     @Override
     public String toString() {
         return  nome + " " +
-                inicoBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicoBolsa.get(Calendar.MONTH) + 1)+ "/" + inicoBolsa.get(Calendar.YEAR) +
+                inicioBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicioBolsa.get(Calendar.MONTH) + 1)+ "/" + inicioBolsa.get(Calendar.YEAR) +
                 " - " + fimBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (fimBolsa.get(Calendar.MONTH) + 1)+ "/" + fimBolsa.get(Calendar.YEAR);
     }
 }

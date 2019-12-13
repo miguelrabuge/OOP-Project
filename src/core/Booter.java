@@ -62,7 +62,7 @@ public class Booter {
      * Saves information of the state of the program before termination
      *
      * @param pathname with the path to the file.obj
-     * @param object with the object to save
+     * @param object   with the object to save
      * @return boolean true in case of sucess, false in case of error
      */
     public static boolean saveObjectFile(String pathname, Object object) {
@@ -300,7 +300,7 @@ public class Booter {
      * Parses a String to a Calendar day
      *
      * @param token String with the information given
-     * @param sep String for delimitation of the .split method
+     * @param sep   String for delimitation of the .split method
      * @return Calendar with the day if information given by token is valid, null if invalid
      */
     private Calendar readDay(String token, String sep) {

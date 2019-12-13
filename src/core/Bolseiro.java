@@ -13,12 +13,13 @@ public abstract class Bolseiro extends Pessoa {
 
     /**
      * Creates a Bolseiro with his name, email, research center, beginning of the scholarship and end of the scholarship.
-     * @param nome String with the bolseiro's name.
-     * @param email String with the bolseiro's email.
+     *
+     * @param nome        String with the bolseiro's name.
+     * @param email       String with the bolseiro's email.
      * @param inicioBolsa Calendat with the starting date of the bolseiro's scholarship.
-     * @param fimBolsa Calendar with the ending date of the bolseiro's scholarship.
+     * @param fimBolsa    Calendar with the ending date of the bolseiro's scholarship.
      */
-    public Bolseiro(String nome, String email,Calendar inicioBolsa, Calendar fimBolsa){
+    public Bolseiro(String nome, String email, Calendar inicioBolsa, Calendar fimBolsa) {
         super(nome, email);
         this.inicioBolsa = inicioBolsa;
         this.fimBolsa = fimBolsa;
@@ -27,6 +28,7 @@ public abstract class Bolseiro extends Pessoa {
 
     /**
      * Gets the starting date of the bolseiro's scholarship.
+     *
      * @return Calendar with the starting date of the bolseiro's scholarship.
      */
     public Calendar getInicioBolsa() {
@@ -35,14 +37,16 @@ public abstract class Bolseiro extends Pessoa {
 
     /**
      * Gets the ending date of the bolseiro's scholarship.
+     *
      * @return Calendar with the ending date of the bolseiro's scholarship.
      */
     public Calendar getFimBolsa() {
         return this.fimBolsa;
     }
-    
+
     /**
      * Gets the bolseiro's project.
+     *
      * @return Project with the bolseiro's project.
      */
     public Project getProjeto() {
@@ -51,6 +55,7 @@ public abstract class Bolseiro extends Pessoa {
 
     /**
      * Sets the bolseiro's project.
+     *
      * @param projetos Project with the bolseiro's project.
      */
     public void setProjeto(Project projetos) {
@@ -59,8 +64,8 @@ public abstract class Bolseiro extends Pessoa {
 
     @Override
     public String toString() {
-        return  nome + " " +
-                inicioBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicioBolsa.get(Calendar.MONTH) + 1)+ "/" + inicioBolsa.get(Calendar.YEAR) +
-                " - " + fimBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (fimBolsa.get(Calendar.MONTH) + 1)+ "/" + fimBolsa.get(Calendar.YEAR);
+        return nome + " " +
+                inicioBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicioBolsa.get(Calendar.MONTH) + 1) + "/" + inicioBolsa.get(Calendar.YEAR) +
+                " - " + fimBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (fimBolsa.get(Calendar.MONTH) + 1) + "/" + fimBolsa.get(Calendar.YEAR);
     }
 }

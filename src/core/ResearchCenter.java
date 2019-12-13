@@ -82,11 +82,25 @@ public class ResearchCenter implements Serializable {
      * @return ArrayList with the researchcenter's docentes.
      */
     public ArrayList<Pessoa> getDocentes(){
-        ArrayList<Pessoa> docentes = new ArrayList<Pessoa>();{
+        ArrayList<Pessoa> docentes = new ArrayList<Pessoa>();
             for (Pessoa pessoa : this.pessoas) {
                 if (pessoa.getCusto() == 0){
                     docentes.add(pessoa);
                 }
+            }
+        return docentes;
+    }
+
+    /**
+     * Gets the researchcenter's docentes that are not in a given project.
+     * @param project
+     * @return ArrayList with the researchcenter's docentes not int the Project project.
+     */
+    public ArrayList<Pessoa> getDocentesNotInProject(Project project){
+        ArrayList<Pessoa> docentes = new ArrayList<>();
+        for (Pessoa docente : this.getDocentes()) {
+            if (!project.getDocentes().contains((Docente)docente)){
+                docentes.add(docente);
             }
         }
         return docentes;

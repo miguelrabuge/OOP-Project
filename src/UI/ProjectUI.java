@@ -10,7 +10,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Objects;
 
 public class ProjectUI {
     private int centerIndex, projectIndex;
@@ -24,7 +23,7 @@ public class ProjectUI {
     private JButton backCreateTaskButton, trueCreateTaskButton, backListerDialogButton;
     private JButton trueRemoveTaskButton;
     private JButton listAllButton, listNotStartedButton, listNotConcludedEtcButton, listConcludedButton, backListerButton, backDoubleListerButton;
-    private JButton trueUpdateTaskButton, trueChangeTaskResp;
+    private JButton trueUpdateTaskButton, trueChangeTaskResp, trueAddDocenteButton, trueAddBolseiroButton;
     private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField, incrementoTaskTextField;
     private JComboBox<String> typeCreateTaskBox;
     private JList<Object> peopleCreateTaskList, listerList, doubleLeftList, doubleRightList;
@@ -80,7 +79,9 @@ public class ProjectUI {
         updateTaskButton.addActionListener(buttonListener);
         //People related Buttons
         addDocenteButton = new JButton("Associar Docente ao Projeto");
+        addDocenteButton.addActionListener(buttonListener);
         addBolseiroButton = new JButton("Associar Bolseiro ao Projeto");
+        addBolseiroButton.addActionListener(buttonListener);
         changeRespButton = new JButton("Atribuir");
         changeRespButton.addActionListener(buttonListener);
         //Other Buttons
@@ -153,7 +154,7 @@ public class ProjectUI {
         listerTaskDialog.add(bottomListerPanel, BorderLayout.SOUTH);
     }
 
-    private void doubleListerDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel){
+    private void doubleListerDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel) {
         doubleListerDialog = new JDialog();
         doubleListerDialog.setModal(true);
         doubleListerDialog.setSize(950, 600);
@@ -171,7 +172,7 @@ public class ProjectUI {
         /*Lists*/
         DefaultListModel<Object> leftObjs = new DefaultListModel<>();
         DefaultListModel<Object> rightObjs = new DefaultListModel<>();
-        if ((left != null) && (right != null)){
+        if ((left != null) && (right != null)) {
             leftObjs.addAll(left);
             rightObjs.addAll(right);
         }
@@ -191,7 +192,7 @@ public class ProjectUI {
 
         /*Labels*/
         JLabel doubleTitleLabel = new JLabel(titleLabel);
-        doubleTitleLabel.setFont(new Font(doubleTitleLabel.getFont().getName(),Font.BOLD,22));
+        doubleTitleLabel.setFont(new Font(doubleTitleLabel.getFont().getName(), Font.BOLD, 22));
         JLabel doubleLeftLabel = new JLabel(leftLabel);
         JLabel doubleRightLabel = new JLabel(rightLabel);
 
@@ -202,19 +203,19 @@ public class ProjectUI {
         /*Adding Components to Panels*/
         topPanel.add(doubleTitleLabel);
 
-        leftPanel.add(doubleLeftLabel,BorderLayout.NORTH);
-        leftPanel.add(leftScroll,BorderLayout.CENTER);
+        leftPanel.add(doubleLeftLabel, BorderLayout.NORTH);
+        leftPanel.add(leftScroll, BorderLayout.CENTER);
 
-        rightPanel.add(doubleRightLabel,BorderLayout.NORTH);
-        rightPanel.add(rightScroll,BorderLayout.CENTER);
+        rightPanel.add(doubleRightLabel, BorderLayout.NORTH);
+        rightPanel.add(rightScroll, BorderLayout.CENTER);
 
         bottomPanel.add(backDoubleListerButton);
 
         /*Adding Panels to main Dialog frame*/
-        doubleListerDialog.add(topPanel,BorderLayout.NORTH);
-        doubleListerDialog.add(leftPanel,BorderLayout.WEST);
-        doubleListerDialog.add(rightPanel,BorderLayout.EAST);
-        doubleListerDialog.add(bottomPanel,BorderLayout.SOUTH);
+        doubleListerDialog.add(topPanel, BorderLayout.NORTH);
+        doubleListerDialog.add(leftPanel, BorderLayout.WEST);
+        doubleListerDialog.add(rightPanel, BorderLayout.EAST);
+        doubleListerDialog.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void createTaskDrawer() {
@@ -470,8 +471,8 @@ public class ProjectUI {
         displayTasksDialog.setVisible(true);
     }
 
-    private void updateTaskDialogDrawer(){
-        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(),"Atualizar Tarefas");
+    private void updateTaskDialogDrawer() {
+        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(), "Atualizar Tarefas");
         /*Panels*/
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel bottomTopPanel = new JPanel(new FlowLayout());
@@ -495,8 +496,8 @@ public class ProjectUI {
         bottomBottomPanel.add(trueUpdateTaskButton);
 
         /*Adding Sub-Panels to Main Panels and into the Dialog frame*/
-        bottomPanel.add(bottomTopPanel,BorderLayout.NORTH);
-        bottomPanel.add(bottomBottomPanel,BorderLayout.SOUTH);
+        bottomPanel.add(bottomTopPanel, BorderLayout.NORTH);
+        bottomPanel.add(bottomBottomPanel, BorderLayout.SOUTH);
 
         listerTaskDialog.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -504,33 +505,33 @@ public class ProjectUI {
 
     }
 
-    private void taskUpdater(){
+    private void taskUpdater() {
         Task task;
-        try{
+        try {
             int value = Integer.parseInt(incrementoTaskTextField.getText());
-            if((task = (Task) listerList.getSelectedValue()) != null){
-                if(researchCenters.get(centerIndex).getProjects().get(projectIndex).updateTaskPercentage(task,value)){
+            if ((task = (Task) listerList.getSelectedValue()) != null) {
+                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).updateTaskPercentage(task, value)) {
                     listerTaskDialog.setVisible(false);
                     listerTaskDialog.dispose();
-                    JOptionPane.showMessageDialog(null, "Valor Incrementado com Sucesso!","Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Valor Incrementado com Sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     listerTaskDialog.setVisible(false);
                     listerTaskDialog.dispose();
-                    JOptionPane.showMessageDialog(null,"Valor Não Válido!","Erro",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Valor Não Válido!", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null,"Escolha uma Tarefa!","Erro",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Escolha uma Tarefa!", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             listerTaskDialog.setVisible(false);
             listerTaskDialog.dispose();
-            JOptionPane.showMessageDialog(null,"Introduza Valores Válidos!","Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Introduza Valores Válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
-    private void changeRespDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel){
-        doubleListerDrawer(chosenPeople,chosenTasks,"Trocar Responsável","Escolha uma Pessoa:","Escolha uma Tarefa:");
+    private void changeRespDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel) {
+        doubleListerDrawer(chosenPeople, chosenTasks, "Trocar Responsável", "Escolha uma Pessoa:", "Escolha uma Tarefa:");
 
         JPanel bottomPanel = new JPanel();
 
@@ -540,29 +541,61 @@ public class ProjectUI {
         bottomPanel.add(backDoubleListerButton);
         bottomPanel.add(trueChangeTaskResp);
 
-        doubleListerDialog.add(bottomPanel,BorderLayout.SOUTH);
+        doubleListerDialog.add(bottomPanel, BorderLayout.SOUTH);
 
         doubleListerDialog.setVisible(true);
     }
 
-    private void respChanger(){
+    private void respChanger() {
         Pessoa pessoa;
         Task tarefa;
-        if(((pessoa = (Pessoa) doubleLeftList.getSelectedValue()) != null) && ((tarefa = (Task) doubleRightList.getSelectedValue()) != null)){
+        if (((pessoa = (Pessoa) doubleLeftList.getSelectedValue()) != null) && ((tarefa = (Task) doubleRightList.getSelectedValue()) != null)) {
             if (pessoa.equals(tarefa.getResponsavel())) {
-                JOptionPane.showMessageDialog(null,"A Tarefa já está atribuída a essa pessoa!","Erro",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "A Tarefa já está atribuída a essa pessoa!", "Erro", JOptionPane.ERROR_MESSAGE);
             } else {
-                if(researchCenters.get(centerIndex).getProjects().get(projectIndex).changeTaskResp(pessoa,tarefa)){
+                if (researchCenters.get(centerIndex).getProjects().get(projectIndex).changeTaskResp(pessoa, tarefa)) {
                     doubleListerDialog.setVisible(false);
                     doubleListerDialog.dispose();
-                    JOptionPane.showMessageDialog(null,"Tarefa trocada com Sucesso!","Sucesso",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Tarefa trocada com Sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null,"A Pessoa em causa está sobrecarregada ou o contrato acaba antes do periodo de execução da tarefa","Erro",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "A Pessoa em causa está sobrecarregada ou o contrato acaba antes do periodo de execução da tarefa", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null,"Selecione uma Pessoa e uma Tarefa!","Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selecione uma Pessoa e uma Tarefa!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void addDocenteDrawer(ArrayList<Object> docentes) {
+        listerDrawer(docentes, "Associar Docente");
+
+        JPanel bottomPanel = new JPanel();
+        trueAddDocenteButton = new JButton("Associar");
+        trueAddDocenteButton.addActionListener(buttonListener);
+        trueAddDocenteButton.setEnabled(false);
+
+        bottomPanel.add(backListerDialogButton);
+        bottomPanel.add(trueAddDocenteButton);
+
+        listerTaskDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+        listerTaskDialog.setVisible(true);
+    }
+
+    private void docenteAdder() {
+        Docente docente;
+        if ((docente = ((Docente) listerList.getSelectedValue())) != null){
+            if(researchCenters.get(centerIndex).getProjects().get(projectIndex).addDocente(docente)){
+                listerTaskDialog.setVisible(false);
+                listerTaskDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Docente Associado com Sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                listerTaskDialog.setVisible(false);
+                listerTaskDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Docente não adicionado (Já no projeto)!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }
 
     private class ButtonListener implements ActionListener {
@@ -607,7 +640,7 @@ public class ProjectUI {
                 listerTaskDialog.setVisible(true);
             } else if (e.getSource() == listNotConcludedEtcButton) {
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcludedInEtc());
-                listerDrawer(chosenTasks,"Tarefas Não Concluídas na Data Estimada");
+                listerDrawer(chosenTasks, "Tarefas Não Concluídas na Data Estimada");
                 listerTaskDialog.setVisible(true);
             } else if (e.getSource() == backListerDialogButton) {
                 listerTaskDialog.setVisible(false);
@@ -617,13 +650,22 @@ public class ProjectUI {
             } else if (e.getSource() == changeRespButton) {
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded());
                 chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getPessoas());
-                changeRespDrawer(chosenPeople,chosenTasks,"Trocar Responsável","Escolha uma Pessoa:","Escolha uma Tarefa:");
+                changeRespDrawer(chosenPeople, chosenTasks, "Trocar Responsável", "Escolha uma Pessoa:", "Escolha uma Tarefa:");
             } else if (e.getSource() == trueUpdateTaskButton) {
                 taskUpdater();
             } else if (e.getSource() == trueChangeTaskResp) {
                 respChanger();
             } else if (e.getSource() == totalCostButton) {
                 JOptionPane.showMessageDialog(null, "Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost() + " €.", "Custo Total", JOptionPane.INFORMATION_MESSAGE);
+            } else if (e.getSource() == addDocenteButton) {
+                chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getDocentesNotInProject(researchCenters.get(centerIndex).getProjects().get(projectIndex)));
+                addDocenteDrawer(chosenPeople);
+            } else if (e.getSource() == trueAddDocenteButton) {
+                docenteAdder();
+            } else if (e.getSource() == addBolseiroButton) {
+
+            } else if (e.getSource() == trueAddBolseiroButton) {
+
             }
         }
     }
@@ -642,16 +684,22 @@ public class ProjectUI {
                     if (trueRemoveTaskButton != null) {
                         trueRemoveTaskButton.setEnabled(false);
                     }
+                    if (trueAddDocenteButton != null) {
+                        trueAddDocenteButton.setEnabled(false);
+                    }
                 } else {
                     if (trueRemoveTaskButton != null) {
                         trueRemoveTaskButton.setEnabled(true);
+                    }
+                    if (trueAddDocenteButton != null) {
+                        trueAddDocenteButton.setEnabled(true);
                     }
                 }
             }
         }
     }
 
-    private class JanelaListener implements WindowListener{
+    private class JanelaListener implements WindowListener {
 
         @Override
         public void windowOpened(WindowEvent e) {
@@ -661,7 +709,7 @@ public class ProjectUI {
         @Override
         public void windowClosing(WindowEvent e) {
             Booter booter = new Booter();
-            if (booter.saveObjectFile(pathName,researchCenters)){
+            if (booter.saveObjectFile(pathName, researchCenters)) {
                 System.out.println("Ficheiro Objeto guardado com Sucesso");
             } else {
                 System.out.println("Erro ao Guardar Ficheiro Objeto");

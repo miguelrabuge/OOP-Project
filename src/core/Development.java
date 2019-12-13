@@ -25,7 +25,7 @@ public class Development extends Task {
 
     @Override
     public String toString() {
-        return  "Desenvolvimento " +
+        return  "Desenvolvimento (" + this.percentage + ") " +
                 inicio.get(Calendar.DAY_OF_MONTH) + "/" + (inicio.get(Calendar.MONTH) + 1)+ "/" + inicio.get(Calendar.YEAR) +
                 " - " + etc.get(Calendar.DAY_OF_MONTH) + "/" + (etc.get(Calendar.MONTH) + 1)+ "/" + etc.get(Calendar.YEAR);
     }

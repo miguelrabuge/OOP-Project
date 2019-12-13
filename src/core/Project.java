@@ -71,9 +71,10 @@ public class Project {
 
     /**
      * Sets the end state of the project.
+     *
      * @param b boolean to represent the state of completion fo the project.
      */
-    public void setAcabado(boolean b){
+    public void setAcabado(boolean b) {
         this.acabado = b;
     }
 
@@ -85,7 +86,7 @@ public class Project {
      * @return On success, returns true, otherwise returns false.
      */
     public boolean changeTaskResp(Pessoa responsavel, Task task) {
-        if (assignResp(responsavel,task)){
+        if (assignResp(responsavel, task)) {
             task.getResponsavel().removeTask(task);
             task.setResponsavel(responsavel);
             return true;
@@ -111,23 +112,20 @@ public class Project {
      *
      * @param task            Task object that will get its percentage updated.
      * @param percentageToAdd int that will be added to the current task's percentage of completion.
+     * @return boolean that confirms the increment or decrement
      */
-    public void updateTaskPercentage(Task task, int percentageToAdd) {//percentageToAdd e a percentagem que e para adicionar a que ja estava, pode ate ser negativa, se a pessoa quiser reduzir a taxa de realizacao da tarefa
-        int temp = task.getPercentage();
-        if (temp != 100) {//se a taxa de conclusao for 100, nao da para mudar a sua percentagem
-            if (percentageToAdd + temp >= 0 && percentageToAdd + temp <= 100) {//tem de verificar isto para ser um valor adequado
-                task.setPercentage(temp + percentageToAdd);
-            } else if (percentageToAdd + task.getPercentage() < 0) {
-                task.setPercentage(0);
-            } else if (percentageToAdd + task.getPercentage() > 100) {
-                task.setPercentage(100);
-            }
-            if (task.getPercentage() == 100)
+    public boolean updateTaskPercentage(Task task, int percentageToAdd) {//percentageToAdd e a percentagem que e para adicionar a que ja estava, pode ate ser negativa, se a pessoa quiser reduzir a taxa de realizacao da tarefa
+        int percentageActual = task.getPercentage();
+        if (percentageToAdd + percentageActual >= 0 && percentageToAdd + percentageActual <= 100) {//tem de verificar isto para ser um valor adequado
+            task.setPercentage(percentageActual + percentageToAdd);
+            if (task.getPercentage() == 100) {
                 task.setFim(new GregorianCalendar());//como a taxa de conclusao chegou a 100%, declara a task como finalizada e guarda a data em que isso aconteceu
-        } else {
-            System.out.printf("Não pode alterar a taxa de conclusao da tarefa uma vez que ja se encontra a 100%%.\n");
+            }
+            return true;
         }
+        return false;
     }
+
 
     /**
      * Gets the project's not started tasks.
@@ -161,11 +159,11 @@ public class Project {
         return temp;//depois ver se o temp esta vazio ou nao
     }
 
-    public ArrayList<Object> getTasksNotConcludedInEtc(){
+    public ArrayList<Object> getTasksNotConcludedInEtc() {
         ArrayList<Object> tarefas = new ArrayList<>();
         Calendar diaAtual = new GregorianCalendar();
-        for (Task task: this.tasks) {
-            if (((task.getPercentage() == 100) && task.getEtc().before(task.getFim())) || (task.getEtc().before(diaAtual))){
+        for (Task task : this.tasks) {
+            if (((task.getPercentage() == 100) && task.getEtc().before(task.getFim())) || (task.getEtc().before(diaAtual))) {
                 tarefas.add(task);
             }
         }
@@ -335,7 +333,6 @@ public class Project {
     }
 
 
-
     /**
      * Sets the project's ending date.
      *
@@ -407,13 +404,13 @@ public class Project {
      * @param task        Task object that will have the pessoa as responsible.
      */
     public boolean assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, a pessoa passada como parametro
-        if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0)  && (((Bolseiro)responsavel).getInicioBolsa().before(task.getInicio())) //Se a data de inicio da tarefa for depois ou igual à data de inicio da bolsa
-                                                                            && (((Bolseiro)responsavel).getFimBolsa().after(task.getEtc())))) { //Se a data de fim da tarefa for antes ou igual à data de fim da bolsa
+        if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0) && (((Bolseiro) responsavel).getInicioBolsa().before(task.getInicio())) //Se a data de inicio da tarefa for depois ou igual à data de inicio da bolsa
+                && (((Bolseiro) responsavel).getFimBolsa().after(task.getEtc())))) { //Se a data de fim da tarefa for antes ou igual à data de fim da bolsa
             if (task.checkAvailability(responsavel) && task.getPercentage() != 100) {
                 responsavel.addTask(task);
                 System.out.println("Tarefa atribuida com sucesso.\n");
             } else {
-                if (task.getPercentage() == 100){
+                if (task.getPercentage() == 100) {
                     System.out.println("Tarefa nao atribuída, pois está concluída.\n");
                 } else {
                     System.out.println("Tarefa nao atribuída, pois a pessoa está sobrecarregada no periodo de execução da tarefa.\n");

@@ -22,8 +22,9 @@ public class ProjectUI {
     private JButton backCreateTaskButton, trueCreateTaskButton, backListerDialogButton;
     private JButton trueRemoveTaskButton;
     private JButton listAllButton, listNotStartedButton, listNotConcludedEtcButton, listConcludedButton, backListerButton;
-    private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField;
-    private JComboBox typeCreateTaskBox;
+    private JButton trueUpdateTaskButton;
+    private JTextField diaInicioCreateTaskTextField, mesInicioCreateTaskTextField, anoInicioCreateTaskTextField, mesFimCreateTaskTextField, incrementoTaskTextField;
+    private JComboBox<String> typeCreateTaskBox;
     private JList<Object> peopleCreateTaskList, listerList;
     private ArrayList<Object> chosenTasks;
 
@@ -71,6 +72,7 @@ public class ProjectUI {
         listTaskButton = new JButton("Listar");
         listTaskButton.addActionListener(buttonListener);
         updateTaskButton = new JButton("Atualizar");
+        updateTaskButton.addActionListener(buttonListener);
         //People related Buttons
         addDocenteButton = new JButton("Associar Docente ao Projeto");
         addBolseiroButton = new JButton("Associar Bolseiro ao Projeto");
@@ -205,7 +207,7 @@ public class ProjectUI {
         mesFimCreateTaskTextField = new JTextField(2);
 
         /*Combo box*/
-        typeCreateTaskBox = new JComboBox();
+        typeCreateTaskBox = new JComboBox<>();
         typeCreateTaskBox.addItem("Documentação");
         typeCreateTaskBox.addItem("Design");
         typeCreateTaskBox.addItem("Desenvolvimento");
@@ -273,12 +275,11 @@ public class ProjectUI {
     }
 
     private void taskCreater() {
-        int diaInicio, mesInicio, anoInicio, mesFim, listIndex, boxIndex;
+        int diaInicio, mesInicio, anoInicio, mesFim, boxIndex;
         Calendar inicio, etc;
         Pessoa responsavel;
         Task tarefa;
         try {
-            listIndex = peopleCreateTaskList.getSelectedIndex();
             diaInicio = Integer.parseInt(diaInicioCreateTaskTextField.getText());
             mesInicio = Integer.parseInt(mesInicioCreateTaskTextField.getText());
             anoInicio = Integer.parseInt(anoInicioCreateTaskTextField.getText());
@@ -399,6 +400,65 @@ public class ProjectUI {
         displayTasksDialog.setVisible(true);
     }
 
+    private void updateTaskDialogDrawer(){
+        listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(),"Atualizar Tarefas");
+        /*Panels*/
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel bottomTopPanel = new JPanel(new FlowLayout());
+        JPanel bottomBottomPanel = new JPanel(new FlowLayout());
+
+        /*Label*/
+        JLabel incrementoLabel = new JLabel("Incremento: ");
+
+        /*TextField*/
+        incrementoTaskTextField = new JTextField(10);
+
+        /*Button*/
+        trueUpdateTaskButton = new JButton("Atualizar Tarefa");
+        trueUpdateTaskButton.addActionListener(buttonListener);
+
+        /*Adding components to Panels*/
+        bottomTopPanel.add(incrementoLabel);
+        bottomTopPanel.add(incrementoTaskTextField);
+
+        bottomBottomPanel.add(backListerDialogButton);
+        bottomBottomPanel.add(trueUpdateTaskButton);
+
+        /*Adding Sub-Panels to Main Panels and into the Dialog frame*/
+        bottomPanel.add(bottomTopPanel,BorderLayout.NORTH);
+        bottomPanel.add(bottomBottomPanel,BorderLayout.SOUTH);
+
+        listerTaskDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+        listerTaskDialog.setVisible(true);
+
+    }
+
+    private void taskUpdater(){
+        Task task;
+        try{
+            int value = Integer.parseInt(incrementoTaskTextField.getText());
+            if((task = (Task) listerList.getSelectedValue()) != null){
+                if(researchCenters.get(centerIndex).getProjects().get(projectIndex).updateTaskPercentage(task,value)){
+                    listerTaskDialog.setVisible(false);
+                    listerTaskDialog.dispose();
+                    JOptionPane.showMessageDialog(null, "Valor Incrementado com Sucesso!","Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    listerTaskDialog.setVisible(false);
+                    listerTaskDialog.dispose();
+                    JOptionPane.showMessageDialog(null,"Valor Não Válido!","Erro",JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null,"Escolha uma Tarefa!","Erro",JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e){
+            listerTaskDialog.setVisible(false);
+            listerTaskDialog.dispose();
+            JOptionPane.showMessageDialog(null,"Introduza Valores Válidos!","Erro",JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -443,6 +503,10 @@ public class ProjectUI {
             } else if (e.getSource() == backListerDialogButton) {
                 listerTaskDialog.setVisible(false);
                 listerTaskDialog.dispose();
+            } else if (e.getSource() == updateTaskButton) {
+                updateTaskDialogDrawer();
+            } else if (e.getSource() == trueUpdateTaskButton) {
+                taskUpdater();
             } else if (e.getSource() == totalCostButton) {
                 JOptionPane.showMessageDialog(null, "Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost() + " €.", "Custo Total", JOptionPane.INFORMATION_MESSAGE);
             }

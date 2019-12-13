@@ -8,11 +8,14 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CenterUI {
+    private String pathName;
     private int index;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
@@ -23,23 +26,26 @@ public class CenterUI {
     private JList<Object> docentesList, bolseirosList, docentesCreateProjectList, projetosList;
     private DefaultListModel<Object> docentesListObjs, bolseirosListObjs, projetosListObjs;
     private JTextField nameTextField, acronimoTextField, diaInicioTextField, diaFimTextField, mesInicioTextField, mesFimTextField, anoInicioTextField, anoFimTextField;
+    private JanelaListener windowListener;
 
-    public CenterUI(ArrayList<ResearchCenter> researchCenters, int index) {
+    public CenterUI(ArrayList<ResearchCenter> researchCenters, int index, String pathName) {
         this.researchCenters = researchCenters;
         this.index = index;
+        this.pathName = pathName;
         drawer();
     }
 
     private void drawer() {
         frame = new JFrame();
+        windowListener = new JanelaListener();
+        frame.addWindowListener(windowListener);
         buttonListener = new ButtonListener();
         listListener = new ListListener();
 
         frame.setTitle("Project Manager");
         frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);;
 
         JPanel topPanel = new JPanel();
         JPanel centerPanel = new JPanel();
@@ -447,7 +453,7 @@ public class CenterUI {
                 if (JOptionPane.showConfirmDialog(null, "Tem a certeza?", "Voltar", JOptionPane.YES_NO_OPTION) == 0) {
                     frame.setVisible(false);
                     frame.dispose();
-                    new IntroUI(researchCenters);
+                    new IntroUI(researchCenters, pathName);
                 }
             } else if (e.getSource() == trueCreateProjectButton) {
                 projectCreater();
@@ -468,7 +474,7 @@ public class CenterUI {
             } else if (e.getSource() == openProjectButton) {
                 frame.setVisible(false);
                 frame.dispose();
-                new ProjectUI(researchCenters, index, projetosList.getSelectedIndex());
+                new ProjectUI(researchCenters, index, projetosList.getSelectedIndex(),pathName);
             }
         }
     }
@@ -492,4 +498,48 @@ public class CenterUI {
         }
     }
 
+    private class JanelaListener implements WindowListener {
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            Booter booter = new Booter();
+            if (booter.saveObjectFile(pathName,researchCenters)){
+                System.out.println("Ficheiro Objeto guardado com Sucesso");
+            } else {
+                System.out.println("Erro ao Guardar Ficheiro Objeto");
+            }
+            frame.dispose();
+            System.exit(0);
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+
+        }
+    }
 }

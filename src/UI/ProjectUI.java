@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 
 public class ProjectUI {
     private int centerIndex, projectIndex;
+    private String pathName;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
     private JDialog createTaskDialog, listerTaskDialog, displayTasksDialog;
@@ -27,23 +28,26 @@ public class ProjectUI {
     private JComboBox<String> typeCreateTaskBox;
     private JList<Object> peopleCreateTaskList, listerList;
     private ArrayList<Object> chosenTasks;
+    private JanelaListener windowListener;
 
-    public ProjectUI(ArrayList<ResearchCenter> researchCenters, int centerIndex, int projectIndex) {
+    public ProjectUI(ArrayList<ResearchCenter> researchCenters, int centerIndex, int projectIndex, String pathName) {
         this.researchCenters = researchCenters;
         this.centerIndex = centerIndex;
         this.projectIndex = projectIndex;
+        this.pathName = pathName;
         drawer();
     }
 
     private void drawer() {
         frame = new JFrame();
+        windowListener = new JanelaListener();
+        frame.addWindowListener(windowListener);
         buttonListener = new ButtonListener();
         listListener = new ListListener();
         frame.setTitle("Project Manager");
         frame.setSize(750, 350);
         frame.setLayout(new GridLayout(4, 1));
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel titlePanel = new JPanel();
         JPanel topPanel = new JPanel();
@@ -465,7 +469,7 @@ public class ProjectUI {
             if (e.getSource() == backButton) {
                 frame.setVisible(false);
                 frame.dispose();
-                new CenterUI(researchCenters, centerIndex);
+                new CenterUI(researchCenters, centerIndex, pathName);
             } else if (e.getSource() == createTaskButton) {
                 createTaskDrawer();
             } else if (e.getSource() == trueCreateTaskButton) {
@@ -533,6 +537,51 @@ public class ProjectUI {
                     }
                 }
             }
+        }
+    }
+
+    private class JanelaListener implements WindowListener{
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            Booter booter = new Booter();
+            if (booter.saveObjectFile(pathName,researchCenters)){
+                System.out.println("Ficheiro Objeto guardado com Sucesso");
+            } else {
+                System.out.println("Erro ao Guardar Ficheiro Objeto");
+            }
+            frame.dispose();
+            System.exit(0);
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+
         }
     }
 }

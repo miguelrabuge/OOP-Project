@@ -3,34 +3,65 @@ package core;
 import UI.IntroUI;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Main {
-
+public class Booter {
     public static void main(String[] args) {
-        ArrayList<ResearchCenter> researchCenters = new ArrayList<>();
         ResearchCenter researchCenterFileBooter;
-        //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/Teste.txt";
-        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\Teste.txt";
+        ArrayList<ResearchCenter> researchCenters;
+        Booter booter = new Booter();
 
-        if (/*read from .obj == true*/ false) {
-            //TODO: read from .obj
+        //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/files/Teste.txt";
+        //String objectBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/save.obj"
+        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\Teste.txt";
+        String objectBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\save.obj";
+
+        if ((researchCenters = booter.loadObjectFile(objectBooter)) != null) {
             System.out.println("Sucesso: Carregados Dados do Ficheiro.obj");
-        } else if ((researchCenterFileBooter = loadFile(backupBooter)) != null) {
-            System.out.println("Falhou: Carregar Dados do Ficheiro.obj");
-            System.out.println("Sucesso: Carregado Centro do Ficheiro.txt");
-            researchCenters.add(researchCenterFileBooter);
         } else {
             System.out.println("Falhou: Carregar Dados do Ficheiro.obj");
-            System.out.println("Falhou: Carregar Centro do Ficheiro.txt");
+            researchCenters = new ArrayList<>();
+            if ((researchCenterFileBooter = booter.loadFile(backupBooter)) != null) {
+                System.out.println("Sucesso: Carregado Centro do Ficheiro.txt");
+                researchCenters.add(researchCenterFileBooter);
+            } else {
+                System.out.println("Falhou: Carregar Centro do Ficheiro.txt");
+            }
         }
-        new IntroUI(researchCenters);
+        new IntroUI(researchCenters, objectBooter);
     }
 
-    private static ResearchCenter loadFile(String pathname) {
+    private ArrayList<ResearchCenter> loadObjectFile(String pathname) {
+        ArrayList<ResearchCenter> researchCenters;
+        try {
+            FileInputStream fileObj = new FileInputStream(pathname);
+            ObjectInputStream inputStreamObj = new ObjectInputStream(fileObj);
+            researchCenters = (ArrayList<ResearchCenter>) inputStreamObj.readObject();
+            inputStreamObj.close();
+            fileObj.close();
+            return researchCenters;
+        } catch (IOException | ClassNotFoundException e) {
+            return null;
+        }
+
+    }
+
+    public static boolean saveObjectFile(String pathname, Object object) {
+        try {
+            FileOutputStream objFile = new FileOutputStream(pathname);
+            ObjectOutputStream outputStreamObj = new ObjectOutputStream(objFile);
+            outputStreamObj.writeObject(object);
+            outputStreamObj.close();
+            objFile.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private ResearchCenter loadFile(String pathname) {
         ResearchCenter researchCenter = null;
         Pessoa pessoa;
         Docente docente;
@@ -241,7 +272,7 @@ public class Main {
     }
 
 
-    private static Calendar readDay(String token, String sep) {
+    private Calendar readDay(String token, String sep) {
         Calendar day = new GregorianCalendar();
         String[] subtokens;
         try {

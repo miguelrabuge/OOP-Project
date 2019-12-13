@@ -110,12 +110,22 @@ public class ResearchCenter implements Serializable {
      * Gets the researchcenter's bolseiros.
      * @return ArrayList with the researchcenter's bolseiros.
      */
-    public ArrayList<Pessoa> getBolseiros(){
-        ArrayList<Pessoa> bolseiros = new ArrayList<Pessoa>();{
+    public ArrayList<Bolseiro> getBolseiros(){
+        ArrayList<Bolseiro> bolseiros = new ArrayList<>();{
             for (Pessoa pessoa : this.pessoas) {
                 if (pessoa.getCusto() != 0){
-                    bolseiros.add(pessoa);
+                    bolseiros.add((Bolseiro) pessoa);
                 }
+            }
+        }
+        return bolseiros;
+    }
+
+    public ArrayList<Object> getBolseirosNotAssociatedAndProject(Project project){
+        ArrayList<Object> bolseiros = new ArrayList<>();
+        for (Bolseiro bolseiro: this.getBolseiros()){
+            if (bolseiro.getProjeto() == null || project.getBolseiros().contains(bolseiro)){
+                bolseiros.add(bolseiro);
             }
         }
         return bolseiros;

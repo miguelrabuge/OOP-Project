@@ -27,6 +27,8 @@ public class Doutorado extends Bolseiro {
         return 1200;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "(D)" + nome;
+    }
 }

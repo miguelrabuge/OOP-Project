@@ -584,8 +584,8 @@ public class ProjectUI {
 
     private void docenteAdder() {
         Docente docente;
-        if ((docente = ((Docente) listerList.getSelectedValue())) != null){
-            if(researchCenters.get(centerIndex).getProjects().get(projectIndex).addDocente(docente)){
+        if ((docente = ((Docente) listerList.getSelectedValue())) != null) {
+            if (researchCenters.get(centerIndex).getProjects().get(projectIndex).addDocente(docente)) {
                 listerTaskDialog.setVisible(false);
                 listerTaskDialog.dispose();
                 JOptionPane.showMessageDialog(null, "Docente Associado com Sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -595,7 +595,47 @@ public class ProjectUI {
                 JOptionPane.showMessageDialog(null, "Docente não adicionado (Já no projeto)!", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
 
+    private void addBolseiroDrawer(ArrayList<Object> docentes, ArrayList<Object> bolseiros) {
+        doubleListerDrawer(docentes, bolseiros, "Associar Bolseiro", "Escolha um Docente:", "Escolha um bolseiro:");
+
+        JPanel bottomPanel = new JPanel();
+
+        trueAddBolseiroButton = new JButton("Associar");
+        trueAddBolseiroButton.addActionListener(buttonListener);
+
+        bottomPanel.add(backDoubleListerButton);
+        bottomPanel.add(trueAddBolseiroButton);
+
+        doubleListerDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+        doubleListerDialog.setVisible(true);
+    }
+
+    private void bolseiroAdder() {
+        Bolseiro bolseiro;
+        Docente docente;
+        if (((bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null && bolseiro.getCusto() == 1200)) { //Se for um doutorado
+            if (!researchCenters.get(centerIndex).getProjects().get(projectIndex).getBolseiros().contains(bolseiro)) {
+                researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
+                doubleListerDialog.setVisible(false);
+                doubleListerDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Doutorado Associado Com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Doutorado Já Associado!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {//TODO: verificar aqui mais uns erros e brincar com isto
+            if (((docente = (Docente) doubleLeftList.getSelectedValue()) != null) && (bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) {
+                ((Estudante) bolseiro).setOrientador(docente);
+                researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
+                doubleListerDialog.setVisible(false);
+                doubleListerDialog.dispose();
+                JOptionPane.showMessageDialog(null, "Estudante Associado Com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione:\nUm Docente e um Estudante\nUm Doutorado", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private class ButtonListener implements ActionListener {
@@ -663,9 +703,12 @@ public class ProjectUI {
             } else if (e.getSource() == trueAddDocenteButton) {
                 docenteAdder();
             } else if (e.getSource() == addBolseiroButton) {
-
+                chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getDocentes());
+                addBolseiroDrawer(chosenPeople, researchCenters.get(centerIndex).getBolseirosNotAssociatedAndProject(researchCenters.get(centerIndex).getProjects().get(projectIndex)));
             } else if (e.getSource() == trueAddBolseiroButton) {
-
+                bolseiroAdder();
+            } else if (e.getSource() == endButton){
+                
             }
         }
     }

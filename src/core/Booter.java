@@ -19,8 +19,8 @@ public class Booter {
 
         //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/files/backUp.txt";
         //String objectBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/save.obj"
-        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\backUp.txt";
-        String objectBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\save.obj";
+        String backupBooter = "ficheiro.txt";
+        String objectBooter = "ficheiro.obj";
 
         if ((researchCenters = booter.loadObjectFile(objectBooter)) != null) {  // Inicialização a partir do ficheiro.obj
             System.out.println("Sucesso: Carregados Dados do Ficheiro.obj");

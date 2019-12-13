@@ -11,10 +11,10 @@ public class Design extends Task {
      * Creates a Design task with the beginning date and the estimated time to complete it.
      *
      * @param inicio Calendar with the starting date of the design task.
-     * @param eta    Calendar with the estimated time to complete the task.
+     * @param etc    Calendar with the estimated time to complete the task.
      */
-    public Design(Calendar inicio, Calendar eta) {
-        super(inicio, eta);
+    public Design(Calendar inicio, Calendar etc) {
+        super(inicio, etc);
     }
 
     /**

@@ -11,10 +11,10 @@ public class Documentation extends Task {
      * Creates a Documentation task with its starting date and the estimated time to complete it.
      *
      * @param inicio Calendar with the starting date of the task.
-     * @param eta    Calendar with the estimated date to complete the documentation task.
+     * @param etc    Calendar with the estimated date to complete the documentation task.
      */
-    public Documentation(Calendar inicio, Calendar eta) {
-        super(inicio, eta);
+    public Documentation(Calendar inicio, Calendar etc) {
+        super(inicio, etc);
     }
 
     /**

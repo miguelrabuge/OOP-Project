@@ -19,7 +19,7 @@ public class Project implements Serializable {
     private ArrayList<Docente> docentes;
     private ArrayList<Bolseiro> bolseiros;
 
-    private boolean acabado = false;
+    private boolean acabado;
 
     /**
      * Creates a Project with its name, acronym, beginning date, estimated time to complete it and a principal investigator.
@@ -41,6 +41,7 @@ public class Project implements Serializable {
         this.docentes = new ArrayList<Docente>();
         this.docentes.add(principal);
         this.bolseiros = new ArrayList<Bolseiro>();
+        this.acabado = false;
     }
 
     /**
@@ -227,28 +228,20 @@ public class Project implements Serializable {
      * @return On success, returns true, otherwise returns false.
      */
     public boolean endProject() {
-
+        Calendar diaAtual = new GregorianCalendar();
         if (!this.acabado) {
-            if (this.etc.compareTo(new GregorianCalendar()) <= 0) {//se o tempo estimado para concluir o projeto ja tiver passado, estamos provavelmente em condicao de finalizar o projeto
-
-                if (this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) {//se o projeto nao tiver tarefas e o etc tiver passado, o projeto pode ser finalizado
+            if (this.etc.compareTo(diaAtual) <= 0) {//se o tempo estimado para concluir o projeto ja tiver passado, estamos provavelmente em condicao de finalizar o projeto
+                if (this.tasks.size() == this.getTasksConcluded().size()) {
                     this.acabado = true;
-                    this.dataFim = new GregorianCalendar();
-                    return true;
-                } else if ((!this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) || (this.tasks.size() != this.getTasksConcluded().size())) {//se as tarefas nao tiverem sido todas concluidas, mesmo que o etc tenha passado, o projeto nao pode ser terminado
-                    return false;
-                } else {//se as tarefas estiverem todas concluidas e o etc ja tiver passado, o projeto pode ser terminado
-                    this.acabado = true;
-                    this.dataFim = new GregorianCalendar();
+                    System.out.println("meteu a true");
+                    this.dataFim = diaAtual;
                     return true;
                 }
-            } else {
-                return false;
             }
-
         } else {
-            return false;
+            return true; //Se já estiver acabado
         }
+        return false; // tudo o resto não está em condições de terminar
     }
 
 

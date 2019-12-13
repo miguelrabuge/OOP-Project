@@ -121,6 +121,11 @@ public class ResearchCenter implements Serializable {
         return bolseiros;
     }
 
+    /**
+     * Gets the researchcenter's bolseiros free or in the project
+     * @param project Project to add the bolseiros that are in it
+     * @return ArrayList with the researchcenter's bolseiros free or in the project
+     */
     public ArrayList<Object> getBolseirosNotAssociatedAndProject(Project project){
         ArrayList<Object> bolseiros = new ArrayList<>();
         for (Bolseiro bolseiro: this.getBolseiros()){

@@ -16,6 +16,7 @@ public class ProjectUI {
     private String pathName;
     private ArrayList<ResearchCenter> researchCenters;
     private JFrame frame;
+    private JLabel projectLabel;
     private JDialog createTaskDialog, listerTaskDialog, displayTasksDialog, doubleListerDialog;
     private ButtonListener buttonListener;
     private ListListener listListener;
@@ -54,7 +55,7 @@ public class ProjectUI {
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
-        JLabel projectLabel = new JLabel(
+        projectLabel = new JLabel(
                 "Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
                         +researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
                         + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.MONTH) + 1) + "/"
@@ -88,8 +89,13 @@ public class ProjectUI {
         totalCostButton = new JButton("Custo Total");
         totalCostButton.addActionListener(buttonListener);
         endButton = new JButton("TERMINAR!");
+        endButton.addActionListener(buttonListener);
         backButton = new JButton("Voltar");
         backButton.addActionListener(buttonListener);
+
+        if (researchCenters.get(centerIndex).getProjects().get(projectIndex).endProject()){
+            finalizer();
+        }
 
         titlePanel.add(projectLabel);
 
@@ -643,6 +649,26 @@ public class ProjectUI {
         }
     }
 
+    private void finalizer(){
+        projectLabel.setText("Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
+                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.MONTH) + 1) + "/"
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.YEAR) + " - "
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataFim().get(Calendar.DAY_OF_MONTH) + "/"
+                + (researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataFim().get(Calendar.MONTH) + 1) + "/"
+                + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataFim().get(Calendar.YEAR) + ")"
+
+        );
+        createTaskButton.setEnabled(false);
+        removeTaskButton.setEnabled(false);
+        updateTaskButton.setEnabled(false);
+        changeRespButton.setEnabled(false);
+        addDocenteButton.setEnabled(false);
+        addBolseiroButton.setEnabled(false);
+        endButton.setEnabled(false);
+        endButton.setText("CONCLUÍDO");
+    }
+
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -713,7 +739,16 @@ public class ProjectUI {
             } else if (e.getSource() == trueAddBolseiroButton) {
                 bolseiroAdder();
             } else if (e.getSource() == endButton){
-
+                Calendar diaAtual = new GregorianCalendar();
+                if (JOptionPane.showConfirmDialog(null, "Tem a certeza?", "Terminar Projeto", JOptionPane.YES_NO_OPTION) == 0) {
+                    if (researchCenters.get(centerIndex).getProjects().get(projectIndex).endProject() ){
+                        finalizer();
+                    } else if(JOptionPane.showConfirmDialog(null, "O Projeto não está em Condições para Terminar:\n       - Tarefas por Concluir \n       - A Data Estimada de Conclusão ainda não foi alcançada\n\n Deseja terminá-lo na mesma? ", "Terminar Projeto", JOptionPane.YES_NO_OPTION) == 0){
+                        researchCenters.get(centerIndex).getProjects().get(projectIndex).setAcabado(true);
+                        researchCenters.get(centerIndex).getProjects().get(projectIndex).setDataFim(diaAtual);
+                        finalizer();
+                    }
+                }
             }
         }
     }

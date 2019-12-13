@@ -3,6 +3,7 @@
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../../ProjetoPOO/JavaDoc" />
     <option name="OPTION_SCOPE" value="private" />
+    <option name="OTHER_OPTIONS" value="-encoding &quot;UTF-8&quot;" />
     <option name="OPTION_INCLUDE_LIBS" value="true" />
   </component>
   <component name="ProjectKey">

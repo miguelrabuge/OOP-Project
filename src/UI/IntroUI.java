@@ -31,13 +31,13 @@ public class IntroUI extends JFrame {
     public IntroUI(ArrayList<ResearchCenter> researchCenters, String pathName) {
         this.researchCenters = researchCenters;
         this.pathName = pathName;
-        Drawer();
+        drawer();
     }
 
     /**
      * Draws a IntroIU
      */
-    private void Drawer() {
+    private void drawer() {
         frame = new JFrame();
 
         /*Frame Settings*/

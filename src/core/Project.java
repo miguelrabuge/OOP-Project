@@ -13,7 +13,7 @@ public class Project implements Serializable {
     private String acronimo;
     private Docente principal;
     private Calendar dataInicio;
-    private Calendar etc;//tempo estimado para terminar o projeto em meses
+    private Calendar etc;
     private Calendar dataFim;
     private ArrayList<Task> tasks;
     private ArrayList<Docente> docentes;
@@ -60,6 +60,7 @@ public class Project implements Serializable {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
+        task.setProjeto(this);
     }
 
     /**
@@ -88,7 +89,7 @@ public class Project implements Serializable {
      * @return On success, returns true, otherwise returns false.
      */
     public boolean changeTaskResp(Pessoa responsavel, Task task) {
-        if (assignResp(responsavel, task)) {
+        if (assignResp(responsavel, task)) {        //if task is assignable to responsavel
             task.getResponsavel().removeTask(task);
             task.setResponsavel(responsavel);
             return true;
@@ -104,24 +105,23 @@ public class Project implements Serializable {
      */
     public boolean removeTask(Task task) {
         task.getResponsavel().removeTask(task);
-        return (this.tasks).remove(task);//retorna true (se for removido com sucesso) ou false (se nao for removido)
+        task.setProjeto(null);
+        return (this.tasks).remove(task);   //retorna true (se for removido com sucesso) ou false (se nao for removido)
     }
 
     /**
      * Updates the percentage of the task passed as argument, adds the percentageToAdd to the current task completion percentage.
-     * If the result value is less than 0, the task's percentage of completion is set to 0.
-     * If the result value is higher than 100, the task's percentage of completion is set to 100.
      *
      * @param task            Task object that will get its percentage updated.
      * @param percentageToAdd int that will be added to the current task's percentage of completion.
      * @return boolean that confirms the increment or decrement
      */
-    public boolean updateTaskPercentage(Task task, int percentageToAdd) {//percentageToAdd e a percentagem que e para adicionar a que ja estava, pode ate ser negativa, se a pessoa quiser reduzir a taxa de realizacao da tarefa
+    public boolean updateTaskPercentage(Task task, int percentageToAdd) {//percentageToAdd é a percentagem que é para adicionar há que já estava, pode até ser negativa, se a pessoa quiser reduzir a taxa de realização da tarefa
         int percentageActual = task.getPercentage();
-        if (percentageToAdd + percentageActual >= 0 && percentageToAdd + percentageActual <= 100) {//tem de verificar isto para ser um valor adequado
+        if (percentageToAdd + percentageActual >= 0 && percentageToAdd + percentageActual <= 100) {     //tem de verificar isto para ser um valor adequado
             task.setPercentage(percentageActual + percentageToAdd);
             if (task.getPercentage() == 100) {
-                task.setFim(new GregorianCalendar());//como a taxa de conclusao chegou a 100%, declara a task como finalizada e guarda a data em que isso aconteceu
+                task.setFim(new GregorianCalendar());   //como a taxa de conclusao chegou a 100%, declara a task como finalizada e guarda a data em que isso aconteceu
             }
             return true;
         }
@@ -136,7 +136,7 @@ public class Project implements Serializable {
      */
     public ArrayList<Task> getTasksNotStarted() {
         //retorna um ArrayList<Task> com as tasks do projeto nao comecadas (percentagem == 0)
-        ArrayList<Task> temp = new ArrayList<Task>();
+        ArrayList<Task> temp = new ArrayList<>();
         for (Task task : this.tasks) {
             if (task.getPercentage() == 0) {
                 temp.add(task);
@@ -146,7 +146,7 @@ public class Project implements Serializable {
     }
 
     /**
-     * Gets the project's taks that aren't concluded.
+     * Gets the project's tasks that aren't concluded.
      *
      * @return ArrayList with all of the project's tasks that aren't concluded.
      */
@@ -158,13 +158,19 @@ public class Project implements Serializable {
                 temp.add(task);
             }
         }
-        return temp;//depois ver se o temp esta vazio ou nao
+        return temp;
     }
 
+    /**
+     * Gets the project's tasks that were not concluded before the ETC
+     *
+     * @return ArrayList with all of the project's tasks that were not concluded before the ETC
+     */
     public ArrayList<Object> getTasksNotConcludedInEtc() {
         ArrayList<Object> tarefas = new ArrayList<>();
         Calendar diaAtual = new GregorianCalendar();
         for (Task task : this.tasks) {
+            // Verifica primeiro se foi concluída. Se sim, vê se o Fim foi depois do Etc e adiciona. Caso contrário verifica se já ultrapassou o etc e adiciona
             if (((task.getPercentage() == 100) && task.getEtc().before(task.getFim())) || (task.getEtc().before(diaAtual))) {
                 tarefas.add(task);
             }
@@ -178,14 +184,13 @@ public class Project implements Serializable {
      * @return ArrayList with all of the project's concluded tasks.
      */
     public ArrayList<Task> getTasksConcluded() {
-        //retorna um ArrayList<Task> com as tasks concluidas (percentagem == 100)
-        ArrayList<Task> temp = new ArrayList<Task>();
+        ArrayList<Task> temp = new ArrayList<>();
         for (Task task : this.tasks) {
             if (task.getPercentage() == 100) {
                 temp.add(task);
             }
         }
-        return temp;//depois ver se o temp esta vazio ou nao
+        return temp;
     }
 
     /**
@@ -196,13 +201,15 @@ public class Project implements Serializable {
     public int getCost() {
         int custo = 0;
         for (Task task : this.tasks) {
+            //Percorre-se todas as tasks do projeto. Ao responsável de cada uma, calcula se o salário médio diário e multiplica-se pelo número de dias em que este executa a tarefa.
+            //Este valor é posteriormente somado à variável int custo que irá ser retornada.
             custo += ((task.getResponsavel().getCusto() * 12) / 365) * numeroDeDias(task);
         }
         return custo;
     }
 
     /**
-     * Counts the days that were spent by the tasks reponsible to complete it.
+     * Counts the days that were spent by the tasks responsible to complete it.
      *
      * @param task Tasks object that we want to know the time taken to finish it.
      * @return int with the number of days spent to complete the task.
@@ -210,11 +217,11 @@ public class Project implements Serializable {
     private int numeroDeDias(Task task) {
         int daysCounter;
         Calendar inicio = (Calendar) task.getInicio().clone();
-        if (task.getFim() != null) {
+        if (task.getFim() != null) { //Se a tarefa foi concluída, conta-se até à data de Fim
             for (daysCounter = 0; inicio.compareTo(task.getFim()) <= 0; daysCounter++) {
                 inicio.add(Calendar.DAY_OF_MONTH, 1);
             }
-        } else {
+        } else {    //Caso contrário conta-se até à Data prevista
             for (daysCounter = 0; inicio.compareTo(task.getEtc()) <= 0; daysCounter++) {
                 inicio.add(Calendar.DAY_OF_MONTH, 1);
             }
@@ -223,25 +230,26 @@ public class Project implements Serializable {
     }
 
     /**
-     * Sets a project as finished, if it is not already finished and if all the project's tasks are completed.
+     * Verifies if a project can be ended.
+     * If it can, sets the boolean acabado to true
+     * Else returns false
      *
-     * @return On success, returns true, otherwise returns false.
+     * @return On success, sets the ta and returns true and , otherwise returns false.
      */
     public boolean endProject() {
         Calendar diaAtual = new GregorianCalendar();
         if (!this.acabado) {
-            if (this.etc.compareTo(diaAtual) <= 0) {//se o tempo estimado para concluir o projeto ja tiver passado, estamos provavelmente em condicao de finalizar o projeto
+            if (this.etc.compareTo(diaAtual) <= 0) {//se o tempo estimado para concluir o projeto já tiver passado, estamos, provavelmente, em condições de finalizar o projeto
                 if (this.tasks.size() == this.getTasksConcluded().size()) {
                     this.acabado = true;
-                    System.out.println("meteu a true");
                     this.dataFim = diaAtual;
-                    return true;
+                    return true; // Caso o ETC tenha passado e as tasks estiverem todas concluídas
                 }
             }
         } else {
             return true; //Se já estiver acabado
         }
-        return false; // tudo o resto não está em condições de terminar
+        return false; // Tudo o resto que não está em condições de finalizar
     }
 
 
@@ -264,24 +272,6 @@ public class Project implements Serializable {
     }
 
     /**
-     * Gets the project's acronym.
-     *
-     * @return String with the project's acronym.
-     */
-    public String getAcronimo() {
-        return this.acronimo;
-    }
-
-    /**
-     * Sets the project's acronym.
-     *
-     * @param acronimo String with the project's acronym.
-     */
-    public void sertAcronimo(String acronimo) {
-        this.acronimo = acronimo;
-    }
-
-    /**
      * Gets the project's starting date.
      *
      * @return Calendar with the project's starting date.
@@ -291,30 +281,12 @@ public class Project implements Serializable {
     }
 
     /**
-     * Sets the project's starting date.
-     *
-     * @param dataInicio Calendar with the project's starting date.
-     */
-    public void setDataInicio(Calendar dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    /**
      * Gets the project's estimated date of completion.
      *
      * @return Calendar with the project's estimated date of completion.
      */
     public Calendar getEtc() {
         return this.etc;
-    }
-
-    /**
-     * Sets the project's estimated date of completion.
-     *
-     * @param etc Calendar with the project's estimated date of completion.
-     */
-    public void setEtc(Calendar etc) {
-        this.etc = etc;
     }
 
     /**
@@ -346,109 +318,68 @@ public class Project implements Serializable {
     }
 
     /**
-     * Sets the project's bolseiros.
-     *
-     * @param bolseiros ArrayList with the project's bolseiros.
-     */
-    public void setBolseiros(ArrayList<Bolseiro> bolseiros) {
-        this.bolseiros = bolseiros;
-    }
-
-    /**
      * Gets the project's docentes.
      *
-     * @return ArrayList twith the project's docentes.
+     * @return ArrayList with the project's docentes.
      */
     public ArrayList<Docente> getDocentes() {
         return this.docentes;
     }
 
     /**
-     * Sets the project's docentes.
-     *
-     * @param docentes ArrayList with the project's docentes.
-     */
-    public void setDocentes(ArrayList<Docente> docentes) {
-        this.docentes = docentes;
-    }
-
-    /**
-     * Sets the project's tasks.
-     *
-     * @param tasks ArrayList with the project's tasks.
-     */
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    /**
      * Gets the project's Pessoas (docentes + bolseiros).
+     *
+     * @return ArrayList with the project's people
      */
     public ArrayList<Pessoa> getPessoas() {
-        ArrayList<Pessoa> pessoas = new ArrayList<Pessoa>();
+        ArrayList<Pessoa> pessoas = new ArrayList<>();
         pessoas.addAll(this.docentes);
         pessoas.addAll(this.bolseiros);
         return pessoas;
     }
 
     /**
-     * Assignes a project's task to a responsible.
+     * Assignes a project's task to a responsible
+     * Only if sobrecarga less than maximum possible and task is contained in the responsible contract period in case of a Bolseiro.
+     * IP can receive ALL tasks
      *
      * @param responsavel Pessoa object that will become responsible by the task.
      * @param task        Task object that will have the pessoa as responsible.
+     * @return boolean true if it it Assignable; false if not
      */
-    public boolean assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, a pessoa passada como parametro
+    public boolean assignResp(Pessoa responsavel, Task task) {//atribui uma task, se possivel, à pessoa passada como parametro
         if ((responsavel.getCusto() == 0) || ((responsavel.getCusto() > 0) && (((Bolseiro) responsavel).getInicioBolsa().before(task.getInicio())) //Se a data de inicio da tarefa for depois ou igual à data de inicio da bolsa
-                && (((Bolseiro) responsavel).getFimBolsa().after(task.getEtc())))) { //Se a data de fim da tarefa for antes ou igual à data de fim da bolsa
+                && (((Bolseiro) responsavel).getFimBolsa().after(task.getEtc())))) { //Se a data de fim da tarefa for antes à data de fim da bolsa
             if (task.checkAvailability(responsavel) && task.getPercentage() != 100) {
                 responsavel.addTask(task);
-                System.out.println("Tarefa atribuida com sucesso.\n");
+                System.out.println("Tarefa atribuida com sucesso.");
+            } else if (responsavel.equals(this.principal)) {    // O investigador principal aceita todas as tasks
+                responsavel.addTask(task);
+                System.out.println("Tarefa atribuida com sucesso ao IP.");
             } else {
                 if (task.getPercentage() == 100) {
-                    System.out.println("Tarefa nao atribuída, pois está concluída.\n");
+                    System.out.println("Tarefa nao atribuída, pois está concluída.");
                 } else {
-                    System.out.println("Tarefa nao atribuída, pois a pessoa está sobrecarregada no periodo de execução da tarefa.\n");
+                    System.out.println("Tarefa nao atribuída, pois a pessoa está sobrecarregada no periodo de execução da tarefa.");
                 }
                 return false;
             }
         } else {
-            System.out.println("Não foi possível atribuir a tarefa à pessoa em questão, porque o contrato acaba antes do periodo de execução da tarefa.\n");
+            System.out.println("Não foi possível atribuir a tarefa à pessoa em questão, porque o contrato acaba antes do periodo de execução da tarefa.");
             return false;
         }
         return true;
     }
 
     /**
-     * Gets the project's principal investigator.
-     *
-     * @return Docente object with the project's principal investigator.
-     */
-    public Docente getPrincipal() {
-        return this.principal;
-    }
-
-    /**
-     * Sets the project's principal investigator.
-     *
-     * @param principal Docente object with the project's principal investigator.
-     */
-    public void setPrincipal(Docente principal) {
-        this.principal = principal;
-    }
-
-    /**
-     * Adds a bolseiro to the project's bolseiros.
+     * Adds a bolseiro to the project's bolseiros if it has not been assigned to another project.
      *
      * @param bolseiro Bolseiro object that will be added to the project's bolseiros.
-     * @return On success, returns true, otherwise returns false.
      */
-    public boolean addBolseiro(Bolseiro bolseiro) {
-        if (bolseiro.getProjeto() == null) {
+    public void addBolseiro(Bolseiro bolseiro) {
+        if (bolseiro.getProjeto() == null) { // Se não estiver destacado para outro projeto
             this.bolseiros.add(bolseiro);
             bolseiro.setProjeto(this);
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -459,12 +390,12 @@ public class Project implements Serializable {
      * @return On success, returns true, otherwise returns false.
      */
     public boolean addDocente(Docente docente) {
-        if (!this.docentes.contains(docente)) {//se o docente nao estiver ja no projeto, adiciona-o.
+        if (!this.docentes.contains(docente)) {//se o docente não estiver ja no projeto, adiciona-o.
             this.docentes.add(docente);
             docente.addProject(this);
             return true;
         }
-        return false;//se o docente ja estiver adicionado ao projeto retorna false.
+        return false;   //se o docente já estiver adicionado ao projeto retorna false.
     }
 
     @Override

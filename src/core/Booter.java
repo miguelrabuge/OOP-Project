@@ -7,32 +7,42 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Represents a program Booter for the initialization of the program
+ */
 public class Booter {
+
     public static void main(String[] args) {
         ResearchCenter researchCenterFileBooter;
         ArrayList<ResearchCenter> researchCenters;
         Booter booter = new Booter();
 
-        //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/files/Teste.txt";
+        //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/files/backUp.txt";
         //String objectBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/save.obj"
-        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\Teste.txt";
+        String backupBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\backUp.txt";
         String objectBooter = "C:\\Users\\User\\Desktop\\2 ano\\POO\\POO-Project\\src\\files\\save.obj";
 
-        if ((researchCenters = booter.loadObjectFile(objectBooter)) != null) {
+        if ((researchCenters = booter.loadObjectFile(objectBooter)) != null) {  // Inicialização a partir do ficheiro.obj
             System.out.println("Sucesso: Carregados Dados do Ficheiro.obj");
         } else {
             System.out.println("Falhou: Carregar Dados do Ficheiro.obj");
             researchCenters = new ArrayList<>();
-            if ((researchCenterFileBooter = booter.loadFile(backupBooter)) != null) {
+            if ((researchCenterFileBooter = booter.loadFile(backupBooter)) != null) { // Inicialização a partir do ficheiro.txt
                 System.out.println("Sucesso: Carregado Centro do Ficheiro.txt");
                 researchCenters.add(researchCenterFileBooter);
             } else {
-                System.out.println("Falhou: Carregar Centro do Ficheiro.txt");
+                System.out.println("Falhou: Carregar Centro do Ficheiro.txt"); // Inicialização sem estrutura de dados prévia
             }
         }
         new IntroUI(researchCenters, objectBooter);
     }
 
+    /**
+     * Loads information from the saved file.obj
+     *
+     * @param pathname with the path to the file.obj
+     * @return Arraylist with the saved research centers
+     */
     private ArrayList<ResearchCenter> loadObjectFile(String pathname) {
         ArrayList<ResearchCenter> researchCenters;
         try {
@@ -48,6 +58,13 @@ public class Booter {
 
     }
 
+    /**
+     * Saves information of the state of the program before termination
+     *
+     * @param pathname with the path to the file.obj
+     * @param object with the object to save
+     * @return boolean true in case of sucess, false in case of error
+     */
     public static boolean saveObjectFile(String pathname, Object object) {
         try {
             FileOutputStream objFile = new FileOutputStream(pathname);
@@ -61,6 +78,13 @@ public class Booter {
         }
     }
 
+    /**
+     * Loads information from the file.txt
+     * BackUp loader if the file.obj cannot be loaded
+     *
+     * @param pathname with the path to the file.txt
+     * @return reserchCenter ResearchCenter object to initialize the program
+     */
     private ResearchCenter loadFile(String pathname) {
         ResearchCenter researchCenter = null;
         Pessoa pessoa;
@@ -272,6 +296,13 @@ public class Booter {
     }
 
 
+    /**
+     * Parses a String to a Calendar day
+     *
+     * @param token String with the information given
+     * @param sep String for delimitation of the .split method
+     * @return Calendar with the day if information given by token is valid, null if invalid
+     */
     private Calendar readDay(String token, String sep) {
         Calendar day = new GregorianCalendar();
         String[] subtokens;

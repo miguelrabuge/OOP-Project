@@ -8,8 +8,6 @@ import java.util.Calendar;
  * Represents a Pessoa.
  */
 public abstract class Pessoa implements Serializable {
-
-
     protected String nome;
     protected String email;
     protected ArrayList<Task> tasks;
@@ -24,24 +22,6 @@ public abstract class Pessoa implements Serializable {
         this.nome = nome;
         this.email = email;
         this.tasks = new ArrayList<Task>();
-    }
-
-    /**
-     * Gets the pessoa's tasks.
-     *
-     * @return ArrayList with the pessoa's tasks.
-     */
-    public ArrayList<Task> getTasks() {
-        return this.tasks;
-    }
-
-    /**
-     * Sets the pessoa's tasks.
-     *
-     * @param tasks ArrayList with the pessoa's tasks.
-     */
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
     }
 
     /**
@@ -63,31 +43,13 @@ public abstract class Pessoa implements Serializable {
     }
 
     /**
-     * Gets the pessoa's email.
-     *
-     * @return String with the pessoa's email.
-     */
-    public String getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Sets the pessoa's email.
-     *
-     * @param email String with the pessoa's email.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
      * Removes a task from the pessoa's tasks.
      *
      * @param task Task object that will be removed from pessoa's tasks.
      */
-    public void removeTask(Task task) {//remove uma task das tasks da pessoa
+    public void removeTask(Task task) {
         this.tasks.remove(task);
-        task.setResponsavel(null);//volta a colocar a task como livre, ou seja nao tem um responsavel
+        task.setResponsavel(null);
     }
 
     /**
@@ -95,9 +57,9 @@ public abstract class Pessoa implements Serializable {
      *
      * @param task Task object that will be added to pessoa's tasks.
      */
-    public void addTask(Task task) {//adiciona uma task as tasks da pessoa
+    public void addTask(Task task) {
         this.tasks.add(task);
-        task.setResponsavel(this);//penso que isto funcione
+        task.setResponsavel(this);
     }
 
     /**
@@ -106,10 +68,11 @@ public abstract class Pessoa implements Serializable {
      * @param dia Calendar with the day that the workload refers to.
      * @return double with the pessoa's workload on the day passed as argument.
      */
-    public double getSobrecarga(Calendar dia) {//retorna a sobrecarga da pessoa
+    public double getSobrecarga(Calendar dia) {
         double sobrecarga = 0;
         for (Task task : this.tasks) {
             if (task.getPercentage() != 100) {
+                //Em cada tarefa se o dia estiver entre o inicio e o fim da mesma, incrementa a sobrecarga
                 if ((dia.after(task.getInicio()) && dia.before(task.getEtc())) || dia.compareTo(task.getInicio()) == 0 || dia.compareTo(task.getEtc()) == 0) {
                     sobrecarga += task.getEsforco();
                 }

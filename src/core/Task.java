@@ -7,10 +7,10 @@ import java.util.Calendar;
  * Represents a Task.
  */
 public abstract class Task implements Serializable {
+    protected int percentage;
     protected Calendar inicio;
     protected Calendar fim;
     protected Calendar etc;
-    protected int percentage;
     protected Project projeto;
     protected Pessoa responsavel;
 
@@ -22,10 +22,10 @@ public abstract class Task implements Serializable {
      * @param etc    Calendar with the task's estimated time for completion.
      */
     public Task(Calendar inicio, Calendar etc) {
+        this.percentage = 0;
         this.inicio = inicio;
         this.fim = null;
         this.etc = etc;
-        this.percentage = 0;
         this.responsavel = null;
     }
 
@@ -36,15 +36,6 @@ public abstract class Task implements Serializable {
      */
     public Calendar getInicio() {
         return this.inicio;
-    }
-
-    /**
-     * Sets the task's starting date.
-     *
-     * @param inicio Calendat with the task's starting date.
-     */
-    public void setInicio(Calendar inicio) {
-        this.inicio = inicio;
     }
 
     /**
@@ -75,15 +66,6 @@ public abstract class Task implements Serializable {
     }
 
     /**
-     * Sets the task's estimated time for completion.
-     *
-     * @param etc Calendar with the task's estimated for completion.
-     */
-    public void setEtc(Calendar etc) {
-        this.etc = etc;
-    }
-
-    /**
      * Gets the task's percentage of completion.
      *
      * @return int with the task's percentage of completion.
@@ -99,15 +81,6 @@ public abstract class Task implements Serializable {
      */
     public void setPercentage(int percentage) {
         this.percentage = percentage;
-    }
-
-    /**
-     * Gets the project that the task is associated to.
-     *
-     * @return Project object that the task belongs to.
-     */
-    public Project getProjeto() {
-        return this.projeto;
     }
 
     /**
@@ -145,15 +118,16 @@ public abstract class Task implements Serializable {
     public abstract double getEsforco();
 
     /**
-     * Checks if a task can be assigned to responsavel.
+     * Checks if a task can be assigned to Pessoa responsible.
      *
-     * @param responsavel Pessoa object that we want to check the availability.
-     * @return
+     * @param responsavel Pessoa object that we want to check availability.
+     * @return boolean true if Pessoa is available; false if not
      */
     public boolean checkAvailability(Pessoa responsavel) {
         Calendar dia = (Calendar) this.getInicio().clone();
-
-        while (dia.compareTo(this.getEtc()) < 0) {//enquanto nao chegar ao dia estimado para concluir a tarefa verificamos se a pessoa pode executar a task
+        // Enquanto não chegar ao dia estimado para concluir a tarefa, verificamos se a pessoa pode executar a task em cada um desses dias,
+        // verificando a sobrecarga diária
+        while (dia.compareTo(this.getEtc()) < 0) {
             if ((this.getEsforco() + responsavel.getSobrecarga(dia)) > 1) {
                 return false;
             }

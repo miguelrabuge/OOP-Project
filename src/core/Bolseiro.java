@@ -34,29 +34,13 @@ public abstract class Bolseiro extends Pessoa {
     }
 
     /**
-     * Sets the starting date of the bolseiro's scholarship.
-     * @param inicioBolsa Calendar with the starting date of the bolseiro's scholarship.
-     */
-    public void setInicioBolsa(Calendar inicioBolsa) {
-        this.inicioBolsa = inicioBolsa;
-    }
-
-    /**
      * Gets the ending date of the bolseiro's scholarship.
      * @return Calendar with the ending date of the bolseiro's scholarship.
      */
     public Calendar getFimBolsa() {
         return this.fimBolsa;
     }
-
-    /**
-     * Sets the ending date of the bolseiro's scholarship.
-     * @param fimBolsa Calendar with the ending date of the bolseiro's scholarship.
-     */
-    public void setFimBolsa(Calendar fimBolsa) {
-        this.fimBolsa = fimBolsa;
-    }
-
+    
     /**
      * Gets the bolseiro's project.
      * @return Project with the bolseiro's project.

@@ -639,9 +639,14 @@ public class ProjectUI {
         } else {
             if (((docente = (Docente) doubleLeftList.getSelectedValue()) != null) && (bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) {
                 ((Estudante) bolseiro).setOrientador(docente);
-                researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
-                doubleListerDialog.setVisible(false);
-                doubleListerDialog.dispose();
+
+                if (!docente.equals(((Estudante) bolseiro).getOrientador())){
+                    researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
+                    doubleListerDialog.setVisible(false);
+                    doubleListerDialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "O Docente que escolheu já é Orientador do bolseiro!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
                 JOptionPane.showMessageDialog(null, "Estudante Associado Com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione:\nUm Docente e um Estudante\nUm Doutorado", "Erro", JOptionPane.ERROR_MESSAGE);

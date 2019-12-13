@@ -708,7 +708,7 @@ public class ProjectUI {
             } else if (e.getSource() == trueAddBolseiroButton) {
                 bolseiroAdder();
             } else if (e.getSource() == endButton){
-                
+
             }
         }
     }

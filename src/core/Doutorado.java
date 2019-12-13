@@ -27,7 +27,7 @@ public class Doutorado extends Bolseiro {
         return 1200;
     }
 
-    @Override
+    @Override //TODO: meter data
     public String toString() {
         return "(D)" + nome;
     }

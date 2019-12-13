@@ -54,7 +54,7 @@ public class ResearchCenter implements Serializable {
     /**
      * Gets a Pessoa on the Center by name
      *
-     * @param name
+     * @param name String Pessoa's name
      * @return On success Pessoa object that matches the given String else returns null
      */
     public Pessoa getPessoaByName(String name) {
@@ -84,7 +84,7 @@ public class ResearchCenter implements Serializable {
     /**
      * Gets the researchcenter's docentes that are not in a given project.
      *
-     * @param project
+     * @param project Project used to compare
      * @return ArrayList with the researchcenter's docentes not int the Project project.
      */
     public ArrayList<Pessoa> getDocentesNotInProject(Project project) {

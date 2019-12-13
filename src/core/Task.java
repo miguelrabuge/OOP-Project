@@ -1,11 +1,12 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Represents a Task.
  */
-public abstract class Task {
+public abstract class Task implements Serializable {
     protected Calendar inicio;
     protected Calendar fim;
     protected Calendar etc;

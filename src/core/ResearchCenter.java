@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -7,7 +8,7 @@ import java.util.GregorianCalendar;
 /**
  * Represents a ResearchCenter
  */
-public class ResearchCenter {
+public class ResearchCenter implements Serializable {
     private String name;
     private ArrayList<Project> projects;
     private ArrayList<Pessoa> pessoas;

@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -7,7 +8,7 @@ import java.util.GregorianCalendar;
 /**
  * Represents a Project.
  */
-public class Project {
+public class Project implements Serializable {
     private String nome;
     private String acronimo;
     private Docente principal;
@@ -227,7 +228,7 @@ public class Project {
      */
     public boolean endProject() {
 
-        if (this.acabado != true) {
+        if (!this.acabado) {
             if (this.etc.compareTo(new GregorianCalendar()) <= 0) {//se o tempo estimado para concluir o projeto ja tiver passado, estamos provavelmente em condicao de finalizar o projeto
 
                 if (this.tasks.isEmpty() && this.getTasksConcluded().isEmpty()) {//se o projeto nao tiver tarefas e o etc tiver passado, o projeto pode ser finalizado

@@ -1,12 +1,13 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * Represents a Pessoa.
  */
-public abstract class Pessoa {
+public abstract class Pessoa implements Serializable {
 
 
     protected String nome;

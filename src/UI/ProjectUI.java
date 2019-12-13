@@ -616,16 +616,21 @@ public class ProjectUI {
     private void bolseiroAdder() {
         Bolseiro bolseiro;
         Docente docente;
-        if (((bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null && bolseiro.getCusto() == 1200)) { //Se for um doutorado
-            if (!researchCenters.get(centerIndex).getProjects().get(projectIndex).getBolseiros().contains(bolseiro)) {
-                researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
-                doubleListerDialog.setVisible(false);
-                doubleListerDialog.dispose();
-                JOptionPane.showMessageDialog(null, "Doutorado Associado Com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        if ((((bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) && (bolseiro.getCusto() == 1200))) { //Se for um doutorado
+            if ((docente = (Docente) doubleLeftList.getSelectedValue()) == null) {
+                if(!researchCenters.get(centerIndex).getProjects().get(projectIndex).getBolseiros().contains(bolseiro)){
+                    researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
+                    doubleListerDialog.setVisible(false);
+                    doubleListerDialog.dispose();
+                    JOptionPane.showMessageDialog(null, "Doutorado Associado Com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Doutorado Já Associado!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Doutorado Já Associado!", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Um Doutorado não Precisa de Orientador!", "Erro", JOptionPane.ERROR_MESSAGE);
+
             }
-        } else {//TODO: verificar aqui mais uns erros e brincar com isto
+        } else {
             if (((docente = (Docente) doubleLeftList.getSelectedValue()) != null) && (bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) {
                 ((Estudante) bolseiro).setOrientador(docente);
                 researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);

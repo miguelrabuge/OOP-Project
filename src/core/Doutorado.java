@@ -27,8 +27,10 @@ public class Doutorado extends Bolseiro {
         return 1200;
     }
 
-    @Override //TODO: meter data
+    @Override
     public String toString() {
-        return "(D)" + nome;
+        return  "(D) " + nome + " " +
+                inicioBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (inicioBolsa.get(Calendar.MONTH) + 1)+ "/" + inicioBolsa.get(Calendar.YEAR) +
+                " - " + fimBolsa.get(Calendar.DAY_OF_MONTH) + "/" + (fimBolsa.get(Calendar.MONTH) + 1)+ "/" + fimBolsa.get(Calendar.YEAR);
     }
 }

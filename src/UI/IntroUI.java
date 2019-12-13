@@ -12,7 +12,7 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 /**
- * Represents the IntroUI where the user chooses the center
+ * Represents the Intro UI where the user chooses the center
  */
 public class IntroUI extends JFrame {
     private ArrayList<ResearchCenter> researchCenters;
@@ -91,7 +91,7 @@ public class IntroUI extends JFrame {
     }
 
     /**
-     * Represents a ButtonListener that implement the ActionListener class
+     * Represents a ButtonListener that implements the ActionListener class
      */
     private class ButtonListener implements ActionListener {
         @Override

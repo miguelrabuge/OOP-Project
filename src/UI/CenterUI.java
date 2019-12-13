@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Represents the CenterUI
+ * Represents the Center UI
  */
 public class CenterUI {
     private String pathName;
@@ -162,7 +162,7 @@ public class CenterUI {
      * Draws a generic list see-only display for the User
      *
      * @param projects Arraylist with the projects to List
-     * @param title String to User know what is being listed
+     * @param title String to the User know what is being listed
      */
     private void lister(ArrayList<Project> projects, String title) {
         /*JDialog*/
@@ -543,7 +543,7 @@ public class CenterUI {
     }
 
     /**
-     * Represents a ButtonListener that implement the ActionListener class
+     * Represents a ButtonListener that implements the ActionListener class
      */
     private class ButtonListener implements ActionListener {
         @Override
@@ -579,7 +579,7 @@ public class CenterUI {
     }
 
     /**
-     * Represents a ListListener that implement the ListSelectionListener class
+     * Represents a ListListener that implements the ListSelectionListener class
      */
     private class ListListener implements ListSelectionListener {
         /**

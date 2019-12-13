@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Represents the Project UI
+ */
 public class ProjectUI {
     private int centerIndex, projectIndex;
     private String pathName;
@@ -31,6 +34,13 @@ public class ProjectUI {
     private ArrayList<Object> chosenTasks, chosenPeople;
     private JanelaListener windowListener;
 
+    /**
+     * Creates a ProjectUI with the chosen project in a previously chosen researchCenter
+     * @param researchCenters ArrayList with the centers Data base
+     * @param centerIndex int index for the current center
+     * @param projectIndex int index for the current project
+     * @param pathName saving path for file.obj
+     */
     public ProjectUI(ArrayList<ResearchCenter> researchCenters, int centerIndex, int projectIndex, String pathName) {
         this.researchCenters = researchCenters;
         this.centerIndex = centerIndex;
@@ -39,22 +49,30 @@ public class ProjectUI {
         drawer();
     }
 
+    /**
+     * Draws a ProjectUI
+     */
     private void drawer() {
         frame = new JFrame();
+        /*Listeners*/
         windowListener = new JanelaListener();
         frame.addWindowListener(windowListener);
         buttonListener = new ButtonListener();
         listListener = new ListListener();
+
+        /*Frame Settings*/
         frame.setTitle("Project Manager");
         frame.setSize(750, 350);
         frame.setLayout(new GridLayout(4, 1));
         frame.setLocationRelativeTo(null);
 
+        /*Panels*/
         JPanel titlePanel = new JPanel();
         JPanel topPanel = new JPanel();
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
+        /*Labels*/
         projectLabel = new JLabel(
                 "Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
                         +researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
@@ -69,7 +87,8 @@ public class ProjectUI {
         JLabel pessoasLabel = new JLabel("Pessoas:");
         JLabel othersLabel = new JLabel("Outros:");
 
-        //Tasks related Buttons
+        /*Buttons*/
+        //Task related Buttons
         createTaskButton = new JButton("Criar");
         createTaskButton.addActionListener(buttonListener);
         removeTaskButton = new JButton("Eliminar");
@@ -78,6 +97,7 @@ public class ProjectUI {
         listTaskButton.addActionListener(buttonListener);
         updateTaskButton = new JButton("Atualizar");
         updateTaskButton.addActionListener(buttonListener);
+
         //People related Buttons
         addDocenteButton = new JButton("Associar Docente ao Projeto");
         addDocenteButton.addActionListener(buttonListener);
@@ -85,6 +105,7 @@ public class ProjectUI {
         addBolseiroButton.addActionListener(buttonListener);
         changeRespButton = new JButton("Atribuir");
         changeRespButton.addActionListener(buttonListener);
+
         //Other Buttons
         totalCostButton = new JButton("Custo Total");
         totalCostButton.addActionListener(buttonListener);
@@ -93,10 +114,12 @@ public class ProjectUI {
         backButton = new JButton("Voltar");
         backButton.addActionListener(buttonListener);
 
+        /*Verificação se o projeto está acabado para o desenhar como tal*/
         if (researchCenters.get(centerIndex).getProjects().get(projectIndex).endProject()){
             finalizer();
         }
 
+        /*Adding Components to main Panels*/
         titlePanel.add(projectLabel);
 
         topPanel.add(tarefasLabel);
@@ -116,6 +139,7 @@ public class ProjectUI {
         bottomPanel.add(endButton);
         bottomPanel.add(backButton);
 
+        /*Adding main panels to the main Frame*/
         frame.add(titlePanel);
         frame.add(topPanel);
         frame.add(middlePanel);
@@ -124,7 +148,14 @@ public class ProjectUI {
         frame.setVisible(true);
     }
 
+    /**
+     * Draws a generic list see-only display for the User
+     *
+     * @param objects Arraylist with the objects to add to that list
+     * @param title String to the User know what is being listed
+     */
     private void listerDrawer(ArrayList<Object> objects, String title) {
+        /*Frame Settings*/
         listerTaskDialog = new JDialog();
         listerTaskDialog.setModal(true);
         listerTaskDialog.setSize(550, 550);
@@ -132,42 +163,63 @@ public class ProjectUI {
         listerTaskDialog.setLayout(new BorderLayout());
         listerTaskDialog.setTitle(title);
 
+        /*Panels*/
         JPanel topListerPanel = new JPanel();
         JPanel middleListerPanel = new JPanel();
         JPanel bottomListerPanel = new JPanel();
 
+        /*Button*/
         backListerDialogButton = new JButton("Voltar");
         backListerDialogButton.addActionListener(buttonListener);
+
+        /*Label*/
         JLabel titleListerLabel = new JLabel(title);
         titleListerLabel.setFont(new Font(titleListerLabel.getFont().getName(), Font.PLAIN, 20));
+
+        /*Scroller Panel*/
+        //Initialization
         DefaultListModel<Object> tasksListModel = new DefaultListModel<>();
+        //Adding objects to the list
         if (objects != null) {
             tasksListModel.addAll(objects);
         }
+        //Adding list to the JList and Settings
         listerList = new JList<>(tasksListModel);
         listerList.setFixedCellWidth(450);
         listerList.setFixedCellHeight(40);
         listerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listerList.addListSelectionListener(listListener);
+        //Adding the Jlist to the JScrollPane
         JScrollPane listerScroller = new JScrollPane(listerList);
 
+        /*Adding the components to the main Panels*/
         topListerPanel.add(titleListerLabel);
         middleListerPanel.add(listerScroller);
         bottomListerPanel.add(backListerDialogButton);
 
+        /*Adding the main Panels to the main Frame*/
         listerTaskDialog.add(topListerPanel, BorderLayout.NORTH);
         listerTaskDialog.add(middleListerPanel, BorderLayout.CENTER);
         listerTaskDialog.add(bottomListerPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Draws a generic double list see-only display for the User
+     *
+     * @param left Arraylist with the objects to add to the left list
+     * @param right Arraylist with the objects to add to the Right list
+     * @param titleLabel String to the User know what is being listed
+     * @param leftLabel String Information of the left list to the User
+     * @param rightLabel String Information of the right list to the User
+     */
     private void doubleListerDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel) {
         doubleListerDialog = new JDialog();
+        /*Settings*/
         doubleListerDialog.setModal(true);
         doubleListerDialog.setSize(950, 600);
         doubleListerDialog.setLocationRelativeTo(null);
         doubleListerDialog.setLayout(new BorderLayout());
         doubleListerDialog.setTitle("Trocar Responsável");
-
 
         /*Panels*/
         JPanel topPanel = new JPanel();
@@ -224,6 +276,9 @@ public class ProjectUI {
         doubleListerDialog.add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Drawer responsible for the create task menu
+     */
     private void createTaskDrawer() {
         createTaskDialog = new JDialog();
         createTaskDialog.setModal(true);
@@ -351,6 +406,9 @@ public class ProjectUI {
         createTaskDialog.setVisible(true);
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for creating a task in the current project
+     */
     private void taskCreater() {
         int diaInicio, mesInicio, anoInicio, mesFim, boxIndex;
         Calendar inicio, etc;
@@ -403,8 +461,12 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Drawer responsible for the remove task menu
+     */
     private void removeTaskDialogDrawer() {
         listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(), "Remover Tarefas");
+        /*Refactoring of the bottom panel to add a Button*/
         JPanel bottomPanel = new JPanel();
 
         trueRemoveTaskButton = new JButton("Eliminar Tarefa");
@@ -419,6 +481,9 @@ public class ProjectUI {
         listerTaskDialog.setVisible(true);
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for removing a task in the current project
+     */
     private void taskRemover() {
         Task tarefa = (Task) listerList.getSelectedValue();
         listerTaskDialog.setVisible(false);
@@ -430,8 +495,12 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Drawer responsible of sub-menu for list choosing
+     */
     private void displayTasksDrawer() {
         displayTasksDialog = new JDialog();
+        /*Settings*/
         displayTasksDialog.setModal(true);
         displayTasksDialog.setSize(400, 400);
         displayTasksDialog.setLocationRelativeTo(null);
@@ -477,6 +546,9 @@ public class ProjectUI {
         displayTasksDialog.setVisible(true);
     }
 
+    /**
+     * Drawer responsible of the task udpating menu
+     */
     private void updateTaskDialogDrawer() {
         listerDrawer(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded(), "Atualizar Tarefas");
         /*Panels*/
@@ -511,6 +583,9 @@ public class ProjectUI {
 
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for updating a task in the current project
+     */
     private void taskUpdater() {
         Task task;
         try {
@@ -536,9 +611,12 @@ public class ProjectUI {
 
     }
 
-    private void changeRespDrawer(ArrayList<Object> left, ArrayList<Object> right, String titleLabel, String leftLabel, String rightLabel) {
+    /**
+     * Drawer responsible for the changing task responsible menu
+     */
+    private void changeRespDrawer() {
         doubleListerDrawer(chosenPeople, chosenTasks, "Trocar Responsável", "Escolha uma Pessoa:", "Escolha uma Tarefa:");
-
+        /*Refactoring of the bottom panel to add a Button*/
         JPanel bottomPanel = new JPanel();
 
         trueChangeTaskResp = new JButton("Alterar");
@@ -552,6 +630,9 @@ public class ProjectUI {
         doubleListerDialog.setVisible(true);
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for changing task responsible in the current project
+     */
     private void respChanger() {
         Pessoa pessoa;
         Task tarefa;
@@ -572,9 +653,14 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Drawer responsible for the docente adder menu
+     *
+     * @param docentes Arraylist with the center docentes except the ones associated in the current project
+     */
     private void addDocenteDrawer(ArrayList<Object> docentes) {
         listerDrawer(docentes, "Associar Docente");
-
+        /*Refactoring of the bottom panel to add a Button*/
         JPanel bottomPanel = new JPanel();
         trueAddDocenteButton = new JButton("Associar");
         trueAddDocenteButton.addActionListener(buttonListener);
@@ -588,6 +674,9 @@ public class ProjectUI {
         listerTaskDialog.setVisible(true);
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for adding a Docente in the current project
+     */
     private void docenteAdder() {
         Docente docente;
         if ((docente = ((Docente) listerList.getSelectedValue())) != null) {
@@ -603,9 +692,15 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Drawer responsible for the adding a bolseiro menu
+     *
+     * @param docentes Arraylist with the docentes in the current project
+     * @param bolseiros Arraylist with the bolseiros in the currente project
+     */
     private void addBolseiroDrawer(ArrayList<Object> docentes, ArrayList<Object> bolseiros) {
         doubleListerDrawer(docentes, bolseiros, "Associar Bolseiro", "Escolha um Docente:", "Escolha um bolseiro:");
-
+        /*Refactoring of the bottom panel to add a Button*/
         JPanel bottomPanel = new JPanel();
 
         trueAddBolseiroButton = new JButton("Associar");
@@ -619,12 +714,15 @@ public class ProjectUI {
         doubleListerDialog.setVisible(true);
     }
 
+    /**
+     * Connection from FrontEnd to BackEnd for adding a Bolseiro in the current project
+     */
     private void bolseiroAdder() {
         Bolseiro bolseiro;
         Docente docente;
         if ((((bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) && (bolseiro.getCusto() == 1200))) { //Se for um doutorado
             if ((docente = (Docente) doubleLeftList.getSelectedValue()) == null) {
-                if(!researchCenters.get(centerIndex).getProjects().get(projectIndex).getBolseiros().contains(bolseiro)){
+                if(!researchCenters.get(centerIndex).getProjects().get(projectIndex).getBolseiros().contains(bolseiro)){ //Se o doutorado já tiver sido adicionado
                     researchCenters.get(centerIndex).getProjects().get(projectIndex).addBolseiro(bolseiro);
                     doubleListerDialog.setVisible(false);
                     doubleListerDialog.dispose();
@@ -636,7 +734,7 @@ public class ProjectUI {
                 JOptionPane.showMessageDialog(null, "Um Doutorado não Precisa de Orientador!", "Erro", JOptionPane.ERROR_MESSAGE);
 
             }
-        } else {
+        } else { // Caso contrário é um Estudante
             if (((docente = (Docente) doubleLeftList.getSelectedValue()) != null) && (bolseiro = (Bolseiro) doubleRightList.getSelectedValue()) != null) {
                 ((Estudante) bolseiro).setOrientador(docente);
 
@@ -654,6 +752,9 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Responsible for making sure a project is ended by blocking some buttons forever and changing the etc to the end date in the main label
+     */
     private void finalizer(){
         projectLabel.setText("Projeto \"" + researchCenters.get(centerIndex).getProjects().get(projectIndex).getNome() + "\" (" +
                 + researchCenters.get(centerIndex).getProjects().get(projectIndex).getDataInicio().get(Calendar.DAY_OF_MONTH) + "/"
@@ -674,76 +775,79 @@ public class ProjectUI {
         endButton.setText("CONCLUÍDO");
     }
 
+    /**
+     * Represents a ButtonListener that implements the ActionListener class
+     */
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == backButton) {
+            if (e.getSource() == backButton) { //Botão para voltar ao menu do Centro
                 frame.setVisible(false);
                 frame.dispose();
                 new CenterUI(researchCenters, centerIndex, pathName);
-            } else if (e.getSource() == createTaskButton) {
+            } else if (e.getSource() == createTaskButton) { //Botão para abrir o menu para criar uma task
                 createTaskDrawer();
-            } else if (e.getSource() == trueCreateTaskButton) {
+            } else if (e.getSource() == trueCreateTaskButton) { //Botão para criar uma task
                 createTaskDialog.setVisible(false);
                 createTaskDialog.dispose();
                 taskCreater();
-            } else if (e.getSource() == backCreateTaskButton) {
+            } else if (e.getSource() == backCreateTaskButton) { //Botão para sair do menu para criar uma task
                 createTaskDialog.setVisible(false);
                 createTaskDialog.dispose();
-            } else if (e.getSource() == removeTaskButton) {
+            } else if (e.getSource() == removeTaskButton) { //Botão botão para abrir o menu para remover uma tarefa
                 removeTaskDialogDrawer();
-            } else if (e.getSource() == trueRemoveTaskButton) {
+            } else if (e.getSource() == trueRemoveTaskButton) { //Botão para remover uma tarefa
                 taskRemover();
-            } else if (e.getSource() == listTaskButton) {
+            } else if (e.getSource() == listTaskButton) { //Botão para abrir o menu the listagens
                 displayTasksDrawer();
-            } else if (e.getSource() == backListerButton) {
+            } else if (e.getSource() == backListerButton) { //Botão para sair do menu de listagens
                 displayTasksDialog.setVisible(false);
                 displayTasksDialog.dispose();
-            } else if (e.getSource() == backDoubleListerButton) {
+            } else if (e.getSource() == backDoubleListerButton) {   //Botão para sair dos menus de adicionar bolseiro, adiconar docente e alterar responsavel por uma tarefa
                 doubleListerDialog.setVisible(false);
                 doubleListerDialog.dispose();
-            } else if (e.getSource() == listAllButton) {
+            } else if (e.getSource() == listAllButton) {    //Botão para listar todas as tarefas
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasks());
                 listerDrawer(chosenTasks, "Todas as Tarefas");
                 listerTaskDialog.setVisible(true);
-            } else if (e.getSource() == listNotStartedButton) {
+            } else if (e.getSource() == listNotStartedButton) { //Botão para listar as tarefas não começadas
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotStarted());
                 listerDrawer(chosenTasks, "Tarefas Não Iniciadas");
                 listerTaskDialog.setVisible(true);
-            } else if (e.getSource() == listConcludedButton) {
+            } else if (e.getSource() == listConcludedButton) { //Botão para listar as tarefas concluídas
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksConcluded());
                 listerDrawer(chosenTasks, "Tarefas Concluídas");
                 listerTaskDialog.setVisible(true);
-            } else if (e.getSource() == listNotConcludedEtcButton) {
+            } else if (e.getSource() == listNotConcludedEtcButton) { //Botão para listar as tarefas não concluídas antes da data estimada
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcludedInEtc());
                 listerDrawer(chosenTasks, "Tarefas Não Concluídas na Data Estimada");
                 listerTaskDialog.setVisible(true);
-            } else if (e.getSource() == backListerDialogButton) {
+            } else if (e.getSource() == backListerDialogButton) { //Botão para sair dos 4 possíveis submenus de listagem + remover tarefas + atualizar tarefas
                 listerTaskDialog.setVisible(false);
                 listerTaskDialog.dispose();
-            } else if (e.getSource() == updateTaskButton) {
+            } else if (e.getSource() == updateTaskButton) {     //Botão para abrir o menu para atualizar uma tarefa
                 updateTaskDialogDrawer();
-            } else if (e.getSource() == changeRespButton) {
+            } else if (e.getSource() == changeRespButton) {     //Botão para abrir o menu para mudar o responsavel de uma tarefa
                 chosenTasks = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getTasksNotConcluded());
                 chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getPessoas());
-                changeRespDrawer(chosenPeople, chosenTasks, "Trocar Responsável", "Escolha uma Pessoa:", "Escolha uma Tarefa:");
-            } else if (e.getSource() == trueUpdateTaskButton) {
+                changeRespDrawer();
+            } else if (e.getSource() == trueUpdateTaskButton) { //Botão para atualizar uma tarefa
                 taskUpdater();
-            } else if (e.getSource() == trueChangeTaskResp) {
+            } else if (e.getSource() == trueChangeTaskResp) {   //Botão para mudar o responsável de uma tarefa
                 respChanger();
-            } else if (e.getSource() == totalCostButton) {
+            } else if (e.getSource() == totalCostButton) {      //Botão para mostar o custo total do projeto
                 JOptionPane.showMessageDialog(null, "Custo Total do Projeto: " + researchCenters.get(centerIndex).getProjects().get(projectIndex).getCost() + " €.", "Custo Total", JOptionPane.INFORMATION_MESSAGE);
-            } else if (e.getSource() == addDocenteButton) {
+            } else if (e.getSource() == addDocenteButton) { //Botão para abrir o menu para associar docentes
                 chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getDocentesNotInProject(researchCenters.get(centerIndex).getProjects().get(projectIndex)));
                 addDocenteDrawer(chosenPeople);
-            } else if (e.getSource() == trueAddDocenteButton) {
+            } else if (e.getSource() == trueAddDocenteButton) { //Botão para associar docente
                 docenteAdder();
-            } else if (e.getSource() == addBolseiroButton) {
+            } else if (e.getSource() == addBolseiroButton) {//Botão para abrir o menu para associar bolseiros
                 chosenPeople = new ArrayList<>(researchCenters.get(centerIndex).getProjects().get(projectIndex).getDocentes());
                 addBolseiroDrawer(chosenPeople, researchCenters.get(centerIndex).getBolseirosNotAssociatedAndProject(researchCenters.get(centerIndex).getProjects().get(projectIndex)));
-            } else if (e.getSource() == trueAddBolseiroButton) {
+            } else if (e.getSource() == trueAddBolseiroButton) {//Botão para associar bolseiros
                 bolseiroAdder();
-            } else if (e.getSource() == endButton){
+            } else if (e.getSource() == endButton){ //Botão para terminar o projeto
                 Calendar diaAtual = new GregorianCalendar();
                 if (JOptionPane.showConfirmDialog(null, "Tem a certeza?", "Terminar Projeto", JOptionPane.YES_NO_OPTION) == 0) {
                     if (researchCenters.get(centerIndex).getProjects().get(projectIndex).endProject() ){
@@ -758,7 +862,14 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Represents a ListListener that implements the ListSelectionListener class
+     */
     private class ListListener implements ListSelectionListener {
+        /**
+         * Enable/ Disable of buttons if a list value is selected, or not, respectively
+         * @param e ListSelectionEvent choosing an element in a given list
+         */
         @Override
         public void valueChanged(ListSelectionEvent e) {
             if (e.getSource() == peopleCreateTaskList) {
@@ -787,13 +898,20 @@ public class ProjectUI {
         }
     }
 
+    /**
+     * Represents a WindowListener
+     */
     private class JanelaListener implements WindowListener {
 
         @Override
         public void windowOpened(WindowEvent e) {
 
         }
-
+        /**
+         * Saves the current state of the program if the frame is closed
+         *
+         * @param e WindowEvent Window Closing
+         */
         @Override
         public void windowClosing(WindowEvent e) {
             Booter booter = new Booter();

@@ -77,7 +77,13 @@ public class IntroUI extends JFrame {
                 }
             } else if (e.getSource() == exitButton) {
                 if (JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja sair?", "Sair", JOptionPane.YES_NO_OPTION) == 0) {
-                    Booter.saveObjectFile(pathName,researchCenters);
+                    Booter booter = new Booter();
+                    if (booter.saveObjectFile(pathName,researchCenters)){
+                        System.out.println("Ficheiro Objeto guardado com Sucesso");
+                    } else {
+                        System.out.println("Erro ao Guardar Ficheiro Objeto");
+                    }
+                    frame.dispose();
                     System.exit(0);
                 }
             } else if (e.getSource() == createCenterButton) {

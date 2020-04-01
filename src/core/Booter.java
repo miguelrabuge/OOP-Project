@@ -17,8 +17,6 @@ public class Booter {
         ArrayList<ResearchCenter> researchCenters;
         Booter booter = new Booter();
 
-        //String backupBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/files/backUp.txt";
-        //String objectBooter = "/Users/gabriel/Documents/UC/2 ano/1 semestre/POO/POO-Project/src/save.obj"
         String backupBooter = "ficheiro.txt";
         String objectBooter = "ficheiro.obj";
 

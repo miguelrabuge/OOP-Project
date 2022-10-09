@@ -1,4 +1,6 @@
 # OOP-Project
- Project for the Object-Oriented Programming subject of the Informatics engineering course @University of Coimbra
-## Collaborators
-* [Gabriel Fernandes](https://github.com/gabrielmendesfernandes)
+Project for the Object-Oriented Programming subject: Research Center Management App
+
+## Team
+- [Gabriel Fernandes](https://github.com/gabrielmendesfernandes)
+- [Miguel Rabuge](https://github.com/MikeLrUC)
